@@ -1,15 +1,27 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import model.MapModel;
+import view.game.GameFrame;
+import view.login.LoginFrame;
+
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        SwingUtilities.invokeLater(() -> {
+            LoginFrame loginFrame = new LoginFrame(300,200);
+            loginFrame.setVisible(true);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+            // CaoCao : 1; GuanYu : 2; General : 3; Soldier : 4; Empty : 5
+            MapModel mapModel = new MapModel(new int[][]{
+                    {1, 1, 3, 3, 5},
+                    {1, 1, 3, 3, 5},
+                    {2, 3, 3, 5, 5},
+                    {2, 3, 3, 0, 0}
+            });
+            GameFrame gameFrame = new GameFrame(600, 450, mapModel);
+            gameFrame.setVisible(false);
+            loginFrame.setGameFrame(gameFrame);
+        });
     }
 }
+
