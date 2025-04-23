@@ -5,6 +5,23 @@ package model;
  */
 public class MapModel {
     int[][] matrix;
+    private int exitRow;
+    private int exitCol;
+
+
+        public void setExitPosition(int row, int col) {
+        this.exitRow = row;
+        this.exitCol = col;
+    }
+
+    public int getExitRow() {
+        return exitRow;
+    }
+
+    public int getExitCol() {
+        return exitCol;
+    }
+
 
     public MapModel(int[][] matrix) {
         this.matrix = matrix;
@@ -18,7 +35,6 @@ public class MapModel {
         return this.matrix.length;
     }
 
-    // the number at specific location
     public int getId(int row, int col) {
         return matrix[row][col];
     }
@@ -34,4 +50,9 @@ public class MapModel {
     public boolean checkInHeightSize(int row) {
         return row >= 0 && row < matrix.length;
     }
+
+    public void setId(int row, int col, int value) {
+        matrix[row][col] = value;
+    }
+
 }
