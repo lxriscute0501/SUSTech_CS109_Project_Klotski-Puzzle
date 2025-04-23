@@ -56,21 +56,21 @@ public class GamePanel extends ListenerPanel {
             for (int j = 0; j < map[0].length; j++) {
                 BoxComponent box = null;
                 if (map[i][j] == 1) {
-                    box = new BoxComponent(Color.ORANGE, i, j);
+                    box = new BoxComponent(Color.ORANGE, i, j,1,1);
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     map[i][j] = 0;
                 } else if (map[i][j] == 2) {
-                    box = new BoxComponent(Color.PINK, i, j);
+                    box = new BoxComponent(Color.PINK, i, j, 2,1);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     map[i][j] = 0;
                     map[i][j + 1] = 0;
                 } else if (map[i][j] == 3) {
-                    box = new BoxComponent(Color.BLUE, i, j);
+                    box = new BoxComponent(Color.BLUE, i, j, 1, 2);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
                     map[i][j] = 0;
                     map[i + 1][j] = 0;
                 } else if (map[i][j] == 4) {
-                    box = new BoxComponent(Color.GREEN, i, j);
+                    box = new BoxComponent(Color.GREEN, i, j, 2,2);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
                     map[i][j] = 0;
                     map[i + 1][j] = 0;
@@ -84,6 +84,10 @@ public class GamePanel extends ListenerPanel {
                 }
             }
         }
+
+        model.setExitPosition(0, model.getWidth()-1);
+
+
         this.repaint();
     }
 
@@ -92,11 +96,38 @@ public class GamePanel extends ListenerPanel {
         super.paintComponent(g);
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+        drawExitArrow(g);
+
         Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 2);
         this.setBorder(border);
     }
 
-    @Override
+    private void drawExitArrow(Graphics g) {
+        int exitRow = model.getExitRow();
+        int exitCol = model.getExitCol();
+
+
+        int x = exitCol * GRID_SIZE + GRID_SIZE / 2; // Arrow X coordinate (centered)
+        int y = exitRow * GRID_SIZE + GRID_SIZE / 2; // Arrow Y coordinate (centered)
+        int arrowSize = GRID_SIZE / 2;
+
+
+        g.setColor(Color.BLACK);
+
+
+        Polygon arrow = new Polygon();
+        arrow.addPoint(x, y - arrowSize);
+        arrow.addPoint(x - arrowSize / 2, y);
+        arrow.addPoint(x + arrowSize / 2, y);
+
+        g.fillPolygon(arrow);
+
+        g.fillRect(x - 5, y, 10, arrowSize);
+    }
+
+
+        @Override
     public void doMouseClick(Point point) {
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
