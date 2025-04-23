@@ -21,26 +21,68 @@ public class GameController {
 
     public void restartGame() {
         System.out.println("Do restart game here");
+
     }
 
     public boolean doMove(int row, int col, Direction direction) {
-        if (model.getId(row, col) == 1) {
-            int nextRow = row + direction.getRow();
-            int nextCol = col + direction.getCol();
-            if (model.checkInHeightSize(nextRow) && model.checkInWidthSize(nextCol)) {
-                if (model.getId(nextRow, nextCol) == 0) {
-                    model.getMatrix()[row][col] = 0;
-                    model.getMatrix()[nextRow][nextCol] = 1;
-                    BoxComponent box = view.getSelectedBox();
-                    box.setRow(nextRow);
-                    box.setCol(nextCol);
-                    box.setLocation(box.getCol() * view.getGRID_SIZE() + 2, box.getRow() * view.getGRID_SIZE() + 2);
-                    box.repaint();
-                    return true;
+
+        BoxComponent box = view.getSelectedBox();
+        if (box == null) return false;
+
+        int oldRow = box.getRow();
+        int oldCol = box.getCol();
+        int newRow = oldRow + direction.getRow();
+        int newCol = oldCol + direction.getCol();
+
+        int widthInGrid = box.getWidth() / view.getGRID_SIZE();
+        int heightInGrid = box.getHeight() / view.getGRID_SIZE();
+
+        for (int i = 0; i < heightInGrid; i++) {
+            for (int j = 0; j < widthInGrid; j++) {
+                int checkRow = newRow + i;
+                int checkCol = newCol + j;
+
+                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) {
+                    return false; // Out of bounds
+                }
+
+                if (model.getId(checkRow, checkCol) != 0 &&
+                        (checkRow < oldRow || checkRow >= oldRow + heightInGrid ||
+                                checkCol < oldCol || checkCol >= oldCol + widthInGrid)) {
+                    return false;
                 }
             }
         }
-        return false;
+
+        for (int i = 0; i < heightInGrid; i++) {
+            for (int j = 0; j < widthInGrid; j++) {
+                model.setId(oldRow + i, oldCol + j, 0);
+            }
+        }
+
+        for (int i = 0; i < heightInGrid; i++) {
+            for (int j = 0; j < widthInGrid; j++) {
+                model.setId(newRow + i, newCol + j, 1); // or use a box ID if you track them
+            }
+        }
+
+        for (int i = 0; i < heightInGrid; i++) {
+            for (int j = 0; j < widthInGrid; j++) {
+                model.setId(newRow + i, newCol + j, 1); // or use a unique ID per block
+            }
+        }
+
+        box.setRow(newRow);
+        box.setCol(newCol);
+        box.setLocation(newCol * view.getGRID_SIZE() + 2, newRow * view.getGRID_SIZE() + 2);
+        box.repaint();
+
+        if (box.getRow() == model.getExitRow() && box.getCol() == model.getExitCol()) {
+            System.out.println("Congratulations! You have moved Cao Cao to the exit!");
+
+            return true;
+        }
+        return true;
     }
 
     //todo: add other methods such as loadGame, saveGame...
