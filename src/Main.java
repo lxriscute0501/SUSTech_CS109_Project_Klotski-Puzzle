@@ -18,12 +18,7 @@ public class Main {
              * Soldier : 4
              * Empty : 0
              */
-            MapModel mapModel = new MapModel(new int[][]{
-                    {1, 1, 3, 3, 4},
-                    {1, 1, 3, 3, 4},
-                    {2, 3, 3, 4, 4},
-                    {2, 3, 3, 0, 0}
-            });
+            MapModel mapModel = new MapModel(new int[4][5]);
             GameFrame gameFrame = new GameFrame(500, 400, mapModel);
             gameFrame.setVisible(false);
             loginFrame.setGameFrame(gameFrame);

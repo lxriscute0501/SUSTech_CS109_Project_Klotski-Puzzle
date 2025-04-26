@@ -7,7 +7,7 @@ import model.User;
 import view.game.BoxComponent;
 import view.game.GamePanel;
 import util.SaveLoadUtil;
-import util.FileValidator;
+import util.FileValid;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -22,28 +22,53 @@ public class GameController {
     private int selectedRow = -1;
     private int selectedCol = -1;
     private int moveCount = 0;
-    private User currentUser; // 当前登录用户
+    private User currentUser;
 
     public GameController(GamePanel view, MapModel model) {
         this.view = view;
         this.model = model;
         this.view.setController(this);
-        new SelectController(view, model, this);
+        setupCallbacks();
         initializeKeyBindings();
     }
 
-    /**
-     * Sets the current logged-in user
-     * @param user the user object
-     */
+    private void setupCallbacks() {
+        view.setMoveCallbacks(
+                this::moveRight,
+                this::moveLeft,
+                this::moveUp,
+                this::moveDown
+        );
+    }
+
+    private void moveRight() {
+        if (selectedRow != -1 && selectedCol != -1) {
+            attemptMove(selectedRow, selectedCol, Direction.RIGHT);
+        }
+    }
+
+    private void moveLeft() {
+        if (selectedRow != -1 && selectedCol != -1) {
+            attemptMove(selectedRow, selectedCol, Direction.LEFT);
+        }
+    }
+
+    private void moveUp() {
+        if (selectedRow != -1 && selectedCol != -1) {
+            attemptMove(selectedRow, selectedCol, Direction.UP);
+        }
+    }
+
+    private void moveDown() {
+        if (selectedRow != -1 && selectedCol != -1) {
+            attemptMove(selectedRow, selectedCol, Direction.DOWN);
+        }
+    }
+
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
-    /**
-     * Saves the current game state
-     * @return true if save was successful
-     */
     public boolean saveGame() {
         if (currentUser == null || currentUser.isGuest()) {
             view.showErrorMessage("Guest users cannot save games.");
@@ -67,10 +92,6 @@ public class GameController {
         }
     }
 
-    /**
-     * Loads the saved game state
-     * @return true if load was successful
-     */
     public boolean loadGame() {
         if (currentUser == null || currentUser.isGuest()) {
             view.showErrorMessage("Guest users cannot load saved games.");
@@ -86,25 +107,20 @@ public class GameController {
         }
 
         try {
-            // Validate the save file first
-            if (!FileValidator.validateSaveFile(saveFile)) {
+            if (!FileValid.validateSaveFile(saveFile)) {
                 view.showErrorMessage("Save file is corrupted or invalid.");
                 return false;
             }
 
             GameState state = SaveLoadUtil.loadGameState(filename);
-
-            // Update model and view
             model.setMatrix(state.getBoardState());
             this.moveCount = state.getMoveCount();
 
-            // Reset selection
             selectedRow = -1;
             selectedCol = -1;
 
-            // Update view
-            view.resetView();
-            view.updateMoveCount(moveCount);
+            view.initialGame();
+            view.updateStepCount(moveCount);
             view.clearSelection();
 
             view.showInfoMessage("Game loaded successfully!");
@@ -115,18 +131,12 @@ public class GameController {
         }
     }
 
-    /**
-     * Auto-saves the game when exiting
-     */
     public void autoSaveOnExit() {
         if (currentUser != null && !currentUser.isGuest()) {
             saveGame();
         }
     }
 
-    /**
-     * Initializes keyboard bindings for movement
-     */
     private void initializeKeyBindings() {
         view.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -166,13 +176,8 @@ public class GameController {
         });
     }
 
-    /**
-     * Selects a block at the specified position
-     * @param row the row of the block
-     * @param col the column of the block
-     */
     public void selectBlock(int row, int col) {
-        if (model.getId(row, col) != 0) { // Only select non-empty blocks
+        if (model.getId(row, col) != 0) {
             selectedRow = row;
             selectedCol = col;
             view.highlightSelectedBox(row, col);
@@ -183,17 +188,10 @@ public class GameController {
         }
     }
 
-    /**
-     * Attempts to move a block in the specified direction
-     * @param row the row of the block
-     * @param col the column of the block
-     * @param direction the direction to move
-     * @return true if the move was successful
-     */
     public boolean attemptMove(int row, int col, Direction direction) {
         if (doMove(row, col, direction)) {
             moveCount++;
-            view.updateMoveCount(moveCount);
+            view.updateStepCount(moveCount);
             return true;
         }
         return false;
@@ -201,45 +199,32 @@ public class GameController {
 
     public void restartGame() {
         model.resetMap();
-        view.resetView();
+        view.initialGame();
         selectedRow = -1;
         selectedCol = -1;
         moveCount = 0;
-        view.updateMoveCount(moveCount);
+        view.updateStepCount(moveCount);
         view.clearSelection();
-        System.out.println("Game restarted");
     }
 
-    /**
-     * Performs the actual movement logic
-     * @param row the row of the block
-     * @param col the column of the block
-     * @param direction the direction to move
-     * @return true if the move was successful
-     */
     public boolean doMove(int row, int col, Direction direction) {
         int blockId = model.getId(row, col);
-        if (blockId == 0) return false; // Can't move empty space
+        if (blockId == 0) return false;
 
-        // Calculate new position
         int nextRow = row + direction.getRow();
         int nextCol = col + direction.getCol();
 
-        // Check boundaries
         if (!model.checkInHeightSize(nextRow) || !model.checkInWidthSize(nextCol)) {
             return false;
         }
 
-        // Check if target position is empty
         if (model.getId(nextRow, nextCol) != 0) {
             return false;
         }
 
-        // Perform the move
         model.getMatrix()[row][col] = 0;
         model.getMatrix()[nextRow][nextCol] = blockId;
 
-        // Update the view
         BoxComponent box = view.getBoxAt(row, col);
         if (box != null) {
             box.setRow(nextRow);
@@ -250,25 +235,16 @@ public class GameController {
             );
             box.repaint();
 
-            // Update selection to new position
             selectedRow = nextRow;
             selectedCol = nextCol;
             view.highlightSelectedBox(nextRow, nextCol);
         }
 
-        // Check for win condition (Cao Cao block at exit)
         checkWinCondition();
-
         return true;
     }
 
-    /**
-     * Checks if the game has been won (Cao Cao block at exit)
-     */
     private void checkWinCondition() {
-        // 检查Cao Cao方块(2x2, ID=1)是否到达出口位置
-        // 假设出口是底部中间位置(3,1)-(3,2)
-
         boolean caoAtExit = true;
         for (int r = 3; r <= 3; r++) {
             for (int c = 1; c <= 2; c++) {
@@ -281,14 +257,12 @@ public class GameController {
 
         if (caoAtExit) {
             view.showVictoryMessage(moveCount);
-            // Auto-save on victory if user is logged in
             if (currentUser != null && !currentUser.isGuest()) {
                 saveGame();
             }
         }
     }
 
-    // Getters for selected position
     public int getSelectedRow() {
         return selectedRow;
     }
@@ -297,7 +271,7 @@ public class GameController {
         return selectedCol;
     }
 
-    public int getMoveCount() {
+    public int getStepCount() {
         return moveCount;
     }
 

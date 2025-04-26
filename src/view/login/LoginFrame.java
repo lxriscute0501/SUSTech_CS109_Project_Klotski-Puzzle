@@ -99,9 +99,12 @@ public class LoginFrame extends JFrame {
 
     private void enterGame(boolean isGuest) {
         if (this.gameFrame != null) {
-            //this.gameFrame.setGuestMode(isGuest);
-            this.gameFrame.setVisible(true);
+            this.gameFrame.setGuestMode(isGuest);
             this.setVisible(false);
+
+            // show start menu
+            StartMenuFrame startMenu = new StartMenuFrame(gameFrame, isGuest);
+            startMenu.setVisible(true);
         }
     }
 
@@ -109,7 +112,7 @@ public class LoginFrame extends JFrame {
         try (InputStream input = new FileInputStream(CONFIG_FILE)) {
             userProperty.load(input);
         } catch (IOException e) {
-            // no file, use the initial username "admin"
+            // if no file, use the initial username "admin"
             userProperty.setProperty("username", "admin");
         }
     }

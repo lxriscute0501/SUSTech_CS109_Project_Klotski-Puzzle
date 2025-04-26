@@ -11,9 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * It is the subclass of ListenerPanel, so that it should implement those four methods: do move left, up, down ,right.
+ * It is the subclass of ListenerPanel, so that it should implement those four methods: move left, up, down ,right.
  * The class contains a grids, which is the corresponding GUI view of the matrix variable in MapMatrix.
  */
 public class GamePanel extends ListenerPanel {
@@ -26,6 +27,17 @@ public class GamePanel extends ListenerPanel {
     private BoxComponent selectedBox;
     private List<ActionListener> stepListeners = new ArrayList<>();
 
+    // Callbacks for movement
+    private Runnable doMoveRight;
+    private Runnable doMoveLeft;
+    private Runnable doMoveUp;
+    private Runnable doMoveDown;
+
+    // Mouse callbacks
+    private Consumer<Point> doLeftClick;
+    private Consumer<Point> doRightClick;
+    private Consumer<Point> doMousePressed;
+    private Consumer<Point> doMouseReleased;
 
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
@@ -52,6 +64,12 @@ public class GamePanel extends ListenerPanel {
 
     public void initialGame() {
         this.steps = 0;
+        initializeBoxes();
+    }
+
+    private void initializeBoxes() {
+        this.removeAll();
+        boxes.clear();
 
         //copy a map
         int[][] map = new int[model.getHeight()][model.getWidth()];
@@ -60,10 +78,8 @@ public class GamePanel extends ListenerPanel {
                 map[i][j] = model.getId(i, j);
 
         //build component
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
                 BoxComponent box = null;
                 if (map[i][j] == 1) {
                     // CaoCao: 2 * 2
@@ -92,7 +108,6 @@ public class GamePanel extends ListenerPanel {
                     map[i][j] = 0;
                 }
 
-                // ???
                 if (box != null) {
                     box.setLocation(j * GRID_SIZE + 2, i * GRID_SIZE + 2);
                     boxes.add(box);
@@ -132,59 +147,88 @@ public class GamePanel extends ListenerPanel {
 
     @Override
     public void doMoveRight() {
-        System.out.println("Click VK_RIGHT");
-        if (selectedBox != null) {
-            if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.RIGHT)) {
-                afterMove();
-            }
+        if (doMoveRight != null) {
+            doMoveRight.run();
         }
     }
 
     @Override
     public void doMoveLeft() {
-        System.out.println("Click VK_LEFT");
-        if (selectedBox != null) {
-            if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.LEFT)) {
-                afterMove();
-            }
+        if (doMoveLeft != null) {
+            doMoveLeft.run();
         }
     }
 
     @Override
     public void doMoveUp() {
-        System.out.println("Click VK_Up");
-        if (selectedBox != null) {
-            if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.UP)) {
-                afterMove();
-            }
+        if (doMoveUp != null) {
+            doMoveUp.run();
         }
     }
 
     @Override
     public void doMoveDown() {
-        System.out.println("Click VK_DOWN");
-        if (selectedBox != null) {
-            if (controller.doMove(selectedBox.getRow(), selectedBox.getCol(), Direction.DOWN)) {
-                afterMove();
-            }
+        if (doMoveDown != null) {
+            doMoveDown.run();
         }
+    }
+
+    @Override
+    public void doLeftClick(Point point) {
+
+    }
+
+    @Override
+    public void doRightClick(Point point) {
+
+    }
+
+    @Override
+    public void doMousePressed(Point point) {
+
+    }
+
+    @Override
+    public void doMouseReleased(Point point) {
+
+    }
+
+    @Override
+    public void doMouseEntered() {
+
+    }
+
+    @Override
+    public void doMouseExited() {
+
+    }
+
+    @Override
+    public void doMouseDragged(Point point) {
+
+    }
+
+    @Override
+    public void doMouseMoved(Point point) {
+
     }
 
     public void afterMove() {
         this.steps ++;
-        this.stepLabel.setText(String.format("Step: %d", this.steps));
+        updateStepLabel();
         triggerStepEvent();
     }
 
     private void updateStepLabel() {
-        if (stepLabel != null) stepLabel.setText(String.format("Step: %d", this.steps));
+        if (stepLabel != null) {
+            stepLabel.setText(String.format("Steps: %d", this.steps));
+        }
     }
 
     public void setStepLabel(JLabel stepLabel) {
         this.stepLabel = stepLabel;
         updateStepLabel();
     }
-
 
     public void setController(GameController controller) {
         this.controller = controller;
@@ -207,16 +251,8 @@ public class GamePanel extends ListenerPanel {
         return steps;
     }
 
-    /**
-     * 高亮显示选中的方块
-     * @param row 行坐标
-     * @param col 列坐标
-     */
     public void highlightSelectedBox(int row, int col) {
-        // 清除之前的选择高亮
         clearSelection();
-
-        // 找到对应的BoxComponent并设置高亮
         BoxComponent box = getBoxAt(row, col);
         if (box != null) {
             box.setSelected(true);
@@ -224,9 +260,6 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
-    /**
-     * 清除所有选择高亮
-     */
     public void clearSelection() {
         for (Component comp : getComponents()) {
             if (comp instanceof BoxComponent) {
@@ -236,21 +269,11 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
-    /**
-     * 更新移动步数显示
-     * @param count 当前步数
-     */
-    public void updateMoveCount(int count) {
-        // 假设有一个JLabel显示步数
-        moveCountLabel.setText("Moves: " + count);
+    public void updateStepCount(int count) {
+        this.steps = count;
+        updateStepLabel();
     }
 
-    /**
-     * 根据坐标获取方块组件
-     * @param row 行坐标
-     * @param col 列坐标
-     * @return 对应的BoxComponent，找不到返回null
-     */
     public BoxComponent getBoxAt(int row, int col) {
         for (Component comp : getComponents()) {
             if (comp instanceof BoxComponent) {
@@ -263,20 +286,6 @@ public class GamePanel extends ListenerPanel {
         return null;
     }
 
-    /**
-     * 重置游戏视图
-     */
-    public void resetView() {
-        removeAll(); // 移除所有组件
-        initializeBoxes(); // 重新初始化方块
-        repaint();
-        revalidate();
-    }
-
-    /**
-     * 显示胜利信息
-     * @param moveCount 获胜时的步数
-     */
     public void showVictoryMessage(int moveCount) {
         JOptionPane.showMessageDialog(this,
                 "Congratulations! You won in " + moveCount + " moves!",
@@ -284,8 +293,13 @@ public class GamePanel extends ListenerPanel {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
 
-
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     public void setMoveCallbacks(Runnable right, Runnable left, Runnable up, Runnable down) {
         this.doMoveRight = right;

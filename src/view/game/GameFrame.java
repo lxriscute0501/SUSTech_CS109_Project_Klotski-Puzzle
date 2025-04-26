@@ -3,6 +3,8 @@ package view.game;
 import controller.GameController;
 import model.MapModel;
 import view.FrameUtil;
+import view.login.LoginFrame;
+import view.login.StartMenuFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
-
     private GameController controller;
     private JButton restartBtn;
-    private JButton loadBtn;
+    private JButton backToMenuBtn;
     private JButton saveBtn;
     private JLabel stepLabel;
     private GamePanel gamePanel;
-    private int stepCount = 0;
+    private LoginFrame loginFrame;
+    private boolean isGuest = false;
 
     public GameFrame(int width, int height, MapModel mapModel) {
-        this.setTitle("Welcome to Klotski Puzzle!");
+        this.setTitle("Klotski Puzzle");
         this.setLayout(null);
         this.setSize(width, height);
 
@@ -29,49 +31,90 @@ public class GameFrame extends JFrame {
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
 
-        // connect the map model && vision graph
         this.controller = new GameController(gamePanel, mapModel);
 
-        this.restartBtn = FrameUtil.createButton(this, "Restart", new Point(gamePanel.getWidth() + 80, 120), 80, 50);
-        this.loadBtn = FrameUtil.createButton(this, "Load", new Point(gamePanel.getWidth() + 80, 210), 80, 50);
-        this.saveBtn = FrameUtil.createButton(this, "Save", new Point(gamePanel.getWidth() + 80, 300), 80, 50);
-        this.stepLabel = FrameUtil.createJLabel(this, "Start", new Font("serif", Font.ITALIC, 22), new Point(gamePanel.getWidth() + 80, 70), 180, 50);
+        initializeUIComponents();
 
-
-        gamePanel.setStepLabel(stepLabel);
-
-        // add ActionListener for step count
-        gamePanel.addStepListener(e -> {
-            stepCount ++;
-            updateStepLabel();
-        });
-
-        this.restartBtn.addActionListener(e -> {
-            controller.restartGame();
-            resetStepCount();
-            gamePanel.requestFocusInWindow(); // enable key listener
-        });
-
-        // ??what is load?
-        this.loadBtn.addActionListener(e -> {
-            String string = JOptionPane.showInputDialog(this, "Input path:");
-            System.out.println("Save at:" + string);
-            // 这里可以添加加载步数的逻辑
-            gamePanel.requestFocusInWindow(); // enable key listener
-        });
-
-        //todo: add other button here
+        // set location and close operation
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void updateStepLabel() {
-        stepLabel.setText("Steps: " + stepCount);
+    private void initializeUIComponents() {
+        // step counter
+        this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
+                new Font("serif", Font.BOLD, 22),
+                new Point(gamePanel.getWidth() + 80, 70), 180, 50);
+        gamePanel.setStepLabel(stepLabel);
+
+        // restart game
+        this.restartBtn = FrameUtil.createButton(this, "Restart",
+                new Point(gamePanel.getWidth() + 80, 150), 120, 40);
+        this.restartBtn.addActionListener(e -> {
+            startNewGame();
+            gamePanel.requestFocusInWindow(); // enable key listener
+        });
+
+        // save game (disabled for guests)
+        this.saveBtn = FrameUtil.createButton(this, "Save Game",
+                new Point(gamePanel.getWidth() + 80, 210), 120, 40);
+        this.saveBtn.addActionListener(e -> {
+            if (controller.saveGame()) {
+                JOptionPane.showMessageDialog(this,
+                        "Game saved successfully!",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            gamePanel.requestFocusInWindow();
+        });
+
+        // back to menu button
+        // save game before back??
+        this.backToMenuBtn = FrameUtil.createButton(this, "Back to Menu",
+                new Point(gamePanel.getWidth() + 80, 270), 120, 40);
+        this.backToMenuBtn.addActionListener(e -> {
+            this.setVisible(false);
+            new StartMenuFrame(this, isGuest).setVisible(true);
+        });
     }
 
-    private void resetStepCount() {
-        stepCount = 0;
-        updateStepLabel();
+    public void setGuestMode(boolean isGuest) {
+        this.isGuest = isGuest;
+        this.saveBtn.setEnabled(!isGuest);
+        if (isGuest) {
+            this.saveBtn.setToolTipText("Guest users cannot save games");
+        }
     }
 
+    public void startNewGame() {
+        controller.restartGame();
+        gamePanel.initialGame();
+        gamePanel.requestFocusInWindow();
+    }
+
+    public boolean loadGame() {
+        if (isGuest) {
+            JOptionPane.showMessageDialog(this,
+                    "Guest users cannot load saved games",
+                    "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        boolean success = controller.loadGame();
+        if (success) gamePanel.updateStepCount(controller.getStepCount());
+        return success;
+    }
+
+    public LoginFrame getLoginFrame() {
+        return loginFrame;
+    }
+
+    public void setLoginFrame(LoginFrame loginFrame) {
+        this.loginFrame = loginFrame;
+    }
+
+    public GameController getController() {
+        return controller;
+    }
 }
