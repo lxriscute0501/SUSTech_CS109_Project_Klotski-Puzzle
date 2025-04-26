@@ -52,7 +52,7 @@ public class LoginFrame extends JFrame {
             // check whether password has been set
             if (!userProperty.containsKey("password")) {
                 JOptionPane.showMessageDialog(this,
-                        "Please setup password first!",
+                        "Please register first!",
                         "Info",
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -78,7 +78,8 @@ public class LoginFrame extends JFrame {
         });
 
         registerBtn.addActionListener(e -> {
-            showPasswordSetupDialog();
+            RegisterFrame registerFrame = new RegisterFrame(this);
+            registerFrame.setVisible(true);
         });
 
         guestBtn.addActionListener(e -> {
@@ -104,8 +105,7 @@ public class LoginFrame extends JFrame {
         }
     }
 
-
-    private void loadUserConfig() {
+    protected void loadUserConfig() {
         try (InputStream input = new FileInputStream(CONFIG_FILE)) {
             userProperty.load(input);
         } catch (IOException e) {
@@ -114,7 +114,7 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    private void saveUserConfig() {
+    protected void saveUserConfig() {
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             // store configuration to file
             userProperty.store(output, "User Configuration");
@@ -127,66 +127,11 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    private void showPasswordSetupDialog() {
-        // 3 rows: username, new password, confirm password
-        // 2 cols: title, input box
-        JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
-
-        JTextField newUsernameField = new JTextField(userProperty.getProperty("username", "admin"));
-        JPasswordField newPasswordField = new JPasswordField();
-        JPasswordField confirmPasswordField = new JPasswordField();
-
-        panel.add(new JLabel("Username:"));
-        panel.add(newUsernameField);
-        panel.add(new JLabel("New Password:"));
-        panel.add(newPasswordField);
-        panel.add(new JLabel("Confirm Password:"));
-        panel.add(confirmPasswordField);
-
-        // show the dialog box
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                panel,
-                "Setup Password",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
-
-        // after user submit the input, check whether the setup is valid
-        if (result == JOptionPane.OK_OPTION) {
-            String newUsername = newUsernameField.getText();
-            String newPassword = new String(newPasswordField.getPassword());
-            String confirmPassword = new String(confirmPasswordField.getPassword());
-
-            /** 2 cases:
-             * empty username or password or both
-             * confirm password != new password
-             */
-            if (newUsername.isEmpty() || newPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                        "Username and password cannot be empty!",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else if (!newPassword.equals(confirmPassword)) {
-                JOptionPane.showMessageDialog(this,
-                        "Passwords do not match!",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                // set new username and password
-                userProperty.setProperty("username", newUsername);
-                userProperty.setProperty("password", newPassword);
-                saveUserConfig();
-                JOptionPane.showMessageDialog(this,
-                        "Username and Password setup successfully!",
-                        newUsername + ", welcome!",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+    protected Properties getUserProperty() {
+        return userProperty;
     }
-
 
     public void setGameFrame(GameFrame gameFrame) {
         this.gameFrame = gameFrame;
     }
-
 }
