@@ -37,28 +37,16 @@ public abstract class ListenerPanel extends JPanel {
                     doRightClick(e.getPoint());
                 }
             }
-            case MouseEvent.MOUSE_PRESSED -> doMousePressed(e.getPoint());
-            case MouseEvent.MOUSE_RELEASED -> doMouseReleased(e.getPoint());
-            case MouseEvent.MOUSE_ENTERED -> doMouseEntered();
-            case MouseEvent.MOUSE_EXITED -> doMouseExited();
-            case MouseEvent.MOUSE_DRAGGED -> doMouseDragged(e.getPoint());
-            case MouseEvent.MOUSE_MOVED -> doMouseMoved(e.getPoint());
         }
     }
 
-    // Keyboard control methods
+    // keyboard control
     public abstract void doMoveRight();
     public abstract void doMoveLeft();
     public abstract void doMoveUp();
     public abstract void doMoveDown();
 
-    // Mouse control methods
+    // mouse control
     public abstract void doLeftClick(Point point);
     public abstract void doRightClick(Point point);
-    public abstract void doMousePressed(Point point);
-    public abstract void doMouseReleased(Point point);
-    public abstract void doMouseEntered();
-    public abstract void doMouseExited();
-    public abstract void doMouseDragged(Point point);
-    public abstract void doMouseMoved(Point point);
 }

@@ -37,10 +37,13 @@ public class RegisterFrame extends JFrame {
             String password = new String(passwordField.getPassword());
             String confirm = new String(confirmField.getPassword());
 
-            /** 2 cases:
+            /** 3 cases:
              * empty username or password or both
+             * username already exist
              * confirm password != new password
              */
+
+
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Username and password cannot be empty!",

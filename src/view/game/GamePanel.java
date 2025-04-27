@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.function.Consumer;
 
 /**
@@ -27,13 +28,13 @@ public class GamePanel extends ListenerPanel {
     private BoxComponent selectedBox;
     private List<ActionListener> stepListeners = new ArrayList<>();
 
-    // Callbacks for movement
+    // movement callbacks
     private Runnable doMoveRight;
     private Runnable doMoveLeft;
     private Runnable doMoveUp;
     private Runnable doMoveDown;
 
-    // Mouse callbacks
+    // mouse callbacks
     private Consumer<Point> doLeftClick;
     private Consumer<Point> doRightClick;
     private Consumer<Point> doMousePressed;
@@ -48,7 +49,50 @@ public class GamePanel extends ListenerPanel {
         this.model = model;
         this.selectedBox = null;
         initialGame();
+
+        setMouseCallbacks(this::doLeftClick, this::doRightClick, null, null);
+
+        setMoveCallbacks(
+                () -> moveSelectedBox(Direction.RIGHT),
+                () -> moveSelectedBox(Direction.LEFT),
+                () -> moveSelectedBox(Direction.UP),
+                () -> moveSelectedBox(Direction.DOWN)
+        );
     }
+
+    public void moveSelectedBox(Direction direction) {
+        if (selectedBox == null) {
+            showInfoMessage("Please choose one box first.");
+            return;
+        }
+
+        if (controller != null) {
+            boolean moved = controller.moveBox(
+                    selectedBox.getRow(),
+                    selectedBox.getCol(),
+                    direction
+            );
+
+            // update box location
+            if (moved) {
+                selectedBox.setLocation(
+                        selectedBox.getCol() * GRID_SIZE + 2,
+                        selectedBox.getRow() * GRID_SIZE + 2
+                );
+                afterMove();
+                repaint();
+            }
+        }
+    }
+
+    private void updateBoxPositions() {
+        for (BoxComponent box : boxes)
+        {
+            box.setLocation(box.getCol() * GRID_SIZE + 2, box.getRow() * GRID_SIZE + 2);
+        }
+        this.repaint();
+    }
+
 
     // add step listener
     public void addStepListener(ActionListener listener) {
@@ -127,90 +171,108 @@ public class GamePanel extends ListenerPanel {
         this.setBorder(border);
     }
 
-    @Override
-    public void doMouseClick(Point point) {
-        Component component = this.getComponentAt(point);
-        if (component instanceof BoxComponent clickedComponent) {
-            if (selectedBox == null) {
-                selectedBox = clickedComponent;
-                selectedBox.setSelected(true);
-            } else if (selectedBox != clickedComponent) {
-                selectedBox.setSelected(false);
-                clickedComponent.setSelected(true);
-                selectedBox = clickedComponent;
-            } else {
-                clickedComponent.setSelected(false);
-                selectedBox = null;
-            }
-        }
-    }
 
+    // move override
     @Override
     public void doMoveRight() {
-        if (doMoveRight != null) {
-            doMoveRight.run();
-        }
+        if (doMoveRight != null) doMoveRight.run();
     }
 
     @Override
     public void doMoveLeft() {
-        if (doMoveLeft != null) {
-            doMoveLeft.run();
-        }
+        if (doMoveLeft != null) doMoveLeft.run();
     }
 
     @Override
     public void doMoveUp() {
-        if (doMoveUp != null) {
-            doMoveUp.run();
-        }
+        if (doMoveUp != null) doMoveUp.run();
     }
 
     @Override
     public void doMoveDown() {
-        if (doMoveDown != null) {
-            doMoveDown.run();
-        }
+        if (doMoveDown != null) doMoveDown.run();
     }
 
+
+    // click override
     @Override
     public void doLeftClick(Point point) {
+        Component component = this.getComponentAt(point);
+        if (component instanceof BoxComponent clickedComponent) {
+            if (selectedBox == null) {
 
+                // no box selected, choose clicked box
+                selectedBox = clickedComponent;
+                selectedBox.setSelected(true);
+
+            } else if (selectedBox != clickedComponent) {
+
+                // different box selected, switch clicked box
+                selectedBox.setSelected(false);
+                clickedComponent.setSelected(true);
+                selectedBox = clickedComponent;
+
+            }
+            // box has been selected, do nothing
+
+        } else {
+            // click the empty place, cancel selecting
+            if (selectedBox != null) {
+                selectedBox.setSelected(false);
+                selectedBox = null;
+            }
+        }
+    }
+    // 在 GamePanel 类中添加以下方法：
+
+    /**
+     * 撤销上一步移动
+     * @return 是否撤销成功
+     */
+    public boolean undoLastMove() {
+        if (controller == null) {
+            showInfoMessage("Controller not initialized");
+            return false;
+        }
+
+        // 调用控制器的撤销方法
+        boolean success = controller.undoLastMove();
+
+        if (success) {
+            // 更新步数
+            steps--;
+            updateStepLabel();
+
+            // 更新所有方块位置
+            updateBoxPositions();
+
+            // 保持选中状态
+            if (selectedBox != null) {
+                selectedBox.setSelected(true);
+            }
+        }
+
+        return success;
+    }
+
+    /**
+     * 检查是否有移动历史可用于撤销
+     * @return 是否可以执行撤销
+     */
+    public boolean canUndo() {
+        return controller != null && controller.hasMoveHistory();
     }
 
     @Override
     public void doRightClick(Point point) {
-
-    }
-
-    @Override
-    public void doMousePressed(Point point) {
-
-    }
-
-    @Override
-    public void doMouseReleased(Point point) {
-
-    }
-
-    @Override
-    public void doMouseEntered() {
-
-    }
-
-    @Override
-    public void doMouseExited() {
-
-    }
-
-    @Override
-    public void doMouseDragged(Point point) {
-
-    }
-
-    @Override
-    public void doMouseMoved(Point point) {
-
+        Component component = this.getComponentAt(point);
+        if (component instanceof BoxComponent clickedComponent) {
+            // click the selected box, cancel it
+            if (selectedBox != null && selectedBox == clickedComponent) {
+                clickedComponent.setSelected(false);
+                selectedBox = null;
+            }
+        }
     }
 
     public void afterMove() {
@@ -286,10 +348,10 @@ public class GamePanel extends ListenerPanel {
         return null;
     }
 
-    public void showVictoryMessage(int moveCount) {
+    public void showVictoryMessage(int stepCount) {
         JOptionPane.showMessageDialog(this,
-                "Congratulations! You won in " + moveCount + " moves!",
-                "Victory",
+                "Congratulations! You won in " + stepCount + " steps!",
+                "Victory!",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 

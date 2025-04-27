@@ -11,19 +11,23 @@ import java.util.Properties;
 public class LoginFrame extends JFrame {
     private JTextField username;
     private JPasswordField password; // display as dots
-    private JButton submitBtn;
+
+    private JButton loginBtn;
     private JButton resetBtn;
     private JButton registerBtn;
     private JButton guestBtn;
+
+    private StartMenuFrame startMenuFrame;
     private GameFrame gameFrame;
+
     private static final String CONFIG_FILE = "user.config";
     private Properties userProperty = new Properties();
-    private boolean isGuest = false;
 
-    public LoginFrame(int width, int height) {
+    public LoginFrame(int width, int height, GameFrame gameFrame) {
         this.setTitle("Login Frame");
         this.setLayout(null);
         this.setSize(width, height);
+        this.gameFrame = gameFrame;
 
         // load username && password
         loadUserConfig();
@@ -40,31 +44,23 @@ public class LoginFrame extends JFrame {
         // password do not use JTextField, so we need to invoke .add() specifically
         this.add(password);
 
-        submitBtn = FrameUtil.createButton(this, "Login", new Point(40, 140), 80, 40);
+        loginBtn = FrameUtil.createButton(this, "Login", new Point(40, 140), 80, 40);
         resetBtn = FrameUtil.createButton(this, "Reset", new Point(130, 140), 80, 40);
         registerBtn = FrameUtil.createButton(this, "Register", new Point(220, 140), 80, 40);
         guestBtn = FrameUtil.createButton(this, "Guest", new Point(310, 140), 80, 40);
 
-        submitBtn.addActionListener(e -> {
+        loginBtn.addActionListener(e -> {
             String inputUsername = username.getText();
             String inputPassword = new String(password.getPassword());
 
-            // check whether password has been set
-            if (!userProperty.containsKey("password")) {
-                JOptionPane.showMessageDialog(this,
-                        "Please register first!",
-                        "Info",
-                        JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
+            System.out.println("Username: " + inputUsername);
+            System.out.println("Password: " + inputPassword);
 
             // verify username and password
             if (inputUsername.equals(userProperty.getProperty("username", "admin")) &&
                     inputPassword.equals(userProperty.getProperty("password"))) {
-                // Correct! false means not guest
-                enterGame(false);
+                enterStartMenuFrame(false);
             } else {
-                // Wrong! show error message
                 JOptionPane.showMessageDialog(this,
                         "Invalid username or password!",
                         "Login Failed",
@@ -83,30 +79,25 @@ public class LoginFrame extends JFrame {
         });
 
         guestBtn.addActionListener(e -> {
-            isGuest = true;
-            enterGame(true);
             JOptionPane.showMessageDialog(this,
                     "You are entering as guest.\nGame progress will not be saved.",
                     "Guest Mode",
                     JOptionPane.INFORMATION_MESSAGE);
+            enterStartMenuFrame(true);
         });
 
-        // set game location int the center
+        // set login frame in the center
         this.setLocationRelativeTo(null);
-
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void enterGame(boolean isGuest) {
-        if (this.gameFrame != null) {
-            this.gameFrame.setGuestMode(isGuest);
-            this.setVisible(false);
 
-            // show start menu
-            StartMenuFrame startMenu = new StartMenuFrame(gameFrame, isGuest);
-            startMenu.setVisible(true);
-        }
+    private void enterStartMenuFrame(boolean isGuest) {
+        this.startMenuFrame = new StartMenuFrame(600, 400, getGameFrame(), isGuest);
+        this.startMenuFrame.setVisible(true);
+        this.setVisible(false);
     }
+
 
     protected void loadUserConfig() {
         try (InputStream input = new FileInputStream(CONFIG_FILE)) {
@@ -136,5 +127,17 @@ public class LoginFrame extends JFrame {
 
     public void setGameFrame(GameFrame gameFrame) {
         this.gameFrame = gameFrame;
+    }
+
+    public GameFrame getGameFrame() {
+        return gameFrame;
+    }
+
+    public void setStartMenuFrame(StartMenuFrame startMenuFrame) {
+        this.startMenuFrame = startMenuFrame;
+    }
+
+    public StartMenuFrame getStartMenuFrame() {
+        return startMenuFrame;
     }
 }

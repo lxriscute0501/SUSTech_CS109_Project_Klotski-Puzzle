@@ -4,16 +4,14 @@ package model;
  * This class is to record the map of one game. For example:
  */
 public class MapModel {
-    private int[][] matrix;
+    private final int[][] matrix;
     private final int[][] initialMatrix;
-    private final int width;
-    private final int height;
+    private final int width = 5;
+    private final int height = 4;
 
     public MapModel(int[][] matrix) {
         this.matrix = matrix;
-        width = matrix[0].length;
-        height = matrix.length;
-        this.initialMatrix = new int[width][height];
+        this.initialMatrix = new int[height][width];
         defaultMap();
     }
 
@@ -25,13 +23,13 @@ public class MapModel {
                 initialMatrix[i][j] = 0;
             }
 
-        // Cao Cao block (2x2, ID=1)
+        // CaoCao block (2x2, ID=1)
         matrix[0][1] = 1;
         matrix[0][2] = 1;
         matrix[1][1] = 1;
         matrix[1][2] = 1;
 
-        // Guan Yu block (2x1, ID=2)
+        // GuanYu block (2x1, ID=2)
         matrix[0][0] = 2;
         matrix[1][0] = 2;
 

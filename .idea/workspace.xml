@@ -4,19 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Login is partly done">
-      <change afterPath="$PROJECT_DIR$/src/util/FileValid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next.">
+      <change afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/SelectController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/GameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/FileVaild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/UserManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/SaveLoadUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/SaveLoadUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +105,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745652898303</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next.">
+      <option name="closed" value="true" />
+      <created>1745659210511</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1745659210511</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -125,6 +137,7 @@
     <MESSAGE value="Update the structure" />
     <MESSAGE value="Update the login frame but not complete" />
     <MESSAGE value="Login is partly done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Login is partly done" />
+    <MESSAGE value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
   </component>
 </project>
