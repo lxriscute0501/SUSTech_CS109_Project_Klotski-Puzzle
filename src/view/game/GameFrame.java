@@ -29,7 +29,6 @@ public class GameFrame extends JFrame {
     private StartMenuFrame startMenuFrame;
     private boolean isGuest = false;
 
-
     public GameFrame(int width, int height, MapModel mapModel) {
         this.setTitle("Klotski Puzzle");
         this.setLayout(null);
@@ -44,13 +43,11 @@ public class GameFrame extends JFrame {
 
         initializeUIComponents();
 
-        // set location and close operation
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void initializeUIComponents() {
-
         // step counter label
         this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("serif", Font.BOLD, 22),
@@ -67,7 +64,7 @@ public class GameFrame extends JFrame {
 
         // save game button (disabled for guests)
         this.saveBtn = FrameUtil.createButton(this, "Save Game",
-                new Point(gamePanel.getWidth() + 80, 210), 120, 40);
+                new Point(gamePanel.getWidth() + 80, 220), 120, 40);
         this.saveBtn.addActionListener(e -> {
             if (controller.saveGame()) {
                 JOptionPane.showMessageDialog(this,
@@ -79,26 +76,24 @@ public class GameFrame extends JFrame {
 
         // undo button
         this.undoBtn = FrameUtil.createButton(this, "Undo",
-                new Point(gamePanel.getWidth() + 80, 330), 120, 40);
+                new Point(gamePanel.getWidth() + 80, 290), 120, 40);
         this.undoBtn.addActionListener(e -> {
             if (gamePanel.undoLastMove()) {
                 gamePanel.requestFocusInWindow();
             }
         });
-        // at the first step it can not use
-        this.undoBtn.setEnabled(false);
-        this.undoBtn.setToolTipText("undo the last move");
+
         gamePanel.requestFocusInWindow();
 
         // direction button
-        this.upBtn = FrameUtil.createButton(this, "⬆️",
-                new Point(gamePanel.getWidth() + 80, 330), 40, 40);
-        this.downBtn = FrameUtil.createButton(this, "⬇️",
-                new Point(gamePanel.getWidth() + 80, 380), 40, 40);
-        this.leftBtn = FrameUtil.createButton(this, "⬅️",
-                new Point(gamePanel.getWidth() + 40, 355), 40, 40);
-        this.rightBtn = FrameUtil.createButton(this, "➡️️",
-                new Point(gamePanel.getWidth() + 120, 355), 40, 40);
+        this.upBtn = FrameUtil.createButton(this, "⬆",
+                new Point(gamePanel.getWidth() + 80, 350), 40, 40);
+        this.downBtn = FrameUtil.createButton(this, "⬇",
+                new Point(gamePanel.getWidth() + 80, 400), 40, 40);
+        this.leftBtn = FrameUtil.createButton(this, "⬅",
+                new Point(gamePanel.getWidth() + 40, 375), 40, 40);
+        this.rightBtn = FrameUtil.createButton(this, "➡",
+                new Point(gamePanel.getWidth() + 120, 375), 40, 40);
 
         // set direction button action
         upBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.UP));
@@ -123,6 +118,8 @@ public class GameFrame extends JFrame {
     }
 
     public boolean loadGame() {
+        // guest can not click the load game button
+        /*
         if (isGuest) {
             JOptionPane.showMessageDialog(this,
                     "Guest users cannot load saved games",
@@ -130,6 +127,7 @@ public class GameFrame extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
+         */
 
         boolean success = controller.loadGame();
         if (success) gamePanel.updateStepCount(controller.getStepCount());

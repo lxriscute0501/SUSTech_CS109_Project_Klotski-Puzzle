@@ -14,19 +14,18 @@ import java.io.File;
 import java.util.Stack;
 
 /**
- * 游戏控制器，负责协调视图(GamePanel)和模型(MapModel)的交互
- * 处理游戏逻辑包括方块选择、移动、保存和加载
+ * It is a bridge to combine GamePanel(view) and MapMatrix(model) in one game.
+ * You can design several methods about the game logic in this class.
  */
 public class GameController {
     private final GamePanel view;
     private final MapModel model;
     private int selectedRow = -1;
     private int selectedCol = -1;
-    private int moveCount = 0;
+    private int stepCount = 0;
     private User currentUser;
-    private Stack<MoveRecord> moveHistory = new Stack<>(); // 移动历史记录栈
+    private Stack<MoveRecord> moveHistory = new Stack<>();
 
-    // 移动记录内部类
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
     public GameController(GamePanel view, MapModel model) {
@@ -46,7 +45,6 @@ public class GameController {
         );
     }
 
-    /* 方向移动方法 */
     private void moveRight() {
         if (hasSelection()) attemptMove(selectedRow, selectedCol, Direction.RIGHT);
     }
@@ -63,22 +61,17 @@ public class GameController {
         if (hasSelection()) attemptMove(selectedRow, selectedCol, Direction.DOWN);
     }
 
-    /**
-     * 尝试移动方块
-     * @return 是否移动成功
-     */
+
     public boolean attemptMove(int row, int col, Direction direction) {
-        boolean moved = moveBox(row, col, direction);
-        if (moved) {
-            moveCount ++;
-            view.updateStepCount(moveCount);
+        boolean isMove = moveBox(row, col, direction);
+        if (isMove) {
+            stepCount ++;
+            view.updateStepCount(stepCount);
         }
-        return moved;
+        return isMove;
     }
 
-    /**
-     * 核心移动方法
-     */
+
     public boolean moveBox(int row, int col, Direction direction) {
         int blockId = model.getId(row, col);
         if (blockId == 0) return false;
@@ -100,15 +93,12 @@ public class GameController {
         updateViewPosition(row, col, toRow, toCol);
 
         checkWinCondition();
-
         return true;
     }
 
-    /**
-     * 撤销上一步移动
-     * @return 是否撤销成功
-     */
-    public boolean undoLastMove() {
+
+    public boolean undoMove() {
+
         if (moveHistory.isEmpty()) {
             System.out.println("Can not undo!");
             return false;
@@ -132,15 +122,15 @@ public class GameController {
             box.repaint();
         }
 
-        // 更新步数和选中状态
-        moveCount--;
-        view.updateStepCount(moveCount);
+        // update step count and selected box
+        stepCount --;
         selectedRow = lastMove.fromRow();
         selectedCol = lastMove.fromCol();
         view.highlightSelectedBox(selectedRow, selectedCol);
 
         return true;
     }
+
 
     /**
      * check the move validity : boundary detection && collision detection
@@ -188,23 +178,6 @@ public class GameController {
                 // 如果不是原始位置，检查是否被其他方块占据
                 if (!isOriginalPosition && model.getId(checkRow, checkCol) != 0) {
                     return false;
-                }
-
-                // 特殊处理：防止"跳跃"移动
-                if (height > 1 || width > 1) {
-                    // 对于大方块，检查移动路径上的中间位置
-                    if (movingRight && c == 0) { // 向右移动时检查左侧一列
-                        int pathCol = fromCol + width - 1;
-                        if (checkCol > pathCol && model.getId(checkRow, pathCol) != 0) {
-                            return false;
-                        }
-                    }
-                    if (movingDown && r == 0) { // 向下移动时检查上方一行
-                        int pathRow = fromRow + height - 1;
-                        if (checkRow > pathRow && model.getId(pathRow, checkCol) != 0) {
-                            return false;
-                        }
-                    }
                 }
             }
         }
@@ -278,7 +251,7 @@ public class GameController {
         }
 
         if (caoAtExit) {
-            view.showVictoryMessage(moveCount);
+            view.showVictoryMessage(stepCount);
             if (currentUser != null && !currentUser.isGuest()) {
                 saveGame();
             }
@@ -290,21 +263,19 @@ public class GameController {
         view.initialGame();
         selectedRow = -1;
         selectedCol = -1;
-        moveCount = 0;
-        moveHistory.clear(); // 清空历史记录
-        view.updateStepCount(moveCount);
+        stepCount = 0;
+        moveHistory.clear();
+        view.updateStepCount(stepCount);
         view.clearSelection();
     }
 
-    /* 用户管理 */
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
-    /* 存档管理 */
     public boolean saveGame() {
         if (currentUser == null || currentUser.isGuest()) {
-            view.showErrorMessage("游客不能保存游戏");
+            view.showErrorMessage("Guest can not save game!");
             return false;
         }
 
@@ -330,7 +301,7 @@ public class GameController {
 
     public boolean loadGame() {
         if (currentUser == null || currentUser.isGuest()) {
-            view.showErrorMessage("游客不能加载存档");
+            view.showErrorMessage("游客不能加载文档");
             return false;
         }
 
@@ -350,14 +321,14 @@ public class GameController {
 
             GameState state = SaveLoadUtil.loadGameState(filename);
             model.setMatrix(state.getBoardState());
-            this.moveCount = state.getMoveCount();
+            this.stepCount = state.getMoveCount();
             this.moveHistory.clear(); // 加载时清空历史
 
             selectedRow = -1;
             selectedCol = -1;
 
             view.initialGame();
-            view.updateStepCount(moveCount);
+            view.updateStepCount(stepCount);
             view.clearSelection();
 
             view.showInfoMessage("游戏加载成功！");
@@ -374,7 +345,6 @@ public class GameController {
         }
     }
 
-    /* 输入控制 */
     private void initializeKeyBindings() {
         view.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -387,7 +357,7 @@ public class GameController {
                     case KeyEvent.VK_LEFT -> attemptMove(selectedRow, selectedCol, Direction.LEFT);
                     case KeyEvent.VK_RIGHT -> attemptMove(selectedRow, selectedCol, Direction.RIGHT);
                     case KeyEvent.VK_Z -> {
-                        if (e.isControlDown()) undoLastMove();
+                        if (e.isControlDown()) undoMove();
                     }
                     case KeyEvent.VK_S -> {
                         if (e.isControlDown()) saveGame();
@@ -415,7 +385,7 @@ public class GameController {
 
     public int getSelectedRow() { return selectedRow; }
     public int getSelectedCol() { return selectedCol; }
-    public int getStepCount() { return moveCount; }
+    public int getStepCount() { return stepCount; }
     public User getCurrentUser() { return currentUser; }
     public boolean hasMoveHistory() { return !moveHistory.isEmpty(); }
 }

@@ -8,6 +8,11 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.Properties;
 
+/**
+ * The initial frame, containing login, reset, register and guest button.
+ * Connect RegisterFrame with register button, and StartMenuFrame with login && guest button.
+ */
+
 public class LoginFrame extends JFrame {
     private JTextField username;
     private JPasswordField password; // display as dots
@@ -38,11 +43,8 @@ public class LoginFrame extends JFrame {
 
         // create password label && input box
         JLabel passwordLabel = FrameUtil.createJLabel(this, new Point(50, 80), 70, 40, "password:");
-        password = new JPasswordField();
+        password = FrameUtil.createJPasswordField(this, new Point(120, 80), 120, 40);
         password.setBounds(120, 80, 120, 40);
-
-        // password do not use JTextField, so we need to invoke .add() specifically
-        this.add(password);
 
         loginBtn = FrameUtil.createButton(this, "Login", new Point(40, 140), 80, 40);
         resetBtn = FrameUtil.createButton(this, "Reset", new Point(130, 140), 80, 40);

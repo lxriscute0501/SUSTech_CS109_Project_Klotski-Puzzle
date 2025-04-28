@@ -11,7 +11,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final String username;
-    private String password; // 注意：实际应用中应该存储哈希值而非明文
+    private String password;
     private final boolean isGuest;
     private int highestLevelCompleted;
     private int bestMoveCount;

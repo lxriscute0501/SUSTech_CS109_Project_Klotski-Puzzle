@@ -5,6 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
 
+/**
+ * Register a new account.
+ */
+
 public class RegisterFrame extends JFrame {
     private final LoginFrame loginFrame;
 
@@ -20,13 +24,13 @@ public class RegisterFrame extends JFrame {
 
         // create password label && input box
         JLabel passwordLabel = FrameUtil.createJLabel(this, new Point(50, 80), 100, 40, "password:");
-        JPasswordField passwordField = new JPasswordField();
+        JPasswordField passwordField = FrameUtil.createJPasswordField(this, new Point(160, 80), 180, 40);
         passwordField.setBounds(160, 80, 180, 40);
         this.add(passwordField);
 
         // create confirm password label && input box
         JLabel confirmLabel = FrameUtil.createJLabel(this, new Point(50, 130), 100, 40, "confirm:");
-        JPasswordField confirmField = new JPasswordField();
+        JPasswordField confirmField = FrameUtil.createJPasswordField(this, new Point(160, 130), 180, 40);
         confirmField.setBounds(160, 130, 180, 40);
         this.add(confirmField);
 
@@ -37,19 +41,27 @@ public class RegisterFrame extends JFrame {
             String password = new String(passwordField.getPassword());
             String confirm = new String(confirmField.getPassword());
 
-            /** 3 cases:
-             * empty username or password or both
-             * username already exist
-             * confirm password != new password
+            /** 4 cases:
+             * 1. empty username or password or both
+             * 2. username already exists
+             * 3. confirm password != new password
+             * 4. all valid - proceed with registration
              */
-
 
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Username and password cannot be empty!",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
-            } else if (!password.equals(confirm)) {
+            }
+            // Check if username already exists in properties
+            else if (loginFrame.getUserProperty().containsKey(username)) {
+                JOptionPane.showMessageDialog(this,
+                        "Username already exists! Please choose a different one.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            else if (!password.equals(confirm)) {
                 JOptionPane.showMessageDialog(this,
                         "Passwords do not match!",
                         "Error",
@@ -57,15 +69,14 @@ public class RegisterFrame extends JFrame {
             } else {
                 // set new username and password
                 Properties props = loginFrame.getUserProperty();
-                props.setProperty("username", username);
-                props.setProperty("password", password);
+                props.setProperty(username, password);
                 loginFrame.saveUserConfig();
 
                 JOptionPane.showMessageDialog(this,
                         "Registration successful!",
                         username + ", welcome!",
                         JOptionPane.INFORMATION_MESSAGE);
-                this.dispose(); // close register frame
+                this.dispose();
             }
         });
 

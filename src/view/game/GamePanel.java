@@ -223,45 +223,27 @@ public class GamePanel extends ListenerPanel {
             }
         }
     }
-    // 在 GamePanel 类中添加以下方法：
 
-    /**
-     * 撤销上一步移动
-     * @return 是否撤销成功
-     */
+
     public boolean undoLastMove() {
         if (controller == null) {
             showInfoMessage("Controller not initialized");
             return false;
         }
 
-        // 调用控制器的撤销方法
-        boolean success = controller.undoLastMove();
+        boolean success = controller.undoMove();
 
         if (success) {
-            // 更新步数
             steps--;
             updateStepLabel();
-
-            // 更新所有方块位置
             updateBoxPositions();
 
-            // 保持选中状态
-            if (selectedBox != null) {
-                selectedBox.setSelected(true);
-            }
+            if (selectedBox != null) selectedBox.setSelected(true);
         }
 
         return success;
     }
 
-    /**
-     * 检查是否有移动历史可用于撤销
-     * @return 是否可以执行撤销
-     */
-    public boolean canUndo() {
-        return controller != null && controller.hasMoveHistory();
-    }
 
     @Override
     public void doRightClick(Point point) {
@@ -281,10 +263,13 @@ public class GamePanel extends ListenerPanel {
         triggerStepEvent();
     }
 
+    public void updateStepCount(int stepCount) {
+        this.steps = stepCount;
+        updateStepLabel();
+    }
+
     private void updateStepLabel() {
-        if (stepLabel != null) {
-            stepLabel.setText(String.format("Steps: %d", this.steps));
-        }
+        if (stepLabel != null) stepLabel.setText(String.format("Steps: %d", this.steps));
     }
 
     public void setStepLabel(JLabel stepLabel) {
@@ -309,9 +294,6 @@ public class GamePanel extends ListenerPanel {
         updateStepLabel();
     }
 
-    public int getSteps() {
-        return steps;
-    }
 
     public void highlightSelectedBox(int row, int col) {
         clearSelection();
@@ -331,10 +313,6 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
-    public void updateStepCount(int count) {
-        this.steps = count;
-        updateStepLabel();
-    }
 
     public BoxComponent getBoxAt(int row, int col) {
         for (Component comp : getComponents()) {

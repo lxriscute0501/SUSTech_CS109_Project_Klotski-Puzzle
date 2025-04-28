@@ -4,20 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next.">
-      <change afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly.">
+      <change afterPath="$PROJECT_DIR$/src/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/SelectController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/SaveLoadUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/SaveLoadUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/FrameUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/FrameUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
@@ -61,17 +57,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.LoginFrame.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.LoginFrame.executor": "Run",
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -113,7 +109,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745659210511</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly.">
+      <option name="closed" value="true" />
+      <created>1745769301960</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1745769301960</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,6 +142,7 @@
     <MESSAGE value="Update the login frame but not complete" />
     <MESSAGE value="Login is partly done" />
     <MESSAGE value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
+    <MESSAGE value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
   </component>
 </project>
