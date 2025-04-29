@@ -9,9 +9,12 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.function.Consumer;
 
 /**
@@ -48,7 +51,27 @@ public class GamePanel extends ListenerPanel {
         this.setSize(model.getWidth() * GRID_SIZE + 4, model.getHeight() * GRID_SIZE + 4);
         this.model = model;
         this.selectedBox = null;
-        initialGame();
+        initializeGame();
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    doLeftClick(point);
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    doRightClick(point);
+                }
+                requestFocusInWindow();  // Get keyboard focus after mouse click
+            }
+        });
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                doKeyPress(e);
+            }
+        });
 
         setMouseCallbacks(this::doLeftClick, this::doRightClick, null, null);
 
@@ -59,6 +82,7 @@ public class GamePanel extends ListenerPanel {
                 () -> moveSelectedBox(Direction.DOWN)
         );
     }
+
 
     public void moveSelectedBox(Direction direction) {
         if (selectedBox == null) {
@@ -106,7 +130,7 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
-    public void initialGame() {
+    public void initializeGame() {
         this.steps = 0;
         initializeBoxes();
     }
@@ -224,10 +248,44 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
+    @Override
+    public void doRightClick(Point point) {
+        Component component = this.getComponentAt(point);
+        if (component instanceof BoxComponent clickedComponent) {
+            // click the selected box, cancel it
+            if (selectedBox != null && selectedBox == clickedComponent) {
+                clickedComponent.setSelected(false);
+                selectedBox = null;
+            }
+        }
+    }
+
+    private void doKeyPress(KeyEvent e) {
+        if (selectedBox == null) return;
+
+        // 方向键交给Controller处理
+        if (e.getKeyCode() == KeyEvent.VK_LEFT ||
+                e.getKeyCode() == KeyEvent.VK_RIGHT ||
+                e.getKeyCode() == KeyEvent.VK_UP ||
+                e.getKeyCode() == KeyEvent.VK_DOWN) {
+            return;
+        }
+
+        // 处理其他按键
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_ESCAPE:
+                if (selectedBox != null) {
+                    selectedBox.setSelected(false);
+                    selectedBox = null;
+                    repaint();
+                }
+                break;
+        }
+    }
 
     public boolean undoLastMove() {
         if (controller == null) {
-            showInfoMessage("Controller not initialized");
+            showInfoMessage("Controller not initialized.");
             return false;
         }
 
@@ -244,18 +302,6 @@ public class GamePanel extends ListenerPanel {
         return success;
     }
 
-
-    @Override
-    public void doRightClick(Point point) {
-        Component component = this.getComponentAt(point);
-        if (component instanceof BoxComponent clickedComponent) {
-            // click the selected box, cancel it
-            if (selectedBox != null && selectedBox == clickedComponent) {
-                clickedComponent.setSelected(false);
-                selectedBox = null;
-            }
-        }
-    }
 
     public void afterMove() {
         this.steps ++;

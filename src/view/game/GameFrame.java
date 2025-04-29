@@ -24,6 +24,7 @@ public class GameFrame extends JFrame {
     private JButton undoBtn;
 
     private JLabel stepLabel;
+    private JLabel usernameLabel;
     private GamePanel gamePanel;
     private LoginFrame loginFrame;
     private StartMenuFrame startMenuFrame;
@@ -48,6 +49,12 @@ public class GameFrame extends JFrame {
     }
 
     private void initializeUIComponents() {
+        // username label
+        this.usernameLabel = FrameUtil.createJLabel(this, "Username: ",
+                new Font("serif", Font.BOLD, 22),
+                new Point(gamePanel.getWidth() + 80, 30), 180, 50);
+
+
         // step counter label
         this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("serif", Font.BOLD, 22),
@@ -106,29 +113,17 @@ public class GameFrame extends JFrame {
     public void setGuestMode(boolean isGuest) {
         this.isGuest = isGuest;
         this.saveBtn.setEnabled(!isGuest);
-        if (isGuest) {
-            this.saveBtn.setToolTipText("Guest users cannot save games");
-        }
+        if (isGuest) this.saveBtn.setToolTipText("Guest users cannot save games.");
     }
 
     public void startNewGame() {
         controller.restartGame();
-        gamePanel.initialGame();
+        gamePanel.initializeGame();
         gamePanel.requestFocusInWindow();
     }
 
+    // put away first!
     public boolean loadGame() {
-        // guest can not click the load game button
-        /*
-        if (isGuest) {
-            JOptionPane.showMessageDialog(this,
-                    "Guest users cannot load saved games",
-                    "Info",
-                    JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-         */
-
         boolean success = controller.loadGame();
         if (success) gamePanel.updateStepCount(controller.getStepCount());
         return success;

@@ -45,6 +45,72 @@ public class GameController {
         );
     }
 
+    private void initializeKeyBindings() {
+        view.addKeyListener(new java.awt.event.KeyAdapter() {
+            // 记录上一次处理的方向键（初始为无效值）
+            private int lastProcessedArrowKey = -1;
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (!hasSelection()) return;
+
+                int keyCode = e.getKeyCode();
+
+                // 如果是方向键，并且与上次处理的方向键相同，则忽略
+                if (isArrowKey(keyCode) && keyCode == lastProcessedArrowKey) {
+                    return;
+                }
+
+                switch (keyCode) {
+                    case KeyEvent.VK_UP -> {
+                        e.consume();
+                        attemptMove(selectedRow, selectedCol, Direction.UP);
+                        lastProcessedArrowKey = KeyEvent.VK_UP;
+                    }
+                    case KeyEvent.VK_DOWN -> {
+                        e.consume();
+                        attemptMove(selectedRow, selectedCol, Direction.DOWN);
+                        lastProcessedArrowKey = KeyEvent.VK_DOWN;
+                    }
+                    case KeyEvent.VK_LEFT -> {
+                        e.consume();
+                        attemptMove(selectedRow, selectedCol, Direction.LEFT);
+                        lastProcessedArrowKey = KeyEvent.VK_LEFT;
+                    }
+                    case KeyEvent.VK_RIGHT -> {
+                        e.consume();
+                        attemptMove(selectedRow, selectedCol, Direction.RIGHT);
+                        lastProcessedArrowKey = KeyEvent.VK_RIGHT;
+                    }
+                    case KeyEvent.VK_U -> {
+                        if (e.isControlDown()) undoMove();
+                    }
+                    case KeyEvent.VK_S -> {
+                        if (e.isControlDown()) saveGame();
+                    }
+                    case KeyEvent.VK_L -> {
+                        if (e.isControlDown()) loadGame();
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (isArrowKey(e.getKeyCode())) {
+                    // 释放按键时重置记录
+                    lastProcessedArrowKey = -1;
+                }
+            }
+
+            private boolean isArrowKey(int keyCode) {
+                return keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
+                        keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT;
+            }
+        });
+    }
+
+
+
     private void moveRight() {
         if (hasSelection()) attemptMove(selectedRow, selectedCol, Direction.RIGHT);
     }
@@ -61,12 +127,13 @@ public class GameController {
         if (hasSelection()) attemptMove(selectedRow, selectedCol, Direction.DOWN);
     }
 
-
     public boolean attemptMove(int row, int col, Direction direction) {
         boolean isMove = moveBox(row, col, direction);
         if (isMove) {
-            stepCount ++;
+            stepCount++;
             view.updateStepCount(stepCount);
+        } else {
+            System.out.println("Can not move in this direction!");
         }
         return isMove;
     }
@@ -76,23 +143,70 @@ public class GameController {
         int blockId = model.getId(row, col);
         if (blockId == 0) return false;
 
-        // destination Id
+        // Calculate destination
         int toRow = row + direction.getRow();
         int toCol = col + direction.getCol();
 
-        // check the move validity
+        // Validate move
         if (!isMoveValid(blockId, row, col, toRow, toCol)) {
-            System.out.println("Can not move in this direction!");
-            return false;
+            return false;  // Message is now handled by the caller if needed
         }
 
-        // record the move history, because we add undo
+        // Record the move history
         moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol));
 
+        // Update positions
         updateModelPosition(blockId, row, col, toRow, toCol);
         updateViewPosition(row, col, toRow, toCol);
 
         checkWinCondition();
+        return true;
+    }
+
+
+    /**
+     * check the move validity : boundary detection && collision detection
+     */
+    private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
+        // boundary
+        if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
+
+        // collision
+        switch (blockId) {
+            case 1: // CaoCao (2x2)
+                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 2);
+            case 2: // GuanYu (2x1)
+                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 1);
+            case 3: // General (1x2)
+                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 1, 2);
+            default: // solider (1x1)
+                return model.getId(toRow, toCol) == 0;
+        }
+    }
+
+    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol,
+                                        int height, int width) {
+        // Check all cells the block would occupy
+        for (int r = 0; r < height; r++) {
+            for (int c = 0; c < width; c++) {
+                int checkRow = toRow + r;
+                int checkCol = toCol + c;
+
+                // Check boundaries
+                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) {
+                    return false;
+                }
+
+                // Check if this is part of the original block position
+                boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
+                        (checkCol >= fromCol && checkCol < fromCol + width);
+
+                // If not original position and not empty, can't move here
+                if (!isOriginal && model.getId(checkRow, checkCol) != 0) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -128,59 +242,6 @@ public class GameController {
         selectedCol = lastMove.fromCol();
         view.highlightSelectedBox(selectedRow, selectedCol);
 
-        return true;
-    }
-
-
-    /**
-     * check the move validity : boundary detection && collision detection
-     */
-    private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
-        // boundary
-        if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
-
-        // collision
-        switch (blockId) {
-            case 1: // CaoCao
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 2);
-            case 2: // GuanYu
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 1);
-            case 3: // General
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 1, 2);
-
-                //??empty and solider?
-            default:
-                return model.getId(toRow, toCol) == 0;
-        }
-    }
-
-    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol,
-                                        int height, int width) {
-        // 确定移动方向
-        boolean movingRight = toCol > fromCol;
-        boolean movingDown = toRow > fromRow;
-
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width; c++) {
-                int checkRow = toRow + r;
-                int checkCol = toCol + c;
-
-                // 检查是否越界
-                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) {
-                    return false;
-                }
-
-                // 检查这个位置是否在原始方块区域内
-                boolean isOriginalPosition =
-                        (checkRow >= fromRow && checkRow < fromRow + height) &&
-                                (checkCol >= fromCol && checkCol < fromCol + width);
-
-                // 如果不是原始位置，检查是否被其他方块占据
-                if (!isOriginalPosition && model.getId(checkRow, checkCol) != 0) {
-                    return false;
-                }
-            }
-        }
         return true;
     }
 
@@ -238,7 +299,6 @@ public class GameController {
         return selectedRow != -1 && selectedCol != -1;
     }
 
-    /* 游戏状态管理 */
     private void checkWinCondition() {
         boolean caoAtExit = true;
         for (int r = 3; r <= 3; r++) {
@@ -260,7 +320,7 @@ public class GameController {
 
     public void restartGame() {
         model.resetMap();
-        view.initialGame();
+        view.initializeGame();
         selectedRow = -1;
         selectedCol = -1;
         stepCount = 0;
@@ -322,12 +382,12 @@ public class GameController {
             GameState state = SaveLoadUtil.loadGameState(filename);
             model.setMatrix(state.getBoardState());
             this.stepCount = state.getMoveCount();
-            this.moveHistory.clear(); // 加载时清空历史
+            this.moveHistory.clear();
 
             selectedRow = -1;
             selectedCol = -1;
 
-            view.initialGame();
+            view.initializeGame();
             view.updateStepCount(stepCount);
             view.clearSelection();
 
@@ -345,32 +405,6 @@ public class GameController {
         }
     }
 
-    private void initializeKeyBindings() {
-        view.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (!hasSelection()) return;
-
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP -> attemptMove(selectedRow, selectedCol, Direction.UP);
-                    case KeyEvent.VK_DOWN -> attemptMove(selectedRow, selectedCol, Direction.DOWN);
-                    case KeyEvent.VK_LEFT -> attemptMove(selectedRow, selectedCol, Direction.LEFT);
-                    case KeyEvent.VK_RIGHT -> attemptMove(selectedRow, selectedCol, Direction.RIGHT);
-                    case KeyEvent.VK_Z -> {
-                        if (e.isControlDown()) undoMove();
-                    }
-                    case KeyEvent.VK_S -> {
-                        if (e.isControlDown()) saveGame();
-                    }
-                    case KeyEvent.VK_L -> {
-                        if (e.isControlDown()) loadGame();
-                    }
-                }
-            }
-        });
-    }
-
-    /* 选择控制 */
     public void selectBlock(int row, int col) {
         if (model.getId(row, col) != 0) {
             selectedRow = row;
