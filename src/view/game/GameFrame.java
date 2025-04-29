@@ -122,6 +122,7 @@ public class GameFrame extends JFrame {
         gamePanel.requestFocusInWindow();
     }
 
+
     // put away first!
     public boolean loadGame() {
         boolean success = controller.loadGame();

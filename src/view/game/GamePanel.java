@@ -263,7 +263,6 @@ public class GamePanel extends ListenerPanel {
     private void doKeyPress(KeyEvent e) {
         if (selectedBox == null) return;
 
-        // 方向键交给Controller处理
         if (e.getKeyCode() == KeyEvent.VK_LEFT ||
                 e.getKeyCode() == KeyEvent.VK_RIGHT ||
                 e.getKeyCode() == KeyEvent.VK_UP ||
@@ -271,7 +270,6 @@ public class GamePanel extends ListenerPanel {
             return;
         }
 
-        // 处理其他按键
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 if (selectedBox != null) {

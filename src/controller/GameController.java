@@ -163,7 +163,6 @@ public class GameController {
         return true;
     }
 
-
     /**
      * check the move validity : boundary detection && collision detection
      */
