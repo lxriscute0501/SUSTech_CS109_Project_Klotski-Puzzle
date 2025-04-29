@@ -9,13 +9,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * It is the subclass of ListenerPanel, so that it should implement those four methods: move left, up, down ,right.
@@ -31,18 +26,6 @@ public class GamePanel extends ListenerPanel {
     private BoxComponent selectedBox;
     private List<ActionListener> stepListeners = new ArrayList<>();
 
-    // movement callbacks
-    private Runnable doMoveRight;
-    private Runnable doMoveLeft;
-    private Runnable doMoveUp;
-    private Runnable doMoveDown;
-
-    // mouse callbacks
-    private Consumer<Point> doLeftClick;
-    private Consumer<Point> doRightClick;
-    private Consumer<Point> doMousePressed;
-    private Consumer<Point> doMouseReleased;
-
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
         this.setVisible(true);
@@ -53,36 +36,10 @@ public class GamePanel extends ListenerPanel {
         this.selectedBox = null;
         initializeGame();
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                Point point = e.getPoint();
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    doLeftClick(point);
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    doRightClick(point);
-                }
-                requestFocusInWindow();  // Get keyboard focus after mouse click
-            }
-        });
-
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                doKeyPress(e);
-            }
-        });
-
-        setMouseCallbacks(this::doLeftClick, this::doRightClick, null, null);
-
-        setMoveCallbacks(
-                () -> moveSelectedBox(Direction.RIGHT),
-                () -> moveSelectedBox(Direction.LEFT),
-                () -> moveSelectedBox(Direction.UP),
-                () -> moveSelectedBox(Direction.DOWN)
-        );
+        // Set focusable to ensure keyboard events work
+        this.setFocusable(true);
+        this.requestFocusInWindow();
     }
-
 
     public void moveSelectedBox(Direction direction) {
         if (selectedBox == null) {
@@ -110,13 +67,11 @@ public class GamePanel extends ListenerPanel {
     }
 
     private void updateBoxPositions() {
-        for (BoxComponent box : boxes)
-        {
+        for (BoxComponent box : boxes) {
             box.setLocation(box.getCol() * GRID_SIZE + 2, box.getRow() * GRID_SIZE + 2);
         }
         this.repaint();
     }
-
 
     // add step listener
     public void addStepListener(ActionListener listener) {
@@ -153,22 +108,17 @@ public class GamePanel extends ListenerPanel {
                     // CaoCao: 2 * 2
                     box = new BoxComponent(Color.GREEN, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
-                    map[i][j] = 0;
-                    map[i + 1][j] = 0;
-                    map[i][j + 1] = 0;
-                    map[i + 1][j + 1] = 0;
+                    map[i][j] = 0; map[i + 1][j] = 0; map[i][j + 1] = 0; map[i + 1][j + 1] = 0;
                 } else if (map[i][j] == 2) {
                     // GuanYu: 2 * 1
                     box = new BoxComponent(Color.PINK, i, j);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
-                    map[i][j] = 0;
-                    map[i + 1][j] = 0;
+                    map[i][j] = 0; map[i + 1][j] = 0;
                 } else if (map[i][j] == 3) {
                     // General: 1 * 2
                     box = new BoxComponent(Color.BLUE, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
-                    map[i][j] = 0;
-                    map[i][j + 1] = 0;
+                    map[i][j] = 0; map[i][j + 1] = 0;
                 } else if (map[i][j] == 4) {
                     // Soldier: 1 * 1
                     box = new BoxComponent(Color.ORANGE, i, j);
@@ -195,50 +145,42 @@ public class GamePanel extends ListenerPanel {
         this.setBorder(border);
     }
 
-
-    // move override
+    // Implement the abstract methods from ListenerPanel
     @Override
     public void doMoveRight() {
-        if (doMoveRight != null) doMoveRight.run();
+        moveSelectedBox(Direction.RIGHT);
     }
 
     @Override
     public void doMoveLeft() {
-        if (doMoveLeft != null) doMoveLeft.run();
+        moveSelectedBox(Direction.LEFT);
     }
 
     @Override
     public void doMoveUp() {
-        if (doMoveUp != null) doMoveUp.run();
+        moveSelectedBox(Direction.UP);
     }
 
     @Override
     public void doMoveDown() {
-        if (doMoveDown != null) doMoveDown.run();
+        moveSelectedBox(Direction.DOWN);
     }
 
-
-    // click override
     @Override
     public void doLeftClick(Point point) {
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
             if (selectedBox == null) {
-
                 // no box selected, choose clicked box
                 selectedBox = clickedComponent;
                 selectedBox.setSelected(true);
-
             } else if (selectedBox != clickedComponent) {
-
                 // different box selected, switch clicked box
                 selectedBox.setSelected(false);
                 clickedComponent.setSelected(true);
                 selectedBox = clickedComponent;
-
             }
             // box has been selected, do nothing
-
         } else {
             // click the empty place, cancel selecting
             if (selectedBox != null) {
@@ -246,6 +188,7 @@ public class GamePanel extends ListenerPanel {
                 selectedBox = null;
             }
         }
+        this.requestFocusInWindow();  // Get keyboard focus after mouse click
     }
 
     @Override
@@ -257,27 +200,6 @@ public class GamePanel extends ListenerPanel {
                 clickedComponent.setSelected(false);
                 selectedBox = null;
             }
-        }
-    }
-
-    private void doKeyPress(KeyEvent e) {
-        if (selectedBox == null) return;
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT ||
-                e.getKeyCode() == KeyEvent.VK_RIGHT ||
-                e.getKeyCode() == KeyEvent.VK_UP ||
-                e.getKeyCode() == KeyEvent.VK_DOWN) {
-            return;
-        }
-
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_ESCAPE:
-                if (selectedBox != null) {
-                    selectedBox.setSelected(false);
-                    selectedBox = null;
-                    repaint();
-                }
-                break;
         }
     }
 
@@ -300,9 +222,8 @@ public class GamePanel extends ListenerPanel {
         return success;
     }
 
-
     public void afterMove() {
-        this.steps ++;
+        this.steps++;
         updateStepLabel();
         triggerStepEvent();
     }
@@ -338,7 +259,6 @@ public class GamePanel extends ListenerPanel {
         updateStepLabel();
     }
 
-
     public void highlightSelectedBox(int row, int col) {
         clearSelection();
         BoxComponent box = getBoxAt(row, col);
@@ -356,7 +276,6 @@ public class GamePanel extends ListenerPanel {
             }
         }
     }
-
 
     public BoxComponent getBoxAt(int row, int col) {
         for (Component comp : getComponents()) {
@@ -383,24 +302,5 @@ public class GamePanel extends ListenerPanel {
 
     public void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void setMoveCallbacks(Runnable right, Runnable left, Runnable up, Runnable down) {
-        this.doMoveRight = right;
-        this.doMoveLeft = left;
-        this.doMoveUp = up;
-        this.doMoveDown = down;
-    }
-
-    public void setMouseCallbacks(
-            Consumer<Point> leftClick,
-            Consumer<Point> rightClick,
-            Consumer<Point> mousePressed,
-            Consumer<Point> mouseReleased
-    ) {
-        this.doLeftClick = leftClick;
-        this.doRightClick = rightClick;
-        this.doMousePressed = mousePressed;
-        this.doMouseReleased = mouseReleased;
     }
 }

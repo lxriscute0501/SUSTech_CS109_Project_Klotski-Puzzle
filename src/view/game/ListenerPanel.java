@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.rmi.server.ExportException;
 
 
 public abstract class ListenerPanel extends JPanel {
@@ -13,18 +14,24 @@ public abstract class ListenerPanel extends JPanel {
         this.setFocusable(true);
     }
 
+
     @Override
     protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
         if (e.getID() == KeyEvent.KEY_PRESSED) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_RIGHT -> doMoveRight();
-                case KeyEvent.VK_LEFT -> doMoveLeft();
-                case KeyEvent.VK_UP -> doMoveUp();
-                case KeyEvent.VK_DOWN -> doMoveDown();
+            try {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_RIGHT -> doMoveRight();
+                    case KeyEvent.VK_LEFT -> doMoveLeft();
+                    case KeyEvent.VK_UP -> doMoveUp();
+                    case KeyEvent.VK_DOWN -> doMoveDown();
+                }
+            } catch (Exception ex) {
+                System.err.println("Error: " + ex.getMessage());
             }
         }
     }
+
 
     @Override
     protected void processMouseEvent(MouseEvent e) {

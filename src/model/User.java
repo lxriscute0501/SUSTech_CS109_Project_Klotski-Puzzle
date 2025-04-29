@@ -41,7 +41,6 @@ public class User implements Serializable {
         this.bestMoveCount = Integer.MAX_VALUE;
     }
 
-    // Getters
     public String getUsername() {
         return username;
     }
@@ -62,7 +61,6 @@ public class User implements Serializable {
         return bestMoveCount;
     }
 
-    // Setters
     public void setPassword(String password) {
         if (!isGuest) {
             this.password = password;

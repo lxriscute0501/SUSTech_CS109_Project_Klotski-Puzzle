@@ -49,11 +49,11 @@ public class GameFrame extends JFrame {
     }
 
     private void initializeUIComponents() {
+
         // username label
         this.usernameLabel = FrameUtil.createJLabel(this, "Username: ",
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 80, 30), 180, 50);
-
 
         // step counter label
         this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",

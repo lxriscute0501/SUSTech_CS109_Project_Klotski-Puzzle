@@ -69,6 +69,10 @@ public class MapModel {
         }
     }
 
+    public void setId(int row, int col, int id) {
+        matrix[row][col] = id;
+    }
+
     public int getId(int row, int col) {
         if (row >= 0 && row < height && col >= 0 && col < width) return matrix[row][col];
         return 0;

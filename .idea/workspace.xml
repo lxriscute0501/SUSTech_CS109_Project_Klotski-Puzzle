@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the problem of step count when clicking undo button">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the undo button, but still have problems with keyboard controlling.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +120,23 @@
       <option name="project" value="LOCAL" />
       <updated>1745858921558</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="[FIX] Fix the undo button, but still have problems with keyboard controlling.">
+      <option name="closed" value="true" />
+      <created>1745912854205</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745912854205</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[FIX] Fix the undo button, but still have problems with keyboard controlling.">
+      <option name="closed" value="true" />
+      <created>1745912892594</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1745912892594</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,6 +163,7 @@
     <MESSAGE value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
     <MESSAGE value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
     <MESSAGE value="[FIX] Fix the problem of step count when clicking undo button" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the problem of step count when clicking undo button" />
+    <MESSAGE value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
   </component>
 </project>
