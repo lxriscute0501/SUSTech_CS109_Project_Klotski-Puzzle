@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="ignore">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] multi-user login">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/UserManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/FileValid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/SaveLoadUtil.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -151,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745944922621</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="[FEAT] multi-user login">
+      <option name="closed" value="true" />
+      <created>1746192393273</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1746192393273</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -184,6 +196,7 @@
     <MESSAGE value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
     <MESSAGE value="[FIX] Fix the keyboard controlled move." />
     <MESSAGE value="ignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="ignore" />
+    <MESSAGE value="[FEAT] multi-user login" />
+    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] multi-user login" />
   </component>
 </project>

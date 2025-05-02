@@ -6,7 +6,6 @@ import view.FrameUtil;
 import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
 
 /**
  * The middle frame, connecting LoginFrame && GameFrame.
@@ -19,8 +18,6 @@ public class StartMenuFrame extends JFrame {
     private JButton startBtn;
     private JButton loadBtn;
 
-    private MapModel mapModel;
-    private GameFrame gameFrame;
     private User user;
     private final boolean isGuest;
 
@@ -51,12 +48,18 @@ public class StartMenuFrame extends JFrame {
         // set load game button (disabled for guests)
         loadBtn = FrameUtil.createButton(this, "Load Game", new Point(200, 200), 200, 40);
         loadBtn.addActionListener(e -> {
+            MapModel mapModel = new MapModel(new int[4][5]);
+            GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
+            gameFrame.loadHistoryGame();
+            gameFrame.setVisible(true);
+            gameFrame.requestFocus();
+            this.setVisible(false);
         });
 
         // disable load button for guest users
         if (isGuest) {
             loadBtn.setEnabled(false);
-            loadBtn.setToolTipText("Guest cannot load saved games!");
+            loadBtn.setToolTipText("Guest cannot load saved games.");
         }
 
         this.setLocationRelativeTo(null);

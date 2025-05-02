@@ -6,11 +6,13 @@ import model.MapModel;
 import model.User;
 import view.game.BoxComponent;
 import view.game.GamePanel;
-import util.SaveLoadUtil;
-import util.FileValid;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -80,8 +82,7 @@ public class GameController {
         }
     }
 
-    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol,
-                                        int height, int width) {
+    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
         // Check all cells the block would occupy
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
@@ -89,18 +90,14 @@ public class GameController {
                 int checkCol = toCol + c;
 
                 // Check boundaries
-                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) {
-                    return false;
-                }
+                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
 
                 // Check if this is part of the original block position
                 boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
                         (checkCol >= fromCol && checkCol < fromCol + width);
 
                 // If not original position and not empty, can't move here
-                if (!isOriginal && model.getId(checkRow, checkCol) != 0) {
-                    return false;
-                }
+                if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
             }
         }
         return true;
@@ -229,75 +226,92 @@ public class GameController {
         this.currentUser = user;
     }
 
-    public boolean saveGame() {
-        if (currentUser == null || currentUser.isGuest()) {
+    public void saveGame() {
+        if (currentUser.isGuest()) {
             view.showErrorMessage("Guest can not save game!");
-            return false;
+            return;
         }
 
-        /*
-        GameState state = new GameState(
-                model.getMatrix(),
-                moveCount,
-                System.currentTimeMillis()
-        );
+        int[][] saveMap = model.getMatrix();
+        List<String> gameData = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
 
-         */
+        gameData.add(String.valueOf(view.getSteps()));
+
+        for (int[] line : saveMap) {
+            sb.setLength(0);
+            for (int value : line) {
+                sb.append(value).append(" ");
+            }
+            gameData.add(sb.toString().trim());
+        }
+
+        String filePath = "data/" + currentUser.getUsername();
+        File dir = new File(filePath);
+        dir.mkdirs();
 
         try {
-            String filename = "resources/users/" + currentUser.getUsername() + ".sav";
-            // SaveLoadUtil.saveGameState(state, filename);
-            view.showInfoMessage("游戏保存成功！");
-            return true;
+            Files.write(Path.of(filePath + "/data.txt"), gameData);
+            view.showInfoMessage("Game saved successfully!");
         } catch (Exception e) {
-            view.showErrorMessage("保存失败: " + e.getMessage());
-            return false;
+            view.showErrorMessage("Game saved failed: " + e.getMessage());
         }
     }
 
-    public boolean loadGame() {
-        if (currentUser == null || currentUser.isGuest()) {
-            view.showErrorMessage("游客不能加载文档");
-            return false;
+    public void loadGame() {
+        if (currentUser.isGuest()) {
+            view.showErrorMessage("Guest can not load game!");
+            return;
         }
 
-        String filename = "resources/users/" + currentUser.getUsername() + ".sav";
-        File saveFile = new File(filename);
+        String filePath = "data/" + currentUser.getUsername() + "/data.txt";
+        File saveFile = new File(filePath);
 
         if (!saveFile.exists()) {
-            view.showErrorMessage("没有找到存档文件");
-            return false;
+            view.showErrorMessage("No saved game found for this user!");
+            return;
         }
 
         try {
-            if (!FileValid.validateSaveFile(saveFile)) {
-                view.showErrorMessage("存档文件已损坏");
-                return false;
+            List<String> lines = Files.readAllLines(Path.of(filePath));
+
+            if (lines.isEmpty()) {
+                view.showErrorMessage("Save file is empty!");
+                return;
             }
 
-            GameState state = SaveLoadUtil.loadGameState(filename);
-            model.setMatrix(state.getBoardState());
-            this.stepCount = state.getMoveCount();
-            this.moveHistory.clear();
+            int savedStepCount = 0;
+            try {
+                savedStepCount = Integer.parseInt(lines.get(0));
+            } catch (NumberFormatException e) {
+                view.showErrorMessage("Invalid step count in save file!");
+                return;
+            }
 
+            int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
+            for (int row = 1; row < lines.size() && row-1 < model.getHeight(); row++) {
+                String[] values = lines.get(row).trim().split(" ");
+                for (int col = 0; col < values.length && col < model.getWidth(); col++) {
+                    try {
+                        loadedMap[row-1][col] = Integer.parseInt(values[col]);
+                    } catch (NumberFormatException e) {
+                        loadedMap[row-1][col] = 0;
+                    }
+                }
+            }
+
+            model.setMatrix(loadedMap);
+            view.setSteps(savedStepCount);
+            moveHistory.clear();
             selectedRow = -1;
             selectedCol = -1;
 
-            view.initializeGame();
-            view.updateStepCount(stepCount);
+            view.rebuildGameView(loadedMap);
+            view.updateStepCount(view.getSteps());
             view.clearSelection();
-
-            view.showInfoMessage("游戏加载成功！");
-            return true;
+            view.showInfoMessage("Game loaded successfully!");
         } catch (Exception e) {
-            view.showErrorMessage("加载失败: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public void autoSaveOnExit() {
-        if (currentUser != null && !currentUser.isGuest()) {
-            saveGame();
+            view.showErrorMessage("Failed to load game: " + e.getMessage());
         }
     }
 
@@ -312,10 +326,4 @@ public class GameController {
             view.clearSelection();
         }
     }
-
-    public int getSelectedRow() { return selectedRow; }
-    public int getSelectedCol() { return selectedCol; }
-    public int getStepCount() { return stepCount; }
-    public User getCurrentUser() { return currentUser; }
-    public boolean hasMoveHistory() { return !moveHistory.isEmpty(); }
 }

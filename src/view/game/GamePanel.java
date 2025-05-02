@@ -136,6 +136,49 @@ public class GamePanel extends ListenerPanel {
         this.repaint();
     }
 
+    public void rebuildGameView(int[][] mapData) {
+        this.removeAll();
+        boxes.clear();
+
+        // 使用传入的地图数据重建视图
+        for (int i = 0; i < mapData.length; i++) {
+            for (int j = 0; j < mapData[0].length; j++) {
+                BoxComponent box = null;
+                if (mapData[i][j] == 1) {
+                    // CaoCao: 2 * 2
+                    box = new BoxComponent(Color.GREEN, i, j);
+                    box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
+                    mapData[i][j] = 0; mapData[i + 1][j] = 0;
+                    mapData[i][j + 1] = 0; mapData[i + 1][j + 1] = 0;
+                } else if (mapData[i][j] == 2) {
+                    // GuanYu: 2 * 1
+                    box = new BoxComponent(Color.PINK, i, j);
+                    box.setSize(GRID_SIZE, GRID_SIZE * 2);
+                    mapData[i][j] = 0; mapData[i + 1][j] = 0;
+                } else if (mapData[i][j] == 3) {
+                    // General: 1 * 2
+                    box = new BoxComponent(Color.BLUE, i, j);
+                    box.setSize(GRID_SIZE * 2, GRID_SIZE);
+                    mapData[i][j] = 0; mapData[i][j + 1] = 0;
+                } else if (mapData[i][j] == 4) {
+                    // Soldier: 1 * 1
+                    box = new BoxComponent(Color.ORANGE, i, j);
+                    box.setSize(GRID_SIZE, GRID_SIZE);
+                    mapData[i][j] = 0;
+                }
+
+                if (box != null) {
+                    box.setLocation(j * GRID_SIZE + 2, i * GRID_SIZE + 2);
+                    boxes.add(box);
+                    this.add(box);
+                }
+            }
+        }
+
+        this.revalidate();
+        this.repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -287,6 +330,10 @@ public class GamePanel extends ListenerPanel {
             }
         }
         return null;
+    }
+
+    public int getSteps() {
+        return steps;
     }
 
     public void showVictoryMessage(int stepCount) {

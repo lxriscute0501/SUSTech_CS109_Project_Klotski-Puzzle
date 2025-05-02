@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class GameFrame extends JFrame {
     private GameController controller;
@@ -29,14 +30,14 @@ public class GameFrame extends JFrame {
     private GamePanel gamePanel;
     private LoginFrame loginFrame;
     private StartMenuFrame startMenuFrame;
-    private User user;
+    private User currentUser;
     private boolean isGuest = false;
 
     public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
         this.setLayout(null);
         this.setSize(width, height);
-        this.user = user;
+        this.currentUser = user;
 
         // create the main game panel
         gamePanel = new GamePanel(mapModel);
@@ -54,7 +55,7 @@ public class GameFrame extends JFrame {
     private void initializeUIComponents() {
 
         // username label
-        this.usernameLabel = FrameUtil.createJLabel(this, "Username: " + user.getUsername(),
+        this.usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 80, 30), 180, 50);
 
@@ -82,12 +83,7 @@ public class GameFrame extends JFrame {
         if (isGuest) this.saveBtn.setToolTipText("Guest users cannot save games.");
 
         this.saveBtn.addActionListener(e -> {
-            if (controller.saveGame()) {
-                JOptionPane.showMessageDialog(this,
-                        "Game saved successfully!",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
+            controller.saveGame();
         });
 
         // undo button
@@ -125,12 +121,9 @@ public class GameFrame extends JFrame {
         gamePanel.requestFocusInWindow();
     }
 
-
-    // put away first!
-    public boolean loadGame() {
-        boolean success = controller.loadGame();
-        if (success) gamePanel.updateStepCount(controller.getStepCount());
-        return success;
+    public void loadHistoryGame() {
+        controller.loadGame();
+        gamePanel.requestFocusInWindow();
     }
 
     public void updateUndoButtonState(boolean enabled) {

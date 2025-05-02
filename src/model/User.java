@@ -16,11 +16,7 @@ public class User implements Serializable {
     private int highestLevelCompleted;
     private int bestMoveCount;
 
-    /**
-     * Constructor for registered users
-     * @param username the username
-     * @param password the password (should be hashed in real application)
-     */
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -29,10 +25,6 @@ public class User implements Serializable {
         this.bestMoveCount = Integer.MAX_VALUE;
     }
 
-    /**
-     * Constructor for guest users
-     * @param username the guest username
-     */
     public User(String username) {
         this.username = username;
         this.password = null;
@@ -62,9 +54,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        if (!isGuest) {
-            this.password = password;
-        }
+        if (!isGuest) this.password = password;
     }
 
     public void updateHighestLevelCompleted(int level) {
