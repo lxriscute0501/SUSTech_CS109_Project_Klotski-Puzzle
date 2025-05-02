@@ -1,13 +1,16 @@
 package view.login;
 
+import model.MapModel;
+import model.User;
 import view.FrameUtil;
 import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * The middle frame, connecting LoginFrame && GameFrame.
- * Able to start new game and load game (only the lastest one, guest forbidden).
+ * Able to start new game and load game (only the latest one, guest forbidden).
  */
 
 public class StartMenuFrame extends JFrame {
@@ -16,12 +19,14 @@ public class StartMenuFrame extends JFrame {
     private JButton startBtn;
     private JButton loadBtn;
 
-    private final GameFrame gameFrame;
+    private MapModel mapModel;
+    private GameFrame gameFrame;
+    private User user;
     private final boolean isGuest;
 
-    public StartMenuFrame(int width, int height, GameFrame gameFrame, boolean isGuest) {
-        this.gameFrame = gameFrame;
+    public StartMenuFrame(int width, int height, boolean isGuest, User user) {
         this.isGuest = isGuest;
+        this.user = user;
 
         this.setTitle("Klotski Puzzle - Start Menu");
         this.setLayout(null);
@@ -35,16 +40,17 @@ public class StartMenuFrame extends JFrame {
         // set start game button
         startBtn = FrameUtil.createButton(this, "Start New Game", new Point(200, 150), 200, 40);
         startBtn.addActionListener(e -> {
+            MapModel mapModel = new MapModel(new int[4][5]);
+            GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
             gameFrame.startNewGame();
-            enterGameFrame();
+            gameFrame.setVisible(true);
+            gameFrame.requestFocus();
+            this.setVisible(false);
         });
 
         // set load game button (disabled for guests)
         loadBtn = FrameUtil.createButton(this, "Load Game", new Point(200, 200), 200, 40);
         loadBtn.addActionListener(e -> {
-            if (gameFrame.loadGame()) {
-                enterGameFrame();
-            }
         });
 
         // disable load button for guest users
@@ -53,16 +59,8 @@ public class StartMenuFrame extends JFrame {
             loadBtn.setToolTipText("Guest cannot load saved games!");
         }
 
-        gameFrame.setGuestMode(isGuest);
-
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-
-    private void enterGameFrame() {
-        gameFrame.setVisible(true);
-        gameFrame.requestFocus();
-        this.setVisible(false);
-    }
 }

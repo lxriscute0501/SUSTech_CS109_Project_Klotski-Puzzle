@@ -1,5 +1,6 @@
 package view.login;
 
+import model.User;
 import view.FrameUtil;
 import view.game.GameFrame;
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class LoginFrame extends JFrame {
     private static final String CONFIG_FILE = "user.config";
     private Properties userProperty = new Properties();
 
-    public LoginFrame(int width, int height, GameFrame gameFrame) {
+    public LoginFrame(int width, int height) {
         this.setTitle("Login Frame");
         this.setLayout(null);
         this.setSize(width, height);
@@ -59,9 +60,10 @@ public class LoginFrame extends JFrame {
             System.out.println("Password: " + inputPassword);
 
             // verify username and password
-            if (inputUsername.equals(userProperty.getProperty("username", "admin")) &&
-                    inputPassword.equals(userProperty.getProperty("password"))) {
-                enterStartMenuFrame(false);
+            String storedPassword = userProperty.getProperty(inputUsername);
+            if (inputPassword.equals(storedPassword)) {
+                User newUser = new User(inputUsername, inputPassword);
+                enterStartMenuFrame(newUser, false);
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Invalid username or password!",
@@ -85,7 +87,8 @@ public class LoginFrame extends JFrame {
                     "You are entering as guest.\nGame progress will not be saved.",
                     "Guest Mode",
                     JOptionPane.INFORMATION_MESSAGE);
-            enterStartMenuFrame(true);
+            User guest = new User("Guest", "defult");
+            enterStartMenuFrame(guest, true);
         });
 
         // set login frame in the center
@@ -94,8 +97,8 @@ public class LoginFrame extends JFrame {
     }
 
 
-    private void enterStartMenuFrame(boolean isGuest) {
-        this.startMenuFrame = new StartMenuFrame(600, 400, getGameFrame(), isGuest);
+    private void enterStartMenuFrame(User newUser, boolean isGuest) {
+        this.startMenuFrame = new StartMenuFrame(600, 400, isGuest, newUser);
         this.startMenuFrame.setVisible(true);
         this.setVisible(false);
     }
@@ -107,6 +110,7 @@ public class LoginFrame extends JFrame {
         } catch (IOException e) {
             // if no file, use the initial username "admin"
             userProperty.setProperty("username", "admin");
+            saveUserConfig();
         }
     }
 

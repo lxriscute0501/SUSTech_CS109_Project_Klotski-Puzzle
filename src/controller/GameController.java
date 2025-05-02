@@ -28,9 +28,10 @@ public class GameController {
 
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
-    public GameController(GamePanel view, MapModel model) {
+    public GameController(GamePanel view, MapModel model, User user) {
         this.view = view;
         this.model = model;
+        this.currentUser = user;
         this.view.setController(this);
     }
 

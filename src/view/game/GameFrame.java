@@ -3,6 +3,7 @@ package view.game;
 import controller.GameController;
 import model.Direction;
 import model.MapModel;
+import model.User;
 import view.FrameUtil;
 import view.login.LoginFrame;
 import view.login.StartMenuFrame;
@@ -28,19 +29,21 @@ public class GameFrame extends JFrame {
     private GamePanel gamePanel;
     private LoginFrame loginFrame;
     private StartMenuFrame startMenuFrame;
+    private User user;
     private boolean isGuest = false;
 
-    public GameFrame(int width, int height, MapModel mapModel) {
+    public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
         this.setLayout(null);
         this.setSize(width, height);
+        this.user = user;
 
         // create the main game panel
         gamePanel = new GamePanel(mapModel);
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
 
-        this.controller = new GameController(gamePanel, mapModel);
+        this.controller = new GameController(gamePanel, mapModel, user);
 
         initializeUIComponents();
 
@@ -51,7 +54,7 @@ public class GameFrame extends JFrame {
     private void initializeUIComponents() {
 
         // username label
-        this.usernameLabel = FrameUtil.createJLabel(this, "Username: ",
+        this.usernameLabel = FrameUtil.createJLabel(this, "Username: " + user.getUsername(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 80, 30), 180, 50);
 
@@ -72,6 +75,12 @@ public class GameFrame extends JFrame {
         // save game button (disabled for guests)
         this.saveBtn = FrameUtil.createButton(this, "Save Game",
                 new Point(gamePanel.getWidth() + 80, 220), 120, 40);
+
+        // forbid guest to click save button
+        this.isGuest = isGuest;
+        this.saveBtn.setEnabled(!isGuest);
+        if (isGuest) this.saveBtn.setToolTipText("Guest users cannot save games.");
+
         this.saveBtn.addActionListener(e -> {
             if (controller.saveGame()) {
                 JOptionPane.showMessageDialog(this,
@@ -108,12 +117,6 @@ public class GameFrame extends JFrame {
         leftBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.LEFT));
         rightBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.RIGHT));
 
-    }
-
-    public void setGuestMode(boolean isGuest) {
-        this.isGuest = isGuest;
-        this.saveBtn.setEnabled(!isGuest);
-        if (isGuest) this.saveBtn.setToolTipText("Guest users cannot save games.");
     }
 
     public void startNewGame() {
