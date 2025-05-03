@@ -60,10 +60,20 @@ public class GamePanel extends ListenerPanel {
                         selectedBox.getCol() * GRID_SIZE + 2,
                         selectedBox.getRow() * GRID_SIZE + 2
                 );
+
+                System.out.println(direction);
                 afterMove();
                 repaint();
+                controller.saveGame(true);
+                controller.checkWinCondition();
             }
         }
+    }
+
+    public void afterMove() {
+        this.steps ++;
+        updateStepLabel();
+        triggerStepEvent();
     }
 
     private void updateBoxPositions() {
@@ -73,12 +83,10 @@ public class GamePanel extends ListenerPanel {
         this.repaint();
     }
 
-    // add step listener
     public void addStepListener(ActionListener listener) {
         stepListeners.add(listener);
     }
 
-    // trigger step event
     private void triggerStepEvent() {
         for (ActionListener listener : stepListeners) {
             listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
@@ -140,7 +148,6 @@ public class GamePanel extends ListenerPanel {
         this.removeAll();
         boxes.clear();
 
-        // 使用传入的地图数据重建视图
         for (int i = 0; i < mapData.length; i++) {
             for (int j = 0; j < mapData[0].length; j++) {
                 BoxComponent box = null;
@@ -258,17 +265,11 @@ public class GamePanel extends ListenerPanel {
             steps--;
             updateStepLabel();
             updateBoxPositions();
-
+            controller.saveGame(true);
             if (selectedBox != null) selectedBox.setSelected(true);
         }
 
         return success;
-    }
-
-    public void afterMove() {
-        this.steps++;
-        updateStepLabel();
-        triggerStepEvent();
     }
 
     public void updateStepCount(int stepCount) {

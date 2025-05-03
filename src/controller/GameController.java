@@ -1,19 +1,19 @@
 package controller;
 
 import model.Direction;
-import model.GameState;
 import model.MapModel;
 import model.User;
 import view.game.BoxComponent;
 import view.game.GamePanel;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
+import javax.swing.Timer;
 
 /**
  * It is a bridge to combine GamePanel(view) and MapMatrix(model) in one game.
@@ -22,11 +22,15 @@ import java.util.Stack;
 public class GameController {
     private final GamePanel view;
     private final MapModel model;
+
+    private final int winx = 0;
+    private final int winy = 0;
+
     private int selectedRow = -1;
     private int selectedCol = -1;
-    private int stepCount = 0;
     private User currentUser;
     private Stack<MoveRecord> moveHistory = new Stack<>();
+    private Timer autoSaveTimer;
 
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
@@ -35,6 +39,8 @@ public class GameController {
         this.model = model;
         this.currentUser = user;
         this.view.setController(this);
+
+        setupAutoSave(1);
     }
 
 
@@ -47,9 +53,7 @@ public class GameController {
         int toCol = col + direction.getCol();
 
         // Validate move
-        if (!isMoveValid(blockId, row, col, toRow, toCol)) {
-            return false;  // Message is now handled by the caller if needed
-        }
+        if (!isMoveValid(blockId, row, col, toRow, toCol)) return false;
 
         // Record the move history
         moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol));
@@ -58,7 +62,6 @@ public class GameController {
         updateModelPosition(blockId, row, col, toRow, toCol);
         updateViewPosition(row, col, toRow, toCol);
 
-        checkWinCondition();
         return true;
     }
 
@@ -130,7 +133,6 @@ public class GameController {
         }
 
         // update step count and selected box
-        stepCount --;
         selectedRow = lastMove.fromRow();
         selectedCol = lastMove.fromCol();
         view.highlightSelectedBox(selectedRow, selectedCol);
@@ -188,25 +190,23 @@ public class GameController {
         }
     }
 
-    private boolean hasSelection() {
-        return selectedRow != -1 && selectedCol != -1;
-    }
-
-    private void checkWinCondition() {
-        boolean caoAtExit = true;
-        for (int r = 3; r <= 3; r++) {
-            for (int c = 1; c <= 2; c++) {
-                if (model.getId(r, c) != 1) {
-                    caoAtExit = false;
+    public void checkWinCondition() {
+        boolean win = true;
+        for (int r = 0; r <= 1; r++) {
+            for (int c = 0; c <= 1; c++) {
+                if (model.getId(winx + r, winy + c) != 1) {
+                    win = false;
                     break;
                 }
             }
         }
 
-        if (caoAtExit) {
-            view.showVictoryMessage(stepCount);
-            if (currentUser != null && !currentUser.isGuest()) {
-                saveGame();
+        if (win) {
+            view.showVictoryMessage(view.getSteps());
+            if (currentUser != null && !currentUser.isGuest())
+            {
+                saveGame(true);
+                currentUser.updateBestMoveCount(view.getSteps());
             }
         }
     }
@@ -216,17 +216,15 @@ public class GameController {
         view.initializeGame();
         selectedRow = -1;
         selectedCol = -1;
-        stepCount = 0;
         moveHistory.clear();
-        view.updateStepCount(stepCount);
+        view.setSteps(0);
         view.clearSelection();
+
+        // save game after restart
+        if (currentUser != null && !currentUser.isGuest()) saveGame(true);
     }
 
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
-    }
-
-    public void saveGame() {
+    public void saveGame(boolean isAuto) {
         if (currentUser.isGuest()) {
             view.showErrorMessage("Guest can not save game!");
             return;
@@ -252,7 +250,7 @@ public class GameController {
 
         try {
             Files.write(Path.of(filePath + "/data.txt"), gameData);
-            view.showInfoMessage("Game saved successfully!");
+            if (!isAuto) view.showInfoMessage("Game saved successfully!");
         } catch (Exception e) {
             view.showErrorMessage("Game saved failed: " + e.getMessage());
         }
@@ -315,6 +313,23 @@ public class GameController {
         }
     }
 
+
+    private void setupAutoSave(int intervalMinutes) {
+        autoSaveTimer = new javax.swing.Timer(intervalMinutes * 60 * 1000, e -> {
+            if (currentUser != null && !currentUser.isGuest()) {
+                saveGame(true);
+                System.out.println("自动保存成功！时间: " + new Date());
+            }
+        });
+        autoSaveTimer.start();
+    }
+
+    public void stopAutoSave() {
+        if (autoSaveTimer != null) {
+            autoSaveTimer.stop();
+        }
+    }
+
     public void selectBlock(int row, int col) {
         if (model.getId(row, col) != 0) {
             selectedRow = row;
@@ -325,5 +340,14 @@ public class GameController {
             selectedCol = -1;
             view.clearSelection();
         }
+    }
+
+    public String exitLocation() {
+        int winx1 = winx, winx2 = winx + 1;
+        int winy1 = winy, winy2 = winy + 1;
+        return String.format("(" + winx1 + ", " + winy1 + ") "
+                + "(" + winx2 + ", " + winy1 + ") "
+                + "(" + winx1 + ", " + winy2 + ") "
+                + "(" + winx2 + ", " + winy2 + ")");
     }
 }

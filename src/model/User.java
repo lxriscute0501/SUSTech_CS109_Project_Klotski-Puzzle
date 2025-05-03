@@ -8,29 +8,29 @@ import java.util.Objects;
  * This class stores basic user information and game progress.
  */
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+    // private static final long serialVersionUID = 1L;
 
     private final String username;
     private String password;
     private final boolean isGuest;
-    private int highestLevelCompleted;
-    private int bestMoveCount;
+    private int highestLevel;
+    private int bestStepCount;
 
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.isGuest = false;
-        this.highestLevelCompleted = 0;
-        this.bestMoveCount = Integer.MAX_VALUE;
+        this.highestLevel = 0;
+        this.bestStepCount = Integer.MAX_VALUE;
     }
 
     public User(String username) {
         this.username = username;
         this.password = null;
         this.isGuest = true;
-        this.highestLevelCompleted = 0;
-        this.bestMoveCount = Integer.MAX_VALUE;
+        this.highestLevel = 0;
+        this.bestStepCount = Integer.MAX_VALUE;
     }
 
     public String getUsername() {
@@ -46,27 +46,23 @@ public class User implements Serializable {
     }
 
     public int getHighestLevelCompleted() {
-        return highestLevelCompleted;
+        return highestLevel;
     }
 
     public int getBestMoveCount() {
-        return bestMoveCount;
+        return bestStepCount;
     }
 
     public void setPassword(String password) {
         if (!isGuest) this.password = password;
     }
 
-    public void updateHighestLevelCompleted(int level) {
-        if (level > highestLevelCompleted) {
-            this.highestLevelCompleted = level;
-        }
+    public void updateHighestLevel(int level) {
+        if (level > highestLevel) this.highestLevel= level;
     }
 
     public void updateBestMoveCount(int moveCount) {
-        if (moveCount < bestMoveCount) {
-            this.bestMoveCount = moveCount;
-        }
+        if (moveCount < bestStepCount) this.bestStepCount = moveCount;
     }
 
     @Override
@@ -88,8 +84,8 @@ public class User implements Serializable {
         return "User{" +
                 "username='" + username + '\'' +
                 ", isGuest=" + isGuest +
-                ", highestLevelCompleted=" + highestLevelCompleted +
-                ", bestMoveCount=" + (bestMoveCount == Integer.MAX_VALUE ? "N/A" : bestMoveCount) +
+                ", highestLevelCompleted=" + highestLevel +
+                ", bestMoveCount=" + (bestStepCount == Integer.MAX_VALUE ? "N/A" : bestStepCount) +
                 '}';
     }
 }

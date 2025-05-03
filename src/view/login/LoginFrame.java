@@ -6,7 +6,6 @@ import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.nio.file.*;
 import java.util.Properties;
 
 /**
@@ -87,7 +86,7 @@ public class LoginFrame extends JFrame {
                     "You are entering as guest.\nGame progress will not be saved.",
                     "Guest Mode",
                     JOptionPane.INFORMATION_MESSAGE);
-            User guest = new User("Guest", "defult");
+            User guest = new User("Guest");
             enterStartMenuFrame(guest, true);
         });
 
@@ -129,21 +128,5 @@ public class LoginFrame extends JFrame {
 
     protected Properties getUserProperty() {
         return userProperty;
-    }
-
-    public void setGameFrame(GameFrame gameFrame) {
-        this.gameFrame = gameFrame;
-    }
-
-    public GameFrame getGameFrame() {
-        return gameFrame;
-    }
-
-    public void setStartMenuFrame(StartMenuFrame startMenuFrame) {
-        this.startMenuFrame = startMenuFrame;
-    }
-
-    public StartMenuFrame getStartMenuFrame() {
-        return startMenuFrame;
     }
 }
