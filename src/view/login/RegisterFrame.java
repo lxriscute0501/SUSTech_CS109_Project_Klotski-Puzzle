@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.Properties;
 
 /**
- * Register a new account.
+ * Register a new account, including username, password, and confirm password.
  */
 
 public class RegisterFrame extends JFrame {
@@ -41,11 +41,10 @@ public class RegisterFrame extends JFrame {
             String password = new String(passwordField.getPassword());
             String confirm = new String(confirmField.getPassword());
 
-            /** 4 cases:
+            /** 3 cases:
              * 1. empty username or password or both
              * 2. username already exists
              * 3. confirm password != new password
-             * 4. all valid - proceed with registration
              */
 
             if (username.isEmpty() || password.isEmpty()) {
@@ -54,7 +53,6 @@ public class RegisterFrame extends JFrame {
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-            // Check if username already exists in properties
             else if (loginFrame.getUserProperty().containsKey(username)) {
                 JOptionPane.showMessageDialog(this,
                         "Username already exists! Please choose a different one.",

@@ -40,12 +40,14 @@ public class MapModel {
         matrix[2][3] = 3;
         matrix[3][0] = 3;
         matrix[3][1] = 3;
+        matrix[3][2] = 3;
+        matrix[3][3] = 3;
 
         // Soldier blocks (1x1, ID=4)
         matrix[0][4] = 4;
         matrix[1][4] = 4;
-        matrix[3][2] = 4;
-        matrix[3][3] = 4;
+        matrix[2][4] = 4;
+        matrix[3][4] = 4;
 
         // copy initial state
         for (int i = 0; i < height; i++)

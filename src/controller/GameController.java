@@ -9,11 +9,12 @@ import view.game.GamePanel;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
  * It is a bridge to combine GamePanel(view) and MapMatrix(model) in one game.
@@ -30,7 +31,12 @@ public class GameController {
     private int selectedCol = -1;
     private User currentUser;
     private Stack<MoveRecord> moveHistory = new Stack<>();
+
+    private long startTime;
+    private Timer gameTimer;
     private Timer autoSaveTimer;
+
+    private static final long GAME_DURATION = 5 * 60 * 1000;
 
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
@@ -40,6 +46,7 @@ public class GameController {
         this.currentUser = user;
         this.view.setController(this);
 
+        startGameTimer();
         setupAutoSave(1);
     }
 
@@ -48,63 +55,59 @@ public class GameController {
         int blockId = model.getId(row, col);
         if (blockId == 0) return false;
 
-        // Calculate destination
         int toRow = row + direction.getRow();
         int toCol = col + direction.getCol();
 
-        // Validate move
         if (!isMoveValid(blockId, row, col, toRow, toCol)) return false;
 
-        // Record the move history
         moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol));
 
-        // Update positions
         updateModelPosition(blockId, row, col, toRow, toCol);
         updateViewPosition(row, col, toRow, toCol);
 
         return true;
     }
 
-    /**
-     * check the move validity : boundary detection && collision detection
-     */
-    private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
-        // boundary
-        if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
+        /**
+        * check the move validity : boundary detection && collision detection
+        */
+        private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
+            // boundary
+            if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
 
-        // collision
-        switch (blockId) {
-            case 1: // CaoCao (2x2)
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 2);
-            case 2: // GuanYu (2x1)
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 1);
-            case 3: // General (1x2)
-                return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 1, 2);
-            default: // solider (1x1)
-                return model.getId(toRow, toCol) == 0;
-        }
-    }
-
-    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
-        // Check all cells the block would occupy
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width; c++) {
-                int checkRow = toRow + r;
-                int checkCol = toCol + c;
-
-                // Check boundaries
-                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
-
-                // Check if this is part of the original block position
-                boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
-                        (checkCol >= fromCol && checkCol < fromCol + width);
-
-                // If not original position and not empty, can't move here
-                if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
+            // collision
+            switch (blockId) {
+                case 1: // CaoCao (2x2)
+                    return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 2);
+                case 2: // GuanYu (2x1)
+                    return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 1);
+                case 3: // General (1x2)
+                    return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 1, 2);
+                default: // solider (1x1)
+                    return model.getId(toRow, toCol) == 0;
             }
         }
-        return true;
-    }
+
+        private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
+            // Check all cells the block would occupy
+            for (int r = 0; r < height; r++) {
+                for (int c = 0; c < width; c++) {
+                    int checkRow = toRow + r;
+                    int checkCol = toCol + c;
+
+                    // Check boundaries
+                    if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
+
+                    // Check if this is part of the original block position
+                    boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
+                        (checkCol >= fromCol && checkCol < fromCol + width);
+
+                    // If not original position and not empty, can't move here
+                    if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
+                }
+            }
+            return true;
+        }
 
 
     public boolean undoMove() {
@@ -202,13 +205,24 @@ public class GameController {
         }
 
         if (win) {
-            view.showVictoryMessage(view.getSteps());
-            if (currentUser != null && !currentUser.isGuest())
-            {
+            stopGameTimer();
+            long actualTime = getActualTime();
+            String timeString = formatTime(actualTime);
+            view.showVictoryMessage(view.getSteps(), timeString);
+
+            if (currentUser != null && !currentUser.isGuest()) {
                 saveGame(true);
                 currentUser.updateBestMoveCount(view.getSteps());
+                // store the actual time in data, not remaining time
+                currentUser.updateBestTime(actualTime);
             }
         }
+    }
+
+    private String formatTime(long totalSeconds) {
+        long minutes = totalSeconds / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     public void restartGame() {
@@ -219,14 +233,18 @@ public class GameController {
         moveHistory.clear();
         view.setSteps(0);
         view.clearSelection();
+        view.setTimeLabelString("Time Left: 05:00");
+        stopGameTimer();
+        startGameTimer();
 
         // save game after restart
         if (currentUser != null && !currentUser.isGuest()) saveGame(true);
     }
 
+
     public void saveGame(boolean isAuto) {
         if (currentUser.isGuest()) {
-            view.showErrorMessage("Guest can not save game!");
+            if (!isAuto) view.showErrorMessage("Guest can not save game!");
             return;
         }
 
@@ -235,6 +253,9 @@ public class GameController {
         StringBuilder sb = new StringBuilder();
 
         gameData.add(String.valueOf(view.getSteps()));
+        gameData.add(String.valueOf(getActualTime()));
+        gameData.add(String.valueOf(currentUser.getBestTime()));
+        gameData.add(String.valueOf(currentUser.getBestMoveCount()));
 
         for (int[] line : saveMap) {
             sb.setLength(0);
@@ -273,27 +294,24 @@ public class GameController {
         try {
             List<String> lines = Files.readAllLines(Path.of(filePath));
 
-            if (lines.isEmpty()) {
-                view.showErrorMessage("Save file is empty!");
+            if (lines.size() < 4) {
+                view.showErrorMessage("Save file is corrupted!");
                 return;
             }
 
-            int savedStepCount = 0;
-            try {
-                savedStepCount = Integer.parseInt(lines.get(0));
-            } catch (NumberFormatException e) {
-                view.showErrorMessage("Invalid step count in save file!");
-                return;
-            }
+            int savedStepCount = Integer.parseInt(lines.get(0));
+            long savedTimeLeft = 300 - Long.parseLong(lines.get(1));
+            long bestTime = Long.parseLong(lines.get(2));
+            int bestSteps = Integer.parseInt(lines.get(3));
 
             int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
-            for (int row = 1; row < lines.size() && row-1 < model.getHeight(); row++) {
+            for (int row = 4; row < lines.size() && row - 4 < model.getHeight(); row++) {
                 String[] values = lines.get(row).trim().split(" ");
                 for (int col = 0; col < values.length && col < model.getWidth(); col++) {
                     try {
-                        loadedMap[row-1][col] = Integer.parseInt(values[col]);
+                        loadedMap[row - 4][col] = Integer.parseInt(values[col]);
                     } catch (NumberFormatException e) {
-                        loadedMap[row-1][col] = 0;
+                        loadedMap[row - 4][col] = 0;
                     }
                 }
             }
@@ -304,9 +322,15 @@ public class GameController {
             selectedRow = -1;
             selectedCol = -1;
 
+            currentUser.updateBestTime(bestTime);
+            currentUser.updateBestMoveCount(bestSteps);
+
             view.rebuildGameView(loadedMap);
             view.updateStepCount(view.getSteps());
             view.clearSelection();
+            view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
+            restartGameTimer(savedTimeLeft);
+
             view.showInfoMessage("Game loaded successfully!");
         } catch (Exception e) {
             view.showErrorMessage("Failed to load game: " + e.getMessage());
@@ -314,20 +338,15 @@ public class GameController {
     }
 
 
+
     private void setupAutoSave(int intervalMinutes) {
         autoSaveTimer = new javax.swing.Timer(intervalMinutes * 60 * 1000, e -> {
             if (currentUser != null && !currentUser.isGuest()) {
                 saveGame(true);
-                System.out.println("自动保存成功！时间: " + new Date());
+                System.out.println("Auto-save successfully！Time: " + new Date());
             }
         });
         autoSaveTimer.start();
-    }
-
-    public void stopAutoSave() {
-        if (autoSaveTimer != null) {
-            autoSaveTimer.stop();
-        }
     }
 
     public void selectBlock(int row, int col) {
@@ -350,4 +369,68 @@ public class GameController {
                 + "(" + winx1 + ", " + winy2 + ") "
                 + "(" + winx2 + ", " + winy2 + ")");
     }
+
+
+    private void startGameTimer() {
+        startTime = System.currentTimeMillis();
+
+        gameTimer = new Timer(1000, e -> {
+            long elapsed = System.currentTimeMillis() - startTime;
+            long remaining = GAME_DURATION - elapsed;
+
+            if (remaining <= 0) {
+                stopGameTimer();
+                view.setTimeLabelString("Time Left: 00:00");
+                view.showErrorMessage("Time's up! Game over.");
+                // view.setGameOverState(); // 假设你有这个方法来禁用交互
+                return;
+            }
+
+            long minutes = remaining / 1000 / 60;
+            long seconds = (remaining / 1000) % 60;
+            String timeString = String.format("Time Left: %02d:%02d", minutes, seconds);
+            view.setTimeLabelString(timeString);
+        });
+
+        gameTimer.start();
+    }
+
+    private void stopGameTimer() {
+        if (gameTimer != null && gameTimer.isRunning()) {
+            gameTimer.stop();
+        }
+    }
+
+    private void restartGameTimer(long remainingSeconds) {
+        stopGameTimer(); // 如果已有定时器，先停止
+
+        startTime = System.currentTimeMillis() - (GAME_DURATION - remainingSeconds * 1000);
+
+        gameTimer = new Timer(1000, e -> {
+            long timeLeft = getTimeLeft();
+            if (timeLeft <= 0) {
+                stopGameTimer();
+                view.setTimeLabelString("Time Left: 00:00");
+                view.showErrorMessage("Time's up! Game Over.");
+                // view.setGameOverState(); // 禁用控制
+                return;
+            }
+            view.setTimeLabelString("Time Left: " + formatTime(timeLeft));
+        });
+
+        gameTimer.start();
+    }
+
+
+    private long getActualTime() {
+        long currentTime = System.currentTimeMillis();
+        return (currentTime - startTime) / 1000;
+    }
+
+    private long getTimeLeft() {
+        long elapsed = System.currentTimeMillis() - startTime;
+        return Math.max(0, GAME_DURATION - elapsed) / 1000;
+    }
+
+
 }

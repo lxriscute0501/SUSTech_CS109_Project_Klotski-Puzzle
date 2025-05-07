@@ -15,7 +15,7 @@ public class User implements Serializable {
     private final boolean isGuest;
     private int highestLevel;
     private int bestStepCount;
-
+    private long bestTime = Long.MAX_VALUE;
 
     public User(String username, String password) {
         this.username = username;
@@ -53,6 +53,10 @@ public class User implements Serializable {
         return bestStepCount;
     }
 
+    public long getBestTime() {
+        return bestTime;
+    }
+
     public void setPassword(String password) {
         if (!isGuest) this.password = password;
     }
@@ -63,6 +67,22 @@ public class User implements Serializable {
 
     public void updateBestMoveCount(int moveCount) {
         if (moveCount < bestStepCount) this.bestStepCount = moveCount;
+    }
+
+    public void updateBestTime(long newTime) {
+        if (newTime < bestTime) {
+            bestTime = newTime;
+        }
+    }
+
+    public String getBestStepCountString() {
+        if (bestStepCount == Integer.MAX_VALUE) return " N/A";
+        else return String.format(" " + bestStepCount);
+    }
+
+    public String getBestTimeString() {
+        if (bestTime == Long.MAX_VALUE) return " N/A";
+        else return String.format(" %02d:%02d", bestTime/60, bestTime%60);
     }
 
     @Override

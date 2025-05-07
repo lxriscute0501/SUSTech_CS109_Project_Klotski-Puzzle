@@ -37,11 +37,8 @@ public class StartMenuFrame extends JFrame {
         // set start game button
         startBtn = FrameUtil.createButton(this, "Start New Game", new Point(200, 150), 200, 40);
         startBtn.addActionListener(e -> {
-            MapModel mapModel = new MapModel(new int[4][5]);
-            GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
-            gameFrame.startNewGame();
-            gameFrame.setVisible(true);
-            gameFrame.requestFocus();
+            LevelFrame levelFrame = new LevelFrame(600, 400, isGuest, user);
+            levelFrame.setVisible(true);
             this.setVisible(false);
         });
 

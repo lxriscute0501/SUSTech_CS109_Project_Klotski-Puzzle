@@ -20,6 +20,7 @@ public class GamePanel extends ListenerPanel {
     private List<BoxComponent> boxes;
     private MapModel model;
     private GameController controller;
+    private JLabel timeLabel;
     private JLabel stepLabel;
     private int steps;
     private final int GRID_SIZE = 50;
@@ -337,11 +338,44 @@ public class GamePanel extends ListenerPanel {
         return steps;
     }
 
-    public void showVictoryMessage(int stepCount) {
+
+    public void updateTimeDisplay(long totalSeconds, boolean isCountdown) {
+        if (timeLabel != null) {
+            long minutes = totalSeconds / 60;
+            long seconds = totalSeconds % 60;
+            String prefix = isCountdown ? "Time Left: " : "Time: ";
+            timeLabel.setText(String.format("%s%02d:%02d", prefix, minutes, seconds));
+        }
+    }
+
+    public void showTimeUpMessage() {
         JOptionPane.showMessageDialog(this,
-                "Congratulations! You won in " + stepCount + " steps!",
-                "Victory!",
-                JOptionPane.INFORMATION_MESSAGE);
+                "Time's up! Game over.",
+                "Time Expired",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void setTimeLabel(JLabel timeLabel) {
+        this.timeLabel = timeLabel;
+    }
+
+    public void setTimeLabelString(String label) {
+        this.timeLabel.setText(label);
+    }
+
+    public JLabel getTimeLabel() {
+        return timeLabel;
+    }
+
+    public void showVictoryMessage(int stepCount, String timeUsed) {
+        String message = String.format(
+                "Congratulations!\n" +
+                        "Steps: %d\n" +
+                        "Time: %s",
+                stepCount, timeUsed);
+
+        JOptionPane.showMessageDialog(this, message,
+                "Victory!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void showInfoMessage(String message) {

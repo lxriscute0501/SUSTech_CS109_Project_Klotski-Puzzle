@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Save and load game of multi-users.">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] timed auto-save or auto-save on exit">
+      <change afterPath="$PROJECT_DIR$/resources/levels/easy/1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/login/ResetFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746198997975</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="[FEAT] timed auto-save or auto-save on exit">
+      <option name="closed" value="true" />
+      <created>1746284334566</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1746284334566</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -204,6 +218,7 @@
     <MESSAGE value="ignore" />
     <MESSAGE value="[FEAT] multi-user login" />
     <MESSAGE value="[FEAT] Save and load game of multi-users." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Save and load game of multi-users." />
+    <MESSAGE value="[FEAT] timed auto-save or auto-save on exit" />
+    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] timed auto-save or auto-save on exit" />
   </component>
 </project>

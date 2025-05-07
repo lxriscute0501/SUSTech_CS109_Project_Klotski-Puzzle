@@ -22,7 +22,9 @@ public class GameFrame extends JFrame {
 
     private JLabel usernameLabel;
     private JLabel bestStepCount;
+    private JLabel bestTime;
     private JLabel winConditionLabel;
+    private JLabel timeLabel;
     private JLabel stepLabel;
     private GamePanel gamePanel;
     private User currentUser;
@@ -65,33 +67,36 @@ public class GameFrame extends JFrame {
 
     private void initializeUIComponents() {
 
+        this.timeLabel = FrameUtil.createJLabel(this, "Time Left: 05:00",
+                new Font("serif", Font.BOLD, 22),
+                new Point(gamePanel.getWidth(), 20), 300, 50);
+        gamePanel.setTimeLabel(timeLabel);
+
         this.usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
                 new Font("serif", Font.BOLD, 22),
-                new Point(gamePanel.getWidth() + 80, 20), 300, 50);
+                new Point(gamePanel.getWidth() + 100, 60), 300, 50);
 
 
-        String bestMoveString;
-        if (currentUser.getBestMoveCount() < Integer.MAX_VALUE)
-            bestMoveString = String.format(" " + currentUser.getBestMoveCount());
-        else bestMoveString = " Null";
-
-        this.bestStepCount = FrameUtil.createJLabel(this, "Best Record:" + bestMoveString,
+        this.bestStepCount = FrameUtil.createJLabel(this, "Best Steps:" + currentUser.getBestStepCountString(),
                 new Font("serif", Font.BOLD, 22),
-                new Point(gamePanel.getWidth() + 80, 60), 300, 50);
+                new Point(gamePanel.getWidth() + 100, 100), 300, 50);
 
+        this.bestTime = FrameUtil.createJLabel(this, "Best Time:" + currentUser.getBestTimeString(),
+                new Font("serif", Font.BOLD, 22),
+                new Point(gamePanel.getWidth() + 100, 140), 300, 50);
 
         this.winConditionLabel = FrameUtil.createJLabel(this, "Exit: " + controller.exitLocation(),
                 new Font("serif", Font.BOLD, 22),
-                new Point(gamePanel.getWidth() + 80, 100), 400, 50);
+                new Point(gamePanel.getWidth() + 100, 180), 400, 50);
 
         this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("serif", Font.BOLD, 25),
-                new Point(gamePanel.getWidth() + 80, 150), 300, 50);
+                new Point(gamePanel.getWidth() + 100, 220), 300, 50);
         gamePanel.setStepLabel(stepLabel);
 
         // restart game button
         this.restartBtn = FrameUtil.createButton(this, "Restart",
-                new Point(gamePanel.getWidth() + 80, 200), 120, 40);
+                new Point(gamePanel.getWidth() + 100, 260), 120, 40);
         this.restartBtn.addActionListener(e -> {
             startNewGame();
             gamePanel.requestFocusInWindow();
@@ -99,7 +104,7 @@ public class GameFrame extends JFrame {
 
         // save game button (disabled for guests)
         this.saveBtn = FrameUtil.createButton(this, "Save Game",
-                new Point(gamePanel.getWidth() + 80, 250), 120, 40);
+                new Point(gamePanel.getWidth() + 100, 300), 120, 40);
 
         this.saveBtn.addActionListener(e -> {
             controller.saveGame(false);
@@ -113,7 +118,7 @@ public class GameFrame extends JFrame {
 
         // undo button
         this.undoBtn = FrameUtil.createButton(this, "Undo",
-                new Point(gamePanel.getWidth() + 80, 320), 120, 40);
+                new Point(gamePanel.getWidth() + 100, 340), 120, 40);
         this.undoBtn.addActionListener(e -> {
             if (gamePanel.undoLastMove()) {
                 gamePanel.requestFocusInWindow();
@@ -124,13 +129,13 @@ public class GameFrame extends JFrame {
 
         // direction button
         this.upBtn = FrameUtil.createButton(this, "⬆",
-                new Point(gamePanel.getWidth() + 80, 400), 40, 40);
+                new Point(gamePanel.getWidth() + 100, 400), 40, 40);
         this.downBtn = FrameUtil.createButton(this, "⬇",
-                new Point(gamePanel.getWidth() + 80, 450), 40, 40);
+                new Point(gamePanel.getWidth() + 100, 450), 40, 40);
         this.leftBtn = FrameUtil.createButton(this, "⬅",
-                new Point(gamePanel.getWidth() + 40, 425), 40, 40);
+                new Point(gamePanel.getWidth() + 60, 425), 40, 40);
         this.rightBtn = FrameUtil.createButton(this, "➡",
-                new Point(gamePanel.getWidth() + 120, 425), 40, 40);
+                new Point(gamePanel.getWidth() + 140, 425), 40, 40);
 
         // set direction button action
         upBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.UP));

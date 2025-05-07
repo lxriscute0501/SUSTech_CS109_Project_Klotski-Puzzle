@@ -72,8 +72,8 @@ public class LoginFrame extends JFrame {
         });
 
         resetBtn.addActionListener(e -> {
-            username.setText("");
-            password.setText("");
+            ResetFrame resetFrame = new ResetFrame(this);
+            resetFrame.setVisible(true);
         });
 
         registerBtn.addActionListener(e -> {
@@ -102,17 +102,6 @@ public class LoginFrame extends JFrame {
         this.setVisible(false);
     }
 
-
-    protected void loadUserConfig() {
-        try (InputStream input = new FileInputStream(CONFIG_FILE)) {
-            userProperty.load(input);
-        } catch (IOException e) {
-            // if no file, use the initial username "admin"
-            userProperty.setProperty("username", "admin");
-            saveUserConfig();
-        }
-    }
-
     protected void saveUserConfig() {
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             // store configuration to file
@@ -125,6 +114,17 @@ public class LoginFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    protected void loadUserConfig() {
+        try (InputStream input = new FileInputStream(CONFIG_FILE)) {
+            userProperty.load(input);
+        } catch (IOException e) {
+            // if no file, use the initial username "admin"
+            userProperty.setProperty("username", "admin");
+            saveUserConfig();
+        }
+    }
+
 
     protected Properties getUserProperty() {
         return userProperty;
