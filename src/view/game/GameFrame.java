@@ -1,6 +1,7 @@
 package view.game;
 
 import controller.GameController;
+import controller.UserDataController;
 import model.Direction;
 import model.MapModel;
 import model.User;
@@ -11,6 +12,7 @@ import java.awt.*;
 
 public class GameFrame extends JFrame {
     private GameController controller;
+    private UserDataController userData;
 
     private JButton restartBtn;
     private JButton saveBtn;
@@ -20,15 +22,10 @@ public class GameFrame extends JFrame {
     private JButton rightBtn;
     private JButton undoBtn;
 
-    private JLabel usernameLabel;
-    private JLabel bestStepCount;
-    private JLabel bestTime;
-    private JLabel winConditionLabel;
-    private JLabel timeLabel;
-    private JLabel stepLabel;
     private GamePanel gamePanel;
     private User currentUser;
     private boolean isGuest;
+    private String level;
 
     public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
@@ -36,6 +33,7 @@ public class GameFrame extends JFrame {
         this.setSize(width, height);
         this.currentUser = user;
         this.isGuest = isGuest;
+        this.level = mapModel.getLevel();
 
         // create the main game panel
         gamePanel = new GamePanel(mapModel);
@@ -43,6 +41,7 @@ public class GameFrame extends JFrame {
         this.add(gamePanel);
 
         this.controller = new GameController(gamePanel, mapModel, user);
+        this.userData = controller.getUserDataController();
 
         initializeUIComponents();
 
@@ -54,7 +53,7 @@ public class GameFrame extends JFrame {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
                     try {
-                        controller.saveGame(true);
+                        userData.saveGame(true);
                         System.exit(0);
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -67,29 +66,32 @@ public class GameFrame extends JFrame {
 
     private void initializeUIComponents() {
 
-        this.timeLabel = FrameUtil.createJLabel(this, "Time Left: 05:00",
+        JLabel timeLabel = FrameUtil.createJLabel(this, "Time Left: 05:00",
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth(), 20), 300, 50);
         gamePanel.setTimeLabel(timeLabel);
 
-        this.usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
+        JLabel levelLabel = FrameUtil.createJLabel(this, "Level: " + level,
+                new Font("serif", Font.BOLD, 22),
+                new Point(gamePanel.getWidth() + 200, 20), 300, 50);
+
+        JLabel usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 60), 300, 50);
 
-
-        this.bestStepCount = FrameUtil.createJLabel(this, "Best Steps:" + currentUser.getBestStepCountString(),
+        JLabel bestStepCount = FrameUtil.createJLabel(this, "Best Steps:" + currentUser.getBestStepCountString(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 100), 300, 50);
 
-        this.bestTime = FrameUtil.createJLabel(this, "Best Time:" + currentUser.getBestTimeString(),
+        JLabel bestTime = FrameUtil.createJLabel(this, "Best Time:" + currentUser.getBestTimeString(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 140), 300, 50);
 
-        this.winConditionLabel = FrameUtil.createJLabel(this, "Exit: " + controller.exitLocation(),
+        JLabel winConditionLabel = FrameUtil.createJLabel(this, "Exit: " + controller.exitLocation(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 180), 400, 50);
 
-        this.stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
+        JLabel stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("serif", Font.BOLD, 25),
                 new Point(gamePanel.getWidth() + 100, 220), 300, 50);
         gamePanel.setStepLabel(stepLabel);
@@ -107,7 +109,7 @@ public class GameFrame extends JFrame {
                 new Point(gamePanel.getWidth() + 100, 300), 120, 40);
 
         this.saveBtn.addActionListener(e -> {
-            controller.saveGame(false);
+            userData.saveGame(false);
         });
 
         // forbid guest to click save button
@@ -152,7 +154,7 @@ public class GameFrame extends JFrame {
     }
 
     public void loadHistoryGame() {
-        controller.loadGame();
+        userData.loadGame();
         gamePanel.requestFocusInWindow();
     }
 

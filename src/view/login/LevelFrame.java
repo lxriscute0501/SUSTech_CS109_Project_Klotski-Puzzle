@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 难度选择界面，提供不同难度级别选项
+ * The third frame, connecting StartMenuFrame && GameFrame.
+ * Able to choose different game levels.
  */
+
 public class LevelFrame extends JFrame {
     private final boolean isGuest;
     private final User user;
@@ -32,13 +34,13 @@ public class LevelFrame extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton easyBtn = FrameUtil.createButton(this, "Easy", new Point(200, 120), 200, 40);
-        easyBtn.addActionListener(e -> startGameWithDifficulty(1));
+        easyBtn.addActionListener(e -> startGameWithLevel(1));
 
         JButton mediumBtn = FrameUtil.createButton(this, "Medium", new Point(200, 180), 200, 40);
-        mediumBtn.addActionListener(e -> startGameWithDifficulty(2));
+        mediumBtn.addActionListener(e -> startGameWithLevel(2));
 
         JButton hardBtn = FrameUtil.createButton(this, "Hard", new Point(200, 240), 200, 40);
-        hardBtn.addActionListener(e -> startGameWithDifficulty(3));
+        hardBtn.addActionListener(e -> startGameWithLevel(3));
 
         JButton backBtn = FrameUtil.createButton(this, "Return", new Point(200, 300), 200, 40);
         backBtn.addActionListener(e -> {
@@ -50,15 +52,20 @@ public class LevelFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void startGameWithDifficulty(int difficulty) {
+    private void startGameWithLevel(int difficulty) {
         int[][] mapData = generateMap(difficulty);
         MapModel mapModel = new MapModel(mapData);
 
-        // 创建游戏主界面
+        String level = "";
+        if (difficulty == 1) level = "Easy"; else if (difficulty == 2) level = "Medium"; else if (difficulty == 3) level = "Hard";
+
+        mapModel.setLevel(level);
+
         GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
         gameFrame.startNewGame();
         gameFrame.setVisible(true);
         gameFrame.requestFocus();
+
         this.dispose();
     }
 
@@ -73,9 +80,9 @@ public class LevelFrame extends JFrame {
 
         String basePath = "resources/levels/" + difficultyFolder + "/";
 
-        // if no map in the folder, return the default one
+        // if no map in the folder, return the default map
         int mapCount = getMapCount(basePath);
-        if (mapCount == 0) return getDefaultMap(difficulty);
+        if (mapCount == 0) return getDefaultMap();
 
         Random random = new Random();
         int selectedMap = random.nextInt(mapCount) + 1;
@@ -101,8 +108,8 @@ public class LevelFrame extends JFrame {
                 lines.add(line.trim());
             }
 
-            // default medium level
-            if (lines.isEmpty()) return getDefaultMap(2);
+            // default is medium level
+            if (lines.isEmpty()) return getDefaultMap();
 
             int rows = lines.size();
             int cols = lines.get(0).split("\\s+").length;
@@ -121,16 +128,13 @@ public class LevelFrame extends JFrame {
             return map;
         } catch (Exception e) {
             System.err.println("Map loading failed: " + filePath + ", Error: " + e.getMessage());
-            return getDefaultMap(2);
+            return getDefaultMap();
         }
     }
 
-    private int[][] getDefaultMap(int difficulty) {
-        switch (difficulty) {
-            case 1: return new int[][]{};
-            case 2: return new int[][]{};
-            case 3: return new int[][]{};
-            default: return new int[4][5];
-        }
+    // defensive programming, if level resources have been changed, we can still load the default map
+    private int[][] getDefaultMap() {
+        int[][] mapDefault = new int[4][5];
+        return mapDefault;
     }
 }

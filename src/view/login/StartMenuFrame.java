@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * The middle frame, connecting LoginFrame && GameFrame.
+ * The second frame, connecting LoginFrame && LevelFrame.
  * Able to start new game and load game (only the latest one, guest forbidden).
  */
 
@@ -17,8 +17,9 @@ public class StartMenuFrame extends JFrame {
 
     private JButton startBtn;
     private JButton loadBtn;
+    private JButton exitBtn;
 
-    private User user;
+    private final User user;
     private final boolean isGuest;
 
     public StartMenuFrame(int width, int height, boolean isGuest, User user) {
@@ -29,12 +30,10 @@ public class StartMenuFrame extends JFrame {
         this.setLayout(null);
         this.setSize(width, height);
 
-        // title label
         titleLabel = FrameUtil.createJLabel(this, new Point(200, 50), 200, 40, "Klotski Puzzle");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // set start game button
         startBtn = FrameUtil.createButton(this, "Start New Game", new Point(200, 150), 200, 40);
         startBtn.addActionListener(e -> {
             LevelFrame levelFrame = new LevelFrame(600, 400, isGuest, user);
@@ -42,7 +41,6 @@ public class StartMenuFrame extends JFrame {
             this.setVisible(false);
         });
 
-        // set load game button (disabled for guests)
         loadBtn = FrameUtil.createButton(this, "Load Game", new Point(200, 200), 200, 40);
         loadBtn.addActionListener(e -> {
             MapModel mapModel = new MapModel(new int[4][5]);
@@ -51,6 +49,13 @@ public class StartMenuFrame extends JFrame {
             gameFrame.setVisible(true);
             gameFrame.requestFocus();
             this.setVisible(false);
+        });
+
+        exitBtn = FrameUtil.createButton(this, "Exit", new Point(200, 250), 200, 40);
+        exitBtn.addActionListener(e -> {
+            LoginFrame loginFrame = new LoginFrame(600, 400);
+            loginFrame.setVisible(true);
+            this.dispose();
         });
 
         // disable load button for guest users

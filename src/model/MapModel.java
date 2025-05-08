@@ -8,6 +8,7 @@ public class MapModel {
     private final int[][] initialMatrix;
     private final int width = 5;
     private final int height = 4;
+    private String level;
 
     public MapModel(int[][] matrix) {
         this.matrix = matrix;
@@ -66,8 +67,8 @@ public class MapModel {
             System.arraycopy(newMatrix[i], 0, matrix[i], 0, width);
     }
 
+    // restore from initial matrix
     public void resetMap() {
-        // restore from initial matrix
         for (int i = 0; i < height; i++) {
             System.arraycopy(initialMatrix[i], 0, matrix[i], 0, width);
         }
@@ -92,6 +93,14 @@ public class MapModel {
 
     public int[][] getMatrix() {
         return matrix;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public boolean checkInWidthSize(int col) {

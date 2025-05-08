@@ -6,13 +6,6 @@ import model.User;
 import view.game.BoxComponent;
 import view.game.GamePanel;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Stack;
 import javax.swing.*;
 
@@ -20,6 +13,7 @@ import javax.swing.*;
  * It is a bridge to combine GamePanel(view) and MapMatrix(model) in one game.
  * You can design several methods about the game logic in this class.
  */
+
 public class GameController {
     private final GamePanel view;
     private final MapModel model;
@@ -34,8 +28,8 @@ public class GameController {
 
     private long startTime;
     private Timer gameTimer;
-    private Timer autoSaveTimer;
 
+    private UserDataController userDataController;
     private static final long GAME_DURATION = 5 * 60 * 1000;
 
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
@@ -45,9 +39,10 @@ public class GameController {
         this.model = model;
         this.currentUser = user;
         this.view.setController(this);
+        this.userDataController = new UserDataController(this, view, model, user);
 
         startGameTimer();
-        setupAutoSave(1);
+        userDataController.setupAutoSave(1);
     }
 
 
@@ -211,9 +206,8 @@ public class GameController {
             view.showVictoryMessage(view.getSteps(), timeString);
 
             if (currentUser != null && !currentUser.isGuest()) {
-                saveGame(true);
+                userDataController.saveGame(true);
                 currentUser.updateBestMoveCount(view.getSteps());
-                // store the actual time in data, not remaining time
                 currentUser.updateBestTime(actualTime);
             }
         }
@@ -238,127 +232,7 @@ public class GameController {
         startGameTimer();
 
         // save game after restart
-        if (currentUser != null && !currentUser.isGuest()) saveGame(true);
-    }
-
-
-    public void saveGame(boolean isAuto) {
-        if (currentUser.isGuest()) {
-            if (!isAuto) view.showErrorMessage("Guest can not save game!");
-            return;
-        }
-
-        int[][] saveMap = model.getMatrix();
-        List<String> gameData = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-
-        gameData.add(String.valueOf(view.getSteps()));
-        gameData.add(String.valueOf(getActualTime()));
-        gameData.add(String.valueOf(currentUser.getBestTime()));
-        gameData.add(String.valueOf(currentUser.getBestMoveCount()));
-
-        for (int[] line : saveMap) {
-            sb.setLength(0);
-            for (int value : line) {
-                sb.append(value).append(" ");
-            }
-            gameData.add(sb.toString().trim());
-        }
-
-        String filePath = "data/" + currentUser.getUsername();
-        File dir = new File(filePath);
-        dir.mkdirs();
-
-        try {
-            Files.write(Path.of(filePath + "/data.txt"), gameData);
-            if (!isAuto) view.showInfoMessage("Game saved successfully!");
-        } catch (Exception e) {
-            view.showErrorMessage("Game saved failed: " + e.getMessage());
-        }
-    }
-
-    public void loadGame() {
-        if (currentUser.isGuest()) {
-            view.showErrorMessage("Guest can not load game!");
-            return;
-        }
-
-        String filePath = "data/" + currentUser.getUsername() + "/data.txt";
-        File saveFile = new File(filePath);
-
-        if (!saveFile.exists()) {
-            view.showErrorMessage("No saved game found for this user!");
-            return;
-        }
-
-        try {
-            List<String> lines = Files.readAllLines(Path.of(filePath));
-
-            if (lines.size() < 4) {
-                view.showErrorMessage("Save file is corrupted!");
-                return;
-            }
-
-            int savedStepCount = Integer.parseInt(lines.get(0));
-            long savedTimeLeft = 300 - Long.parseLong(lines.get(1));
-            long bestTime = Long.parseLong(lines.get(2));
-            int bestSteps = Integer.parseInt(lines.get(3));
-
-            int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
-            for (int row = 4; row < lines.size() && row - 4 < model.getHeight(); row++) {
-                String[] values = lines.get(row).trim().split(" ");
-                for (int col = 0; col < values.length && col < model.getWidth(); col++) {
-                    try {
-                        loadedMap[row - 4][col] = Integer.parseInt(values[col]);
-                    } catch (NumberFormatException e) {
-                        loadedMap[row - 4][col] = 0;
-                    }
-                }
-            }
-
-            model.setMatrix(loadedMap);
-            view.setSteps(savedStepCount);
-            moveHistory.clear();
-            selectedRow = -1;
-            selectedCol = -1;
-
-            currentUser.updateBestTime(bestTime);
-            currentUser.updateBestMoveCount(bestSteps);
-
-            view.rebuildGameView(loadedMap);
-            view.updateStepCount(view.getSteps());
-            view.clearSelection();
-            view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
-            restartGameTimer(savedTimeLeft);
-
-            view.showInfoMessage("Game loaded successfully!");
-        } catch (Exception e) {
-            view.showErrorMessage("Failed to load game: " + e.getMessage());
-        }
-    }
-
-
-
-    private void setupAutoSave(int intervalMinutes) {
-        autoSaveTimer = new javax.swing.Timer(intervalMinutes * 60 * 1000, e -> {
-            if (currentUser != null && !currentUser.isGuest()) {
-                saveGame(true);
-                System.out.println("Auto-save successfully！Time: " + new Date());
-            }
-        });
-        autoSaveTimer.start();
-    }
-
-    public void selectBlock(int row, int col) {
-        if (model.getId(row, col) != 0) {
-            selectedRow = row;
-            selectedCol = col;
-            view.highlightSelectedBox(row, col);
-        } else {
-            selectedRow = -1;
-            selectedCol = -1;
-            view.clearSelection();
-        }
+        if (currentUser != null && !currentUser.isGuest()) userDataController.saveGame(true);
     }
 
     public String exitLocation() {
@@ -421,16 +295,17 @@ public class GameController {
         gameTimer.start();
     }
 
-
-    private long getActualTime() {
+    public long getActualTime() {
         long currentTime = System.currentTimeMillis();
         return (currentTime - startTime) / 1000;
     }
 
-    private long getTimeLeft() {
+    public long getTimeLeft() {
         long elapsed = System.currentTimeMillis() - startTime;
         return Math.max(0, GAME_DURATION - elapsed) / 1000;
     }
 
-
+    public UserDataController getUserDataController() {
+            return userDataController;
+    }
 }

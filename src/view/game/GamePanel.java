@@ -1,6 +1,7 @@
 package view.game;
 
 import controller.GameController;
+import controller.UserDataController;
 import model.Direction;
 import model.MapModel;
 
@@ -20,6 +21,7 @@ public class GamePanel extends ListenerPanel {
     private List<BoxComponent> boxes;
     private MapModel model;
     private GameController controller;
+    private UserDataController userData;
     private JLabel timeLabel;
     private JLabel stepLabel;
     private int steps;
@@ -40,58 +42,6 @@ public class GamePanel extends ListenerPanel {
         // Set focusable to ensure keyboard events work
         this.setFocusable(true);
         this.requestFocusInWindow();
-    }
-
-    public void moveSelectedBox(Direction direction) {
-        if (selectedBox == null) {
-            showInfoMessage("Please choose one box first.");
-            return;
-        }
-
-        if (controller != null) {
-            boolean moved = controller.moveBox(
-                    selectedBox.getRow(),
-                    selectedBox.getCol(),
-                    direction
-            );
-
-            // update box location
-            if (moved) {
-                selectedBox.setLocation(
-                        selectedBox.getCol() * GRID_SIZE + 2,
-                        selectedBox.getRow() * GRID_SIZE + 2
-                );
-
-                System.out.println(direction);
-                afterMove();
-                repaint();
-                controller.saveGame(true);
-                controller.checkWinCondition();
-            }
-        }
-    }
-
-    public void afterMove() {
-        this.steps ++;
-        updateStepLabel();
-        triggerStepEvent();
-    }
-
-    private void updateBoxPositions() {
-        for (BoxComponent box : boxes) {
-            box.setLocation(box.getCol() * GRID_SIZE + 2, box.getRow() * GRID_SIZE + 2);
-        }
-        this.repaint();
-    }
-
-    public void addStepListener(ActionListener listener) {
-        stepListeners.add(listener);
-    }
-
-    private void triggerStepEvent() {
-        for (ActionListener listener : stepListeners) {
-            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
-        }
     }
 
     public void initializeGame() {
@@ -143,6 +93,58 @@ public class GamePanel extends ListenerPanel {
             }
         }
         this.repaint();
+    }
+
+    public void moveSelectedBox(Direction direction) {
+        if (selectedBox == null) {
+            showInfoMessage("Please choose one box first.");
+            return;
+        }
+
+        if (controller != null) {
+            boolean moved = controller.moveBox(
+                    selectedBox.getRow(),
+                    selectedBox.getCol(),
+                    direction
+            );
+
+            // update box location
+            if (moved) {
+                selectedBox.setLocation(
+                        selectedBox.getCol() * GRID_SIZE + 2,
+                        selectedBox.getRow() * GRID_SIZE + 2
+                );
+
+                System.out.println(direction);
+                afterMove();
+                repaint();
+                userData.saveGame(true);
+                controller.checkWinCondition();
+            }
+        }
+    }
+
+    public void afterMove() {
+        this.steps ++;
+        updateStepLabel();
+        triggerStepEvent();
+    }
+
+    private void updateBoxPositions() {
+        for (BoxComponent box : boxes) {
+            box.setLocation(box.getCol() * GRID_SIZE + 2, box.getRow() * GRID_SIZE + 2);
+        }
+        this.repaint();
+    }
+
+    public void addStepListener(ActionListener listener) {
+        stepListeners.add(listener);
+    }
+
+    private void triggerStepEvent() {
+        for (ActionListener listener : stepListeners) {
+            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
+        }
     }
 
     public void rebuildGameView(int[][] mapData) {
@@ -266,7 +268,7 @@ public class GamePanel extends ListenerPanel {
             steps--;
             updateStepLabel();
             updateBoxPositions();
-            controller.saveGame(true);
+            userData.saveGame(true);
             if (selectedBox != null) selectedBox.setSelected(true);
         }
 
@@ -289,6 +291,10 @@ public class GamePanel extends ListenerPanel {
 
     public void setController(GameController controller) {
         this.controller = controller;
+    }
+
+    public void setUserData(UserDataController userData) {
+        this.userData = userData;
     }
 
     public BoxComponent getSelectedBox() {
