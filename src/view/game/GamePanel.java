@@ -17,17 +17,22 @@ import java.util.List;
  * It is the subclass of ListenerPanel, so that it should implement those four methods: move left, up, down ,right.
  * The class contains a grids, which is the corresponding GUI view of the matrix variable in MapMatrix.
  */
+
 public class GamePanel extends ListenerPanel {
     private List<BoxComponent> boxes;
     private MapModel model;
     private GameController controller;
     private UserDataController userData;
-    private JLabel timeLabel;
-    private JLabel stepLabel;
-    private int steps;
-    private final int GRID_SIZE = 50;
     private BoxComponent selectedBox;
     private List<ActionListener> stepListeners = new ArrayList<>();
+
+    private JLabel timeLabel;
+    private JLabel stepLabel;
+    private JLabel bestTimeLabel;
+    private JLabel bestStepsLabel;
+    private JLabel levelLabel;
+    private int steps;
+    private final int GRID_SIZE = 50;
 
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
@@ -46,10 +51,6 @@ public class GamePanel extends ListenerPanel {
 
     public void initializeGame() {
         this.steps = 0;
-        initializeBoxes();
-    }
-
-    private void initializeBoxes() {
         this.removeAll();
         boxes.clear();
 
@@ -137,10 +138,6 @@ public class GamePanel extends ListenerPanel {
         this.repaint();
     }
 
-    public void addStepListener(ActionListener listener) {
-        stepListeners.add(listener);
-    }
-
     private void triggerStepEvent() {
         for (ActionListener listener : stepListeners) {
             listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
@@ -184,9 +181,162 @@ public class GamePanel extends ListenerPanel {
                 }
             }
         }
-
         this.revalidate();
         this.repaint();
+    }
+
+    public boolean undoLastMove() {
+        if (controller == null) {
+            showInfoMessage("Controller not initialized.");
+            return false;
+        }
+
+        boolean success = controller.undoMove();
+
+        if (success) {
+            steps--;
+            updateStepLabel();
+            updateBoxPositions();
+            userData.saveGame(true);
+            if (selectedBox != null) selectedBox.setSelected(true);
+        }
+
+        return success;
+    }
+
+    public void setTimeLabel(JLabel timeLabel) {
+        this.timeLabel = timeLabel;
+    }
+
+    public void setLevelLabel(JLabel levelLabel) {
+        this.levelLabel = levelLabel;
+    }
+
+    public void setBestStepsLabel(JLabel bestStepsLabel) {
+        this.bestStepsLabel = bestStepsLabel;
+    }
+
+    public void updateBestStepsLabel(int bestSteps) {
+        if (bestStepsLabel != null) {
+            bestStepsLabel.setText(String.format("Best Steps: %d", bestSteps));
+        }
+    }
+
+    public void setBestTimeLabel(JLabel bestTimeLabel) {
+        this.bestTimeLabel = bestTimeLabel;
+    }
+
+    public void updateBestTimeLabel(long bestTime) {
+        if (bestTimeLabel != null) {
+            long minutes = bestTime / 60;
+            long seconds = bestTime % 60;
+            bestTimeLabel.setText(String.format("Best Time: %02d:%02d", minutes, seconds));
+        }
+    }
+
+    public void setStepLabel(JLabel stepLabel) {
+        this.stepLabel = stepLabel;
+        updateStepLabel();
+    }
+
+    private void updateStepLabel() {
+        if (stepLabel != null) stepLabel.setText(String.format("Steps: %d", this.steps));
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+        updateStepLabel();
+    }
+
+    public int getSteps() {
+        return steps;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
+    }
+
+    public void setUserData(UserDataController userData) {
+        this.userData = userData;
+    }
+
+    public BoxComponent getSelectedBox() {
+        return selectedBox;
+    }
+
+    public int getGRID_SIZE() {
+        return GRID_SIZE;
+    }
+
+    public void highlightSelectedBox(int row, int col) {
+        clearSelection();
+        BoxComponent box = getBoxAt(row, col);
+        if (box != null) {
+            box.setSelected(true);
+            box.repaint();
+        }
+    }
+
+    public void clearSelection() {
+        for (Component comp : getComponents()) {
+            if (comp instanceof BoxComponent) {
+                ((BoxComponent) comp).setSelected(false);
+                comp.repaint();
+            }
+        }
+    }
+
+    public BoxComponent getBoxAt(int row, int col) {
+        for (Component comp : getComponents()) {
+            if (comp instanceof BoxComponent) {
+                BoxComponent box = (BoxComponent) comp;
+                if (box.getRow() == row && box.getCol() == col) {
+                    return box;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void updateTimeDisplay(long totalSeconds, boolean isCountdown) {
+        if (timeLabel != null) {
+            long minutes = totalSeconds / 60;
+            long seconds = totalSeconds % 60;
+            String prefix = isCountdown ? "Time Left: " : "Time: ";
+            timeLabel.setText(String.format("%s%02d:%02d", prefix, minutes, seconds));
+        }
+    }
+
+    public void showTimeUpMessage() {
+        JOptionPane.showMessageDialog(this,
+                "Time's up! Game over.",
+                "Time Expired",
+                JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void setTimeLabelString(String label) {
+        this.timeLabel.setText(label);
+    }
+
+
+    public void updateLevelLabel(String level) {
+        if (levelLabel != null) {
+            levelLabel.setText("Level: " + level);
+        }
+    }
+
+    public void showVictoryMessage(int stepCount, String timeUsed) {
+        String message = String.format("Victory! Congratulations!\n" + "Steps: %d\n" + "Time used: %s", stepCount, timeUsed);
+
+        JOptionPane.showMessageDialog(this, message, "Victory!", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showInfoMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
@@ -241,7 +391,7 @@ public class GamePanel extends ListenerPanel {
                 selectedBox = null;
             }
         }
-        this.requestFocusInWindow();  // Get keyboard focus after mouse click
+        this.requestFocusInWindow();
     }
 
     @Override
@@ -254,141 +404,5 @@ public class GamePanel extends ListenerPanel {
                 selectedBox = null;
             }
         }
-    }
-
-    public boolean undoLastMove() {
-        if (controller == null) {
-            showInfoMessage("Controller not initialized.");
-            return false;
-        }
-
-        boolean success = controller.undoMove();
-
-        if (success) {
-            steps--;
-            updateStepLabel();
-            updateBoxPositions();
-            userData.saveGame(true);
-            if (selectedBox != null) selectedBox.setSelected(true);
-        }
-
-        return success;
-    }
-
-    public void updateStepCount(int stepCount) {
-        this.steps = stepCount;
-        updateStepLabel();
-    }
-
-    private void updateStepLabel() {
-        if (stepLabel != null) stepLabel.setText(String.format("Steps: %d", this.steps));
-    }
-
-    public void setStepLabel(JLabel stepLabel) {
-        this.stepLabel = stepLabel;
-        updateStepLabel();
-    }
-
-    public void setController(GameController controller) {
-        this.controller = controller;
-    }
-
-    public void setUserData(UserDataController userData) {
-        this.userData = userData;
-    }
-
-    public BoxComponent getSelectedBox() {
-        return selectedBox;
-    }
-
-    public int getGRID_SIZE() {
-        return GRID_SIZE;
-    }
-
-    public void setSteps(int steps) {
-        this.steps = steps;
-        updateStepLabel();
-    }
-
-    public void highlightSelectedBox(int row, int col) {
-        clearSelection();
-        BoxComponent box = getBoxAt(row, col);
-        if (box != null) {
-            box.setSelected(true);
-            box.repaint();
-        }
-    }
-
-    public void clearSelection() {
-        for (Component comp : getComponents()) {
-            if (comp instanceof BoxComponent) {
-                ((BoxComponent) comp).setSelected(false);
-                comp.repaint();
-            }
-        }
-    }
-
-    public BoxComponent getBoxAt(int row, int col) {
-        for (Component comp : getComponents()) {
-            if (comp instanceof BoxComponent) {
-                BoxComponent box = (BoxComponent) comp;
-                if (box.getRow() == row && box.getCol() == col) {
-                    return box;
-                }
-            }
-        }
-        return null;
-    }
-
-    public int getSteps() {
-        return steps;
-    }
-
-
-    public void updateTimeDisplay(long totalSeconds, boolean isCountdown) {
-        if (timeLabel != null) {
-            long minutes = totalSeconds / 60;
-            long seconds = totalSeconds % 60;
-            String prefix = isCountdown ? "Time Left: " : "Time: ";
-            timeLabel.setText(String.format("%s%02d:%02d", prefix, minutes, seconds));
-        }
-    }
-
-    public void showTimeUpMessage() {
-        JOptionPane.showMessageDialog(this,
-                "Time's up! Game over.",
-                "Time Expired",
-                JOptionPane.WARNING_MESSAGE);
-    }
-
-    public void setTimeLabel(JLabel timeLabel) {
-        this.timeLabel = timeLabel;
-    }
-
-    public void setTimeLabelString(String label) {
-        this.timeLabel.setText(label);
-    }
-
-    public JLabel getTimeLabel() {
-        return timeLabel;
-    }
-
-    public void showVictoryMessage(int stepCount, String timeUsed) {
-        String message = String.format(
-                "Congratulations!\n" +
-                        "Steps: %d\n" +
-                        "Time: %s",
-                stepCount, timeUsed);
-
-        JOptionPane.showMessageDialog(this, message,
-                "Victory!", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public void showInfoMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public void showErrorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

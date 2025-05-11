@@ -206,9 +206,9 @@ public class GameController {
             view.showVictoryMessage(view.getSteps(), timeString);
 
             if (currentUser != null && !currentUser.isGuest()) {
-                userDataController.saveGame(true);
                 currentUser.updateBestMoveCount(view.getSteps());
                 currentUser.updateBestTime(actualTime);
+                userDataController.saveGame(true);
             }
         }
     }
@@ -276,7 +276,7 @@ public class GameController {
     }
 
     private void restartGameTimer(long remainingSeconds) {
-        stopGameTimer(); // 如果已有定时器，先停止
+        stopGameTimer();
 
         startTime = System.currentTimeMillis() - (GAME_DURATION - remainingSeconds * 1000);
 

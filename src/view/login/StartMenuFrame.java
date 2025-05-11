@@ -6,6 +6,7 @@ import view.FrameUtil;
 import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 /**
  * The second frame, connecting LoginFrame && LevelFrame.
@@ -43,6 +44,15 @@ public class StartMenuFrame extends JFrame {
 
         loadBtn = FrameUtil.createButton(this, "Load Game", new Point(200, 200), 200, 40);
         loadBtn.addActionListener(e -> {
+            // check whether data.txt exists
+            String filePath = "data/" + user.getUsername() + "/data.txt";
+            File saveFile = new File(filePath);
+
+            if (!saveFile.exists() || !saveFile.canRead()) {
+                JOptionPane.showMessageDialog(this, "Game can not load!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             MapModel mapModel = new MapModel(new int[4][5]);
             GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
             gameFrame.loadHistoryGame();
@@ -51,18 +61,18 @@ public class StartMenuFrame extends JFrame {
             this.setVisible(false);
         });
 
+        // disable load button for guest users
+        if (isGuest) {
+            loadBtn.setEnabled(false);
+            loadBtn.setToolTipText("Guest cannot load saved games.");
+        }
+
         exitBtn = FrameUtil.createButton(this, "Exit", new Point(200, 250), 200, 40);
         exitBtn.addActionListener(e -> {
             LoginFrame loginFrame = new LoginFrame(600, 400);
             loginFrame.setVisible(true);
             this.dispose();
         });
-
-        // disable load button for guest users
-        if (isGuest) {
-            loadBtn.setEnabled(false);
-            loadBtn.setToolTipText("Guest cannot load saved games.");
-        }
 
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

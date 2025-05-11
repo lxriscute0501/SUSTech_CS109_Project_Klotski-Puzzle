@@ -39,7 +39,6 @@ public class GameFrame extends JFrame {
         gamePanel = new GamePanel(mapModel);
         gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
         this.add(gamePanel);
-
         this.controller = new GameController(gamePanel, mapModel, user);
         this.userData = controller.getUserDataController();
 
@@ -56,7 +55,6 @@ public class GameFrame extends JFrame {
                         userData.saveGame(true);
                         System.exit(0);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
                         System.exit(0);
                     }
                 }
@@ -74,18 +72,21 @@ public class GameFrame extends JFrame {
         JLabel levelLabel = FrameUtil.createJLabel(this, "Level: " + level,
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 200, 20), 300, 50);
+        gamePanel.setLevelLabel(levelLabel);
 
         JLabel usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 60), 300, 50);
 
-        JLabel bestStepCount = FrameUtil.createJLabel(this, "Best Steps:" + currentUser.getBestStepCountString(),
+        JLabel bestStepsLabel = FrameUtil.createJLabel(this, "Best Steps: N/A",
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 100), 300, 50);
+        gamePanel.setBestStepsLabel(bestStepsLabel);
 
-        JLabel bestTime = FrameUtil.createJLabel(this, "Best Time:" + currentUser.getBestTimeString(),
+        JLabel bestTimeLabel = FrameUtil.createJLabel(this, "Best Time: N/A",
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 140), 300, 50);
+        gamePanel.setBestTimeLabel(bestTimeLabel);
 
         JLabel winConditionLabel = FrameUtil.createJLabel(this, "Exit: " + controller.exitLocation(),
                 new Font("serif", Font.BOLD, 22),

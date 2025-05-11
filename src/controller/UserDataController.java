@@ -37,13 +37,12 @@ public class UserDataController {
         List<String> gameData = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
+        // saved data
         gameData.add(model.getLevel());
-
-        // Existing data (shifted down by 1 line)
         gameData.add(String.valueOf(view.getSteps()));
         gameData.add(String.valueOf(controller.getActualTime()));
-        gameData.add(String.valueOf(currentUser.getBestTime()));
         gameData.add(String.valueOf(currentUser.getBestMoveCount()));
+        gameData.add(String.valueOf(currentUser.getBestTime()));
 
         for (int[] line : saveMap) {
             sb.setLength(0);
@@ -66,21 +65,11 @@ public class UserDataController {
     }
 
     public void loadGame() {
-        if (currentUser.isGuest()) {
-            view.showErrorMessage("Guest can not load game!");
-            return;
-        }
-
         String filePath = "data/" + currentUser.getUsername() + "/data.txt";
-        File saveFile = new File(filePath);
-
-        if (!saveFile.exists()) {
-            view.showErrorMessage("No saved game found for this user!");
-            return;
-        }
 
         try {
             List<String> lines = Files.readAllLines(Path.of(filePath));
+            System.out.println("Loaded data: " + lines);
 
             if (lines.size() < 5) {
                 view.showErrorMessage("Save file is corrupted!");
@@ -88,40 +77,32 @@ public class UserDataController {
             }
 
             String level = lines.get(0);
-            model.setLevel(level);
-
             int savedStepCount = Integer.parseInt(lines.get(1));
             long savedTimeLeft = 300 - Long.parseLong(lines.get(2));
-            long bestTime = Long.parseLong(lines.get(3));
-            int bestSteps = Integer.parseInt(lines.get(4));
+            int bestSteps = Integer.parseInt(lines.get(3));
+            long bestTime = Long.parseLong(lines.get(4));
+
+            model.setLevel(level);
+            view.updateLevelLabel(level);
+            view.updateBestTimeLabel(bestTime);
+            view.updateBestStepsLabel(bestSteps);
+            view.setSteps(savedStepCount);
 
             int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
-            for (int row = 5; row < lines.size() && row - 5 < model.getHeight(); row++) {
-                String[] values = lines.get(row).trim().split(" ");
-                for (int col = 0; col < values.length && col < model.getWidth(); col++) {
-                    try {
-                        loadedMap[row - 5][col] = Integer.parseInt(values[col]);
-                    } catch (NumberFormatException e) {
-                        loadedMap[row - 5][col] = 0;
-                    }
+            for (int row = 5; row < lines.size(); row++) {
+                String[] values = lines.get(row).split(" ");
+                for (int col = 0; col < values.length; col++) {
+                    loadedMap[row - 5][col] = Integer.parseInt(values[col]);
                 }
             }
 
             model.setMatrix(loadedMap);
-            view.setSteps(savedStepCount);
-            currentUser.updateBestTime(bestTime);
-            currentUser.updateBestMoveCount(bestSteps);
-
             view.rebuildGameView(loadedMap);
-            view.updateStepCount(view.getSteps());
-            view.clearSelection();
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
-
-            // Show level in success message (optional)
-            view.showInfoMessage("Game loaded successfully! Level: " + level);
+            view.showInfoMessage("Loaded level: " + level);
 
         } catch (Exception e) {
-            view.showErrorMessage("Failed to load game: " + e.getMessage());
+            view.showErrorMessage("Load failed: " + e.getMessage());
         }
     }
 
