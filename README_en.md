@@ -2,8 +2,6 @@
 
 # Klotski Puzzle
 
-**🔖 中文 | English**
-
 **CS109 Introduction to Computer Programming (JavaA) 25Spring Project Report**
 
 </div>
