@@ -31,7 +31,10 @@ public class GamePanel extends ListenerPanel {
     private JLabel bestTimeLabel;
     private JLabel bestStepsLabel;
     private JLabel levelLabel;
+    private long bestTime;
+    private int bestSteps;
     private int steps;
+
     private final int GRID_SIZE = 50;
 
     public GamePanel(MapModel model) {
@@ -208,32 +211,6 @@ public class GamePanel extends ListenerPanel {
         this.timeLabel = timeLabel;
     }
 
-    public void setLevelLabel(JLabel levelLabel) {
-        this.levelLabel = levelLabel;
-    }
-
-    public void setBestStepsLabel(JLabel bestStepsLabel) {
-        this.bestStepsLabel = bestStepsLabel;
-    }
-
-    public void updateBestStepsLabel(int bestSteps) {
-        if (bestStepsLabel != null) {
-            bestStepsLabel.setText(String.format("Best Steps: %d", bestSteps));
-        }
-    }
-
-    public void setBestTimeLabel(JLabel bestTimeLabel) {
-        this.bestTimeLabel = bestTimeLabel;
-    }
-
-    public void updateBestTimeLabel(long bestTime) {
-        if (bestTimeLabel != null) {
-            long minutes = bestTime / 60;
-            long seconds = bestTime % 60;
-            bestTimeLabel.setText(String.format("Best Time: %02d:%02d", minutes, seconds));
-        }
-    }
-
     public void setStepLabel(JLabel stepLabel) {
         this.stepLabel = stepLabel;
         updateStepLabel();
@@ -248,9 +225,7 @@ public class GamePanel extends ListenerPanel {
         updateStepLabel();
     }
 
-    public int getSteps() {
-        return steps;
-    }
+    public int getSteps() { return steps; }
 
     public void setController(GameController controller) {
         this.controller = controller;

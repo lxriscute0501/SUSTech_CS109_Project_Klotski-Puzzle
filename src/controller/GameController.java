@@ -206,7 +206,7 @@ public class GameController {
             view.showVictoryMessage(view.getSteps(), timeString);
 
             if (currentUser != null && !currentUser.isGuest()) {
-                currentUser.updateBestMoveCount(view.getSteps());
+                currentUser.updateBestSteps(view.getSteps());
                 currentUser.updateBestTime(actualTime);
                 userDataController.saveGame(true);
             }

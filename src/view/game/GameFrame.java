@@ -26,6 +26,7 @@ public class GameFrame extends JFrame {
     private User currentUser;
     private boolean isGuest;
     private String level;
+    private MapModel map;
 
     public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
@@ -33,7 +34,9 @@ public class GameFrame extends JFrame {
         this.setSize(width, height);
         this.currentUser = user;
         this.isGuest = isGuest;
-        this.level = mapModel.getLevel();
+        this.map = mapModel;
+        this.level = map.getLevel();
+        System.out.println("Level: " + this.level);
 
         // create the main game panel
         gamePanel = new GamePanel(mapModel);
@@ -69,24 +72,23 @@ public class GameFrame extends JFrame {
                 new Point(gamePanel.getWidth(), 20), 300, 50);
         gamePanel.setTimeLabel(timeLabel);
 
-        JLabel levelLabel = FrameUtil.createJLabel(this, "Level: " + level,
+        JLabel levelLabel = FrameUtil.createJLabel(this, "Level: " + this.level,
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 200, 20), 300, 50);
-        gamePanel.setLevelLabel(levelLabel);
 
         JLabel usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 60), 300, 50);
 
-        JLabel bestStepsLabel = FrameUtil.createJLabel(this, "Best Steps: N/A",
+        JLabel bestStepsLabel = FrameUtil.createJLabel(this,
+                "Best Steps: " + (currentUser.hasBestSteps() ? currentUser.getBestSteps() : "N/A"),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 100), 300, 50);
-        gamePanel.setBestStepsLabel(bestStepsLabel);
 
-        JLabel bestTimeLabel = FrameUtil.createJLabel(this, "Best Time: N/A",
+        JLabel bestTimeLabel = FrameUtil.createJLabel(this,
+                "Best Time: " + (currentUser.hasBestTime() ? currentUser.getBestTime() : "N/A"),
                 new Font("serif", Font.BOLD, 22),
                 new Point(gamePanel.getWidth() + 100, 140), 300, 50);
-        gamePanel.setBestTimeLabel(bestTimeLabel);
 
         JLabel winConditionLabel = FrameUtil.createJLabel(this, "Exit: " + controller.exitLocation(),
                 new Font("serif", Font.BOLD, 22),
@@ -158,5 +160,4 @@ public class GameFrame extends JFrame {
         userData.loadGame();
         gamePanel.requestFocusInWindow();
     }
-
 }

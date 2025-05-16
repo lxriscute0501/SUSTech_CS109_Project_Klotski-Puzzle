@@ -4,9 +4,15 @@ import model.MapModel;
 import model.User;
 import view.FrameUtil;
 import view.game.GameFrame;
+import view.game.GamePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * The second frame, connecting LoginFrame && LevelFrame.
@@ -20,8 +26,9 @@ public class StartMenuFrame extends JFrame {
     private JButton loadBtn;
     private JButton exitBtn;
 
-    private final User user;
-    private final boolean isGuest;
+    private User user;
+    private boolean isGuest;
+    private GamePanel gamePanel;
 
     public StartMenuFrame(int width, int height, boolean isGuest, User user) {
         this.isGuest = isGuest;
@@ -44,22 +51,43 @@ public class StartMenuFrame extends JFrame {
 
         loadBtn = FrameUtil.createButton(this, "Load Game", new Point(200, 200), 200, 40);
         loadBtn.addActionListener(e -> {
-            // check whether data.txt exists
+            // check whether data.txt exists and is readable
             String filePath = "data/" + user.getUsername() + "/data.txt";
             File saveFile = new File(filePath);
 
             if (!saveFile.exists() || !saveFile.canRead()) {
-                JOptionPane.showMessageDialog(this, "Game can not load!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Game cannot load!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            MapModel mapModel = new MapModel(new int[4][5]);
-            GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
-            gameFrame.loadHistoryGame();
-            gameFrame.setVisible(true);
-            gameFrame.requestFocus();
-            this.setVisible(false);
+            List<String> lines = null;
+            try {
+                lines = Files.readAllLines(Path.of(filePath));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            try {
+                int[][] loadedMap = new int[4][5];
+                for (int row = 5; row < lines.size(); row++) {
+                    String[] values = lines.get(row).split(" ");
+                    for (int col = 0; col < values.length; col++) {
+                        loadedMap[row - 5][col] = Integer.parseInt(values[col]);
+                    }
+                }
+
+                MapModel mapModel = new MapModel(loadedMap);
+                GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
+                gameFrame.loadHistoryGame();
+                gameFrame.setVisible(true);
+                gameFrame.requestFocus();
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Failed to load game data.", "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
         });
+
 
         // disable load button for guest users
         if (isGuest) {

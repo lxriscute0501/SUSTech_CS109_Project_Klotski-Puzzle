@@ -19,6 +19,7 @@ import java.util.Random;
 public class LevelFrame extends JFrame {
     private final boolean isGuest;
     private final User user;
+    private int[][] exitLocations;
 
     public LevelFrame(int width, int height, boolean isGuest, User user) {
         this.isGuest = isGuest;
@@ -54,18 +55,18 @@ public class LevelFrame extends JFrame {
 
     private void startGameWithLevel(int difficulty) {
         int[][] mapData = generateMap(difficulty);
-        MapModel mapModel = new MapModel(mapData);
 
         String level = "";
         if (difficulty == 1) level = "Easy"; else if (difficulty == 2) level = "Medium"; else if (difficulty == 3) level = "Hard";
 
-        mapModel.setLevel(level);
+        MapModel model = new MapModel(mapData);
 
-        GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
+        model.setLevel(level);
+
+        GameFrame gameFrame = new GameFrame(900, 600, model, isGuest, user);
         gameFrame.startNewGame();
         gameFrame.setVisible(true);
         gameFrame.requestFocus();
-
         this.dispose();
     }
 
@@ -85,7 +86,8 @@ public class LevelFrame extends JFrame {
         if (mapCount == 0) return getDefaultMap();
 
         Random random = new Random();
-        int selectedMap = random.nextInt(mapCount) + 1;
+        int selectedMap = 1;
+        //  int selectedMap = random.nextInt(mapCount) + 1;
         String filePath = basePath + selectedMap + ".txt";
 
         return loadMapFromFile(filePath);
@@ -108,16 +110,14 @@ public class LevelFrame extends JFrame {
                 lines.add(line.trim());
             }
 
-            // default is medium level
             if (lines.isEmpty()) return getDefaultMap();
 
-            int rows = lines.size();
-            int cols = lines.get(0).split("\\s+").length;
-            int[][] map = new int[rows][cols];
+            boolean hasExits = lines.size() > 5;
+            int[][] map = new int[4][5];
 
-            for (int i = 0; i < rows; i++) {
+            for (int i = 0; i < 4 && i < lines.size(); i++) {
                 String[] values = lines.get(i).split("\\s+");
-                for (int j = 0; j < cols && j < values.length; j++) {
+                for (int j = 0; j < 5 && j < values.length; j++) {
                     try {
                         map[i][j] = Integer.parseInt(values[j]);
                     } catch (NumberFormatException e) {
@@ -125,11 +125,43 @@ public class LevelFrame extends JFrame {
                     }
                 }
             }
+
+            if (hasExits && lines.size() >= 9) {
+                int[][] exits = new int[4][2];
+                for (int i = 4; i < 8 && i < lines.size(); i++) {
+                    String[] coords = lines.get(i).split("\\s+");
+                    if (coords.length >= 2) {
+                        try {
+                            exits[i-5][0] = Integer.parseInt(coords[0]);
+                            exits[i-5][1] = Integer.parseInt(coords[1]);
+                        } catch (NumberFormatException e) {
+                            exits[i-5][0] = -1;
+                            exits[i-5][1] = -1;
+                        }
+                    }
+                }
+                this.exitLocations = exits;
+            } else {
+                this.exitLocations = new int[][]{{4, 3}};
+            }
+
             return map;
         } catch (Exception e) {
             System.err.println("Map loading failed: " + filePath + ", Error: " + e.getMessage());
             return getDefaultMap();
         }
+    }
+
+    public int[][] getExitLocations() {
+        return exitLocations;
+    }
+
+    public String exitLocationToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int[] exit : exitLocations) {
+            sb.append("(").append(exit[0]).append(",").append(exit[1]).append(") ");
+        }
+        return sb.toString().trim();
     }
 
     // defensive programming, if level resources have been changed, we can still load the default map

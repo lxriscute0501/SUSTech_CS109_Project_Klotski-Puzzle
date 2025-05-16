@@ -41,7 +41,7 @@ public class UserDataController {
         gameData.add(model.getLevel());
         gameData.add(String.valueOf(view.getSteps()));
         gameData.add(String.valueOf(controller.getActualTime()));
-        gameData.add(String.valueOf(currentUser.getBestMoveCount()));
+        gameData.add(String.valueOf(currentUser.getBestSteps()));
         gameData.add(String.valueOf(currentUser.getBestTime()));
 
         for (int[] line : saveMap) {
@@ -84,9 +84,10 @@ public class UserDataController {
 
             model.setLevel(level);
             view.updateLevelLabel(level);
-            view.updateBestTimeLabel(bestTime);
-            view.updateBestStepsLabel(bestSteps);
+            // view.updateBestTimeLabel(bestTime);
+            // view.updateBestStepsLabel(bestSteps);
             view.setSteps(savedStepCount);
+            view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
 
             int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
             for (int row = 5; row < lines.size(); row++) {
