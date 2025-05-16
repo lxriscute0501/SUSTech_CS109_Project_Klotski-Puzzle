@@ -64,6 +64,10 @@ public class User implements Serializable {
         return bestTime;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

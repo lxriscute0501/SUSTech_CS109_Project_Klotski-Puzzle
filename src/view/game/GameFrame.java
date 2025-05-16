@@ -36,7 +36,6 @@ public class GameFrame extends JFrame {
         this.isGuest = isGuest;
         this.map = mapModel;
         this.level = map.getLevel();
-        System.out.println("Level: " + this.level);
 
         // create the main game panel
         gamePanel = new GamePanel(mapModel);

@@ -52,6 +52,15 @@ public class UserDataController {
             gameData.add(sb.toString().trim());
         }
 
+        int[][] exitPositions = model.getExitPositions();
+        for (int i = 0; i < 4; i++) {
+            sb.setLength(0);
+            for (int j = 0; j < 2; j++) {
+                sb.append(exitPositions[i][j]).append(" ");
+            }
+            gameData.add(sb.toString().trim());
+        }
+
         String filePath = "data/" + currentUser.getUsername();
         File dir = new File(filePath);
         dir.mkdirs();
@@ -62,6 +71,8 @@ public class UserDataController {
         } catch (Exception e) {
             view.showErrorMessage("Game saved failed: " + e.getMessage());
         }
+
+        UserManager.saveUser(currentUser);
     }
 
     public void loadGame() {
@@ -71,7 +82,7 @@ public class UserDataController {
             List<String> lines = Files.readAllLines(Path.of(filePath));
             System.out.println("Loaded data: " + lines);
 
-            if (lines.size() < 5) {
+            if (lines.size() < 13) {
                 view.showErrorMessage("Save file is corrupted!");
                 return;
             }
@@ -79,24 +90,31 @@ public class UserDataController {
             String level = lines.get(0);
             int savedStepCount = Integer.parseInt(lines.get(1));
             long savedTimeLeft = 300 - Long.parseLong(lines.get(2));
-            int bestSteps = Integer.parseInt(lines.get(3));
-            long bestTime = Long.parseLong(lines.get(4));
 
             model.setLevel(level);
             view.updateLevelLabel(level);
-            // view.updateBestTimeLabel(bestTime);
-            // view.updateBestStepsLabel(bestSteps);
             view.setSteps(savedStepCount);
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
 
-            int[][] loadedMap = new int[model.getHeight()][model.getWidth()];
-            for (int row = 5; row < lines.size(); row++) {
-                String[] values = lines.get(row).split(" ");
-                for (int col = 0; col < values.length; col++) {
-                    loadedMap[row - 5][col] = Integer.parseInt(values[col]);
+            int[][] loadedMap = new int[4][5];
+            for (int i = 0; i < 4; i++)
+            {
+                String[] value1 = lines.get(5 + i).split(" ");
+                for (int j = 0; j < 5; j++) {
+                    loadedMap[i][j] = Integer.parseInt(value1[j]);
                 }
             }
 
+            int[][] exitPositions = new int[4][2];
+            for (int i = 0; i < 4; i++)
+            {
+                String[] value2 = lines.get(9 + i).split(" ");
+                for (int j = 0; j < 2; j++) {
+                    exitPositions[i][j] = Integer.parseInt(value2[j]);
+                }
+            }
+
+            model.setExitPositions(exitPositions);
             model.setMatrix(loadedMap);
             view.rebuildGameView(loadedMap);
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));

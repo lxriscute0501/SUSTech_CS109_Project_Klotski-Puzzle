@@ -59,8 +59,7 @@ public class LevelFrame extends JFrame {
         String level = "";
         if (difficulty == 1) level = "Easy"; else if (difficulty == 2) level = "Medium"; else if (difficulty == 3) level = "Hard";
 
-        MapModel model = new MapModel(mapData);
-
+        MapModel model = new MapModel(mapData, level, exitLocations);
         model.setLevel(level);
 
         GameFrame gameFrame = new GameFrame(900, 600, model, isGuest, user);
@@ -112,12 +111,14 @@ public class LevelFrame extends JFrame {
 
             if (lines.isEmpty()) return getDefaultMap();
 
-            boolean hasExits = lines.size() > 5;
+            boolean hasExits = lines.size() > 4;
             int[][] map = new int[4][5];
 
-            for (int i = 0; i < 4 && i < lines.size(); i++) {
+            for (int i = 0; i < 4 && i < lines.size(); i++)
+            {
                 String[] values = lines.get(i).split("\\s+");
-                for (int j = 0; j < 5 && j < values.length; j++) {
+                for (int j = 0; j < 5 && j < values.length; j++)
+                {
                     try {
                         map[i][j] = Integer.parseInt(values[j]);
                     } catch (NumberFormatException e) {
@@ -126,23 +127,21 @@ public class LevelFrame extends JFrame {
                 }
             }
 
-            if (hasExits && lines.size() >= 9) {
+            if (hasExits && lines.size() >= 8) {
                 int[][] exits = new int[4][2];
-                for (int i = 4; i < 8 && i < lines.size(); i++) {
-                    String[] coords = lines.get(i).split("\\s+");
-                    if (coords.length >= 2) {
+                for (int i = 4; i < 8; i++) {
+                    String[] coord = lines.get(i).split("\\s+");
+                    if (coord.length >= 2) {
                         try {
-                            exits[i-5][0] = Integer.parseInt(coords[0]);
-                            exits[i-5][1] = Integer.parseInt(coords[1]);
+                            exits[i-4][0] = Integer.parseInt(coord[0]);
+                            exits[i-4][1] = Integer.parseInt(coord[1]);
                         } catch (NumberFormatException e) {
-                            exits[i-5][0] = -1;
-                            exits[i-5][1] = -1;
+                            exits[i-4][0] = -1;
+                            exits[i-4][1] = -1;
                         }
                     }
                 }
                 this.exitLocations = exits;
-            } else {
-                this.exitLocations = new int[][]{{4, 3}};
             }
 
             return map;
@@ -166,7 +165,6 @@ public class LevelFrame extends JFrame {
 
     // defensive programming, if level resources have been changed, we can still load the default map
     private int[][] getDefaultMap() {
-        int[][] mapDefault = new int[4][5];
-        return mapDefault;
+        return new int[4][5];
     }
 }

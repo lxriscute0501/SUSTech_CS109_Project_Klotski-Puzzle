@@ -28,11 +28,7 @@ public class GamePanel extends ListenerPanel {
 
     private JLabel timeLabel;
     private JLabel stepLabel;
-    private JLabel bestTimeLabel;
-    private JLabel bestStepsLabel;
     private JLabel levelLabel;
-    private long bestTime;
-    private int bestSteps;
     private int steps;
 
     private final int GRID_SIZE = 50;
@@ -43,11 +39,16 @@ public class GamePanel extends ListenerPanel {
         this.setFocusable(true);
         this.setLayout(null);
         this.setSize(model.getWidth() * GRID_SIZE + 4, model.getHeight() * GRID_SIZE + 4);
+
         this.model = model;
         this.selectedBox = null;
         initializeGame();
 
-        // Set focusable to ensure keyboard events work
+        levelLabel = new JLabel("Level: ");
+        levelLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        levelLabel.setBounds(100, 10, 200, 30);
+        this.add(levelLabel);
+
         this.setFocusable(true);
         this.requestFocusInWindow();
     }
@@ -235,10 +236,6 @@ public class GamePanel extends ListenerPanel {
         this.userData = userData;
     }
 
-    public BoxComponent getSelectedBox() {
-        return selectedBox;
-    }
-
     public int getGRID_SIZE() {
         return GRID_SIZE;
     }
@@ -295,9 +292,7 @@ public class GamePanel extends ListenerPanel {
 
 
     public void updateLevelLabel(String level) {
-        if (levelLabel != null) {
-            levelLabel.setText("Level: " + level);
-        }
+        levelLabel.setText("Level: " + level);
     }
 
     public void showVictoryMessage(int stepCount, String timeUsed) {

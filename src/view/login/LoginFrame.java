@@ -1,5 +1,6 @@
 package view.login;
 
+import controller.UserManager;
 import model.User;
 import view.FrameUtil;
 import view.game.GameFrame;
@@ -55,14 +56,9 @@ public class LoginFrame extends JFrame {
             String inputUsername = username.getText();
             String inputPassword = new String(password.getPassword());
 
-            System.out.println("Username: " + inputUsername);
-            System.out.println("Password: " + inputPassword);
-
-            // verify username and password
-            String storedPassword = userProperty.getProperty(inputUsername);
-            if (inputPassword.equals(storedPassword)) {
-                User newUser = new User(inputUsername, inputPassword);
-                enterStartMenuFrame(newUser, false);
+            User user = UserManager.loadUser(inputUsername, inputPassword);
+            if (user != null) {
+                enterStartMenuFrame(user, false);
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Invalid username or password!",
@@ -70,6 +66,7 @@ public class LoginFrame extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
             }
         });
+
 
         resetBtn.addActionListener(e -> {
             ResetFrame resetFrame = new ResetFrame(this);

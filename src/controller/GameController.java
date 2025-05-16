@@ -18,8 +18,7 @@ public class GameController {
     private final GamePanel view;
     private final MapModel model;
 
-    private final int winx = 0;
-    private final int winy = 0;
+    private int[][] exit;
 
     private int selectedRow = -1;
     private int selectedCol = -1;
@@ -40,6 +39,7 @@ public class GameController {
         this.currentUser = user;
         this.view.setController(this);
         this.userDataController = new UserDataController(this, view, model, user);
+        this.exit = model.getExitPositions();
 
         startGameTimer();
         userDataController.setupAutoSave(1);
@@ -190,12 +190,10 @@ public class GameController {
 
     public void checkWinCondition() {
         boolean win = true;
-        for (int r = 0; r <= 1; r++) {
-            for (int c = 0; c <= 1; c++) {
-                if (model.getId(winx + r, winy + c) != 1) {
-                    win = false;
-                    break;
-                }
+        for (int i = 0; i <= 3; i++) {
+            if (model.getId(exit[i][0], exit[i][1]) != 1) {
+                win = false;
+                break;
             }
         }
 
@@ -236,12 +234,10 @@ public class GameController {
     }
 
     public String exitLocation() {
-        int winx1 = winx, winx2 = winx + 1;
-        int winy1 = winy, winy2 = winy + 1;
-        return String.format("(" + winx1 + ", " + winy1 + ") "
-                + "(" + winx2 + ", " + winy1 + ") "
-                + "(" + winx1 + ", " + winy2 + ") "
-                + "(" + winx2 + ", " + winy2 + ")");
+        return String.format("(" + exit[0][0] + ", " + exit[0][1] + ") "
+                + "(" + exit[1][0] + ", " + exit[1][1] + ") "
+                + "(" + exit[2][0] + ", " + exit[2][1] + ") "
+                + "(" + exit[3][0] + ", " + exit[3][1] + ")");
     }
 
 

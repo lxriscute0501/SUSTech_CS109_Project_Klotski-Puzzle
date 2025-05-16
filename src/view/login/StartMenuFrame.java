@@ -4,7 +4,6 @@ import model.MapModel;
 import model.User;
 import view.FrameUtil;
 import view.game.GameFrame;
-import view.game.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +27,6 @@ public class StartMenuFrame extends JFrame {
 
     private User user;
     private boolean isGuest;
-    private GamePanel gamePanel;
 
     public StartMenuFrame(int width, int height, boolean isGuest, User user) {
         this.isGuest = isGuest;
@@ -68,15 +66,27 @@ public class StartMenuFrame extends JFrame {
             }
 
             try {
+                String level = lines.getFirst();
+
                 int[][] loadedMap = new int[4][5];
-                for (int row = 5; row < lines.size(); row++) {
-                    String[] values = lines.get(row).split(" ");
-                    for (int col = 0; col < values.length; col++) {
-                        loadedMap[row - 5][col] = Integer.parseInt(values[col]);
+                for (int i = 0; i < 4; i++)
+                {
+                    String[] value1 = lines.get(5 + i).split(" ");
+                    for (int j = 0; j < 5; j++) {
+                        loadedMap[i][j] = Integer.parseInt(value1[j]);
                     }
                 }
 
-                MapModel mapModel = new MapModel(loadedMap);
+                int[][] exit = new int[4][2];
+                for (int i = 0; i < 4; i++)
+                {
+                    String[] value2 = lines.get(9 + i).split(" ");
+                    for (int j = 0; j < 2; j++) {
+                        exit[i][j] = Integer.parseInt(value2[j]);
+                    }
+                }
+
+                MapModel mapModel = new MapModel(loadedMap, level, exit);
                 GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
                 gameFrame.loadHistoryGame();
                 gameFrame.setVisible(true);
@@ -84,10 +94,8 @@ public class StartMenuFrame extends JFrame {
                 this.dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Failed to load game data.", "Error", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
             }
         });
-
 
         // disable load button for guest users
         if (isGuest) {

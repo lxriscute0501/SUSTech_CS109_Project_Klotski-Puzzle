@@ -1,4 +1,3 @@
-
 import view.login.LoginFrame;
 import javax.swing.*;
 

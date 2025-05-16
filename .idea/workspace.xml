@@ -4,28 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update">
-      <change afterPath="$PROJECT_DIR$/resources/levels/easy/2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/easy/3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/easy/4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/easy/5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/hard/1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/hard/2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/hard/3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/hard/4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/hard/5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/medium/1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/medium/2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/medium/3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/medium/4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/levels/medium/5.txt" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Load game was fixed, but still need to re-construct.">
+      <change afterPath="$PROJECT_DIR$/src/controller/UserManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/levels/easy/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/levels/easy/1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
@@ -219,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746957331725</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Load game was fixed, but still need to re-construct.">
+      <option name="closed" value="true" />
+      <created>1747398056077</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1747398056077</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -258,6 +253,7 @@
     <MESSAGE value="[FEAT] Add level choosing feature, but resources need to be added." />
     <MESSAGE value="[UPDATE] add levels in saveGame and loadGame" />
     <MESSAGE value="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update" />
+    <MESSAGE value="Load game was fixed, but still need to re-construct." />
+    <option name="LAST_COMMIT_MESSAGE" value="Load game was fixed, but still need to re-construct." />
   </component>
 </project>
