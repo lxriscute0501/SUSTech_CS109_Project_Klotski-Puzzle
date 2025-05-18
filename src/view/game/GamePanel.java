@@ -44,11 +44,6 @@ public class GamePanel extends ListenerPanel {
         this.selectedBox = null;
         initializeGame();
 
-        levelLabel = new JLabel("Level: ");
-        levelLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        levelLabel.setBounds(100, 10, 200, 30);
-        this.add(levelLabel);
-
         this.setFocusable(true);
         this.requestFocusInWindow();
     }
@@ -58,33 +53,27 @@ public class GamePanel extends ListenerPanel {
         this.removeAll();
         boxes.clear();
 
-        //copy a map
         int[][] map = new int[model.getHeight()][model.getWidth()];
         for (int i = 0; i < map.length; i++)
             for (int j = 0; j < map[0].length; j++)
                 map[i][j] = model.getId(i, j);
 
-        //build component
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 BoxComponent box = null;
                 if (map[i][j] == 1) {
-                    // CaoCao: 2 * 2
                     box = new BoxComponent(Color.GREEN, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
                     map[i][j] = 0; map[i + 1][j] = 0; map[i][j + 1] = 0; map[i + 1][j + 1] = 0;
                 } else if (map[i][j] == 2) {
-                    // GuanYu: 2 * 1
                     box = new BoxComponent(Color.PINK, i, j);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
                     map[i][j] = 0; map[i + 1][j] = 0;
                 } else if (map[i][j] == 3) {
-                    // General: 1 * 2
                     box = new BoxComponent(Color.BLUE, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     map[i][j] = 0; map[i][j + 1] = 0;
                 } else if (map[i][j] == 4) {
-                    // Soldier: 1 * 1
                     box = new BoxComponent(Color.ORANGE, i, j);
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     map[i][j] = 0;
@@ -123,7 +112,6 @@ public class GamePanel extends ListenerPanel {
                 System.out.println(direction);
                 afterMove();
                 repaint();
-                userData.saveGame(true);
                 controller.checkWinCondition();
             }
         }
@@ -132,7 +120,9 @@ public class GamePanel extends ListenerPanel {
     public void afterMove() {
         this.steps ++;
         updateStepLabel();
-        triggerStepEvent();
+        for (ActionListener listener : stepListeners) {
+            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
+        }
     }
 
     private void updateBoxPositions() {
@@ -140,12 +130,6 @@ public class GamePanel extends ListenerPanel {
             box.setLocation(box.getCol() * GRID_SIZE + 2, box.getRow() * GRID_SIZE + 2);
         }
         this.repaint();
-    }
-
-    private void triggerStepEvent() {
-        for (ActionListener listener : stepListeners) {
-            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "step"));
-        }
     }
 
     public void rebuildGameView(int[][] mapData) {
@@ -156,23 +140,19 @@ public class GamePanel extends ListenerPanel {
             for (int j = 0; j < mapData[0].length; j++) {
                 BoxComponent box = null;
                 if (mapData[i][j] == 1) {
-                    // CaoCao: 2 * 2
                     box = new BoxComponent(Color.GREEN, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
                     mapData[i][j] = 0; mapData[i + 1][j] = 0;
                     mapData[i][j + 1] = 0; mapData[i + 1][j + 1] = 0;
                 } else if (mapData[i][j] == 2) {
-                    // GuanYu: 2 * 1
                     box = new BoxComponent(Color.PINK, i, j);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
                     mapData[i][j] = 0; mapData[i + 1][j] = 0;
                 } else if (mapData[i][j] == 3) {
-                    // General: 1 * 2
                     box = new BoxComponent(Color.BLUE, i, j);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     mapData[i][j] = 0; mapData[i][j + 1] = 0;
                 } else if (mapData[i][j] == 4) {
-                    // Soldier: 1 * 1
                     box = new BoxComponent(Color.ORANGE, i, j);
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     mapData[i][j] = 0;
@@ -201,8 +181,8 @@ public class GamePanel extends ListenerPanel {
             steps--;
             updateStepLabel();
             updateBoxPositions();
-            userData.saveGame(true);
-            if (selectedBox != null) selectedBox.setSelected(true);
+            clearSelection();
+            selectedBox = null;
         }
 
         return success;
@@ -236,9 +216,7 @@ public class GamePanel extends ListenerPanel {
         this.userData = userData;
     }
 
-    public int getGRID_SIZE() {
-        return GRID_SIZE;
-    }
+    public int getGRID_SIZE() { return GRID_SIZE; }
 
     public void highlightSelectedBox(int row, int col) {
         clearSelection();
@@ -270,26 +248,9 @@ public class GamePanel extends ListenerPanel {
         return null;
     }
 
-    public void updateTimeDisplay(long totalSeconds, boolean isCountdown) {
-        if (timeLabel != null) {
-            long minutes = totalSeconds / 60;
-            long seconds = totalSeconds % 60;
-            String prefix = isCountdown ? "Time Left: " : "Time: ";
-            timeLabel.setText(String.format("%s%02d:%02d", prefix, minutes, seconds));
-        }
-    }
-
-    public void showTimeUpMessage() {
-        JOptionPane.showMessageDialog(this,
-                "Time's up! Game over.",
-                "Time Expired",
-                JOptionPane.WARNING_MESSAGE);
-    }
-
     public void setTimeLabelString(String label) {
         this.timeLabel.setText(label);
     }
-
 
     public void updateLevelLabel(String level) {
         levelLabel.setText("Level: " + level);

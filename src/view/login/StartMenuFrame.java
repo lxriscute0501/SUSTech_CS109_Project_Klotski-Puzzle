@@ -77,16 +77,7 @@ public class StartMenuFrame extends JFrame {
                     }
                 }
 
-                int[][] exit = new int[4][2];
-                for (int i = 0; i < 4; i++)
-                {
-                    String[] value2 = lines.get(9 + i).split(" ");
-                    for (int j = 0; j < 2; j++) {
-                        exit[i][j] = Integer.parseInt(value2[j]);
-                    }
-                }
-
-                MapModel mapModel = new MapModel(loadedMap, level, exit);
+                MapModel mapModel = new MapModel(loadedMap, level);
                 GameFrame gameFrame = new GameFrame(900, 600, mapModel, isGuest, user);
                 gameFrame.loadHistoryGame();
                 gameFrame.setVisible(true);

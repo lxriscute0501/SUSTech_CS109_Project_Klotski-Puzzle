@@ -52,15 +52,6 @@ public class UserDataController {
             gameData.add(sb.toString().trim());
         }
 
-        int[][] exitPositions = model.getExitPositions();
-        for (int i = 0; i < 4; i++) {
-            sb.setLength(0);
-            for (int j = 0; j < 2; j++) {
-                sb.append(exitPositions[i][j]).append(" ");
-            }
-            gameData.add(sb.toString().trim());
-        }
-
         String filePath = "data/" + currentUser.getUsername();
         File dir = new File(filePath);
         dir.mkdirs();
@@ -82,7 +73,7 @@ public class UserDataController {
             List<String> lines = Files.readAllLines(Path.of(filePath));
             System.out.println("Loaded data: " + lines);
 
-            if (lines.size() < 13) {
+            if (lines.size() < 9) {
                 view.showErrorMessage("Save file is corrupted!");
                 return;
             }
@@ -105,16 +96,6 @@ public class UserDataController {
                 }
             }
 
-            int[][] exitPositions = new int[4][2];
-            for (int i = 0; i < 4; i++)
-            {
-                String[] value2 = lines.get(9 + i).split(" ");
-                for (int j = 0; j < 2; j++) {
-                    exitPositions[i][j] = Integer.parseInt(value2[j]);
-                }
-            }
-
-            model.setExitPositions(exitPositions);
             model.setMatrix(loadedMap);
             view.rebuildGameView(loadedMap);
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));

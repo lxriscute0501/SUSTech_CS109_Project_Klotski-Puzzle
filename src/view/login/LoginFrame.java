@@ -24,7 +24,6 @@ public class LoginFrame extends JFrame {
     private JButton guestBtn;
 
     private StartMenuFrame startMenuFrame;
-    private GameFrame gameFrame;
 
     private static final String CONFIG_FILE = "user.config";
     private Properties userProperty = new Properties();
@@ -33,7 +32,6 @@ public class LoginFrame extends JFrame {
         this.setTitle("Login Frame");
         this.setLayout(null);
         this.setSize(width, height);
-        this.gameFrame = gameFrame;
 
         // load username && password
         loadUserConfig();

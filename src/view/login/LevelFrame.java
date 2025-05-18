@@ -19,7 +19,6 @@ import java.util.Random;
 public class LevelFrame extends JFrame {
     private final boolean isGuest;
     private final User user;
-    private int[][] exitLocations;
 
     public LevelFrame(int width, int height, boolean isGuest, User user) {
         this.isGuest = isGuest;
@@ -59,7 +58,7 @@ public class LevelFrame extends JFrame {
         String level = "";
         if (difficulty == 1) level = "Easy"; else if (difficulty == 2) level = "Medium"; else if (difficulty == 3) level = "Hard";
 
-        MapModel model = new MapModel(mapData, level, exitLocations);
+        MapModel model = new MapModel(mapData, level);
         model.setLevel(level);
 
         GameFrame gameFrame = new GameFrame(900, 600, model, isGuest, user);
@@ -85,8 +84,7 @@ public class LevelFrame extends JFrame {
         if (mapCount == 0) return getDefaultMap();
 
         Random random = new Random();
-        int selectedMap = 1;
-        //  int selectedMap = random.nextInt(mapCount) + 1;
+        int selectedMap = random.nextInt(mapCount) + 1;
         String filePath = basePath + selectedMap + ".txt";
 
         return loadMapFromFile(filePath);
@@ -127,40 +125,11 @@ public class LevelFrame extends JFrame {
                 }
             }
 
-            if (hasExits && lines.size() >= 8) {
-                int[][] exits = new int[4][2];
-                for (int i = 4; i < 8; i++) {
-                    String[] coord = lines.get(i).split("\\s+");
-                    if (coord.length >= 2) {
-                        try {
-                            exits[i-4][0] = Integer.parseInt(coord[0]);
-                            exits[i-4][1] = Integer.parseInt(coord[1]);
-                        } catch (NumberFormatException e) {
-                            exits[i-4][0] = -1;
-                            exits[i-4][1] = -1;
-                        }
-                    }
-                }
-                this.exitLocations = exits;
-            }
-
             return map;
         } catch (Exception e) {
             System.err.println("Map loading failed: " + filePath + ", Error: " + e.getMessage());
             return getDefaultMap();
         }
-    }
-
-    public int[][] getExitLocations() {
-        return exitLocations;
-    }
-
-    public String exitLocationToString() {
-        StringBuilder sb = new StringBuilder();
-        for (int[] exit : exitLocations) {
-            sb.append("(").append(exit[0]).append(",").append(exit[1]).append(") ");
-        }
-        return sb.toString().trim();
     }
 
     // defensive programming, if level resources have been changed, we can still load the default map

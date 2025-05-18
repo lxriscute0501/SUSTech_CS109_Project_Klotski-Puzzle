@@ -18,8 +18,8 @@ public class GameController {
     private final GamePanel view;
     private final MapModel model;
 
-    private int[][] exit;
-
+    private final int winx = 1;
+    private final int winy = 3;
     private int selectedRow = -1;
     private int selectedCol = -1;
     private User currentUser;
@@ -39,7 +39,6 @@ public class GameController {
         this.currentUser = user;
         this.view.setController(this);
         this.userDataController = new UserDataController(this, view, model, user);
-        this.exit = model.getExitPositions();
 
         startGameTimer();
         userDataController.setupAutoSave(1);
@@ -56,48 +55,39 @@ public class GameController {
         if (!isMoveValid(blockId, row, col, toRow, toCol)) return false;
 
         moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol));
-
         updateModelPosition(blockId, row, col, toRow, toCol);
         updateViewPosition(row, col, toRow, toCol);
-
         return true;
     }
 
-        /**
-        * check the move validity : boundary detection && collision detection
-        */
         private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
-            // boundary
             if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
 
-            // collision
             switch (blockId) {
-                case 1: // CaoCao (2x2)
+                case 1:
                     return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 2);
-                case 2: // GuanYu (2x1)
+                case 2:
                     return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 2, 1);
-                case 3: // General (1x2)
+                case 3:
                     return checkLargeBlockMove(fromRow, fromCol, toRow, toCol, 1, 2);
-                default: // solider (1x1)
+                default:
                     return model.getId(toRow, toCol) == 0;
             }
         }
 
         private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
-            // Check all cells the block would occupy
-            for (int r = 0; r < height; r++) {
-                for (int c = 0; c < width; c++) {
+            for (int r = 0; r < height; r++)
+            {
+                for (int c = 0; c < width; c++)
+                {
                     int checkRow = toRow + r;
                     int checkCol = toCol + c;
 
-                    // Check boundaries
                     if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
 
-                    // Check if this is part of the original block position
                     boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
                         (checkCol >= fromCol && checkCol < fromCol + width);
 
-                    // If not original position and not empty, can't move here
                     if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
                 }
             }
@@ -106,17 +96,13 @@ public class GameController {
 
 
     public boolean undoMove() {
-
         if (moveHistory.isEmpty()) {
             System.out.println("Can not undo!");
             return false;
         }
 
         MoveRecord lastMove = moveHistory.pop();
-
-        // move in the opposite direction
-        model.getMatrix()[lastMove.toRow()][lastMove.toCol()] = 0;
-        model.getMatrix()[lastMove.fromRow()][lastMove.fromCol()] = lastMove.blockId();
+        updateModelPosition(lastMove.blockId(), lastMove.toRow(), lastMove.toCol(), lastMove.fromRow(), lastMove.fromCol());
 
         // update box vision
         BoxComponent box = view.getBoxAt(lastMove.toRow(), lastMove.toCol());
@@ -134,14 +120,13 @@ public class GameController {
         selectedRow = lastMove.fromRow();
         selectedCol = lastMove.fromCol();
         view.highlightSelectedBox(selectedRow, selectedCol);
-
         return true;
     }
 
     private void updateModelPosition(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
         model.getMatrix()[fromRow][fromCol] = 0;
 
-        // for large blocks, their Id is according to the up-left
+        // for large blocks, each id is according to the up-left
         switch (blockId) {
             case 1:
                 model.getMatrix()[fromRow + 1][fromCol] = 0;
@@ -174,28 +159,58 @@ public class GameController {
     private void updateViewPosition(int fromRow, int fromCol, int toRow, int toCol) {
         BoxComponent box = view.getBoxAt(fromRow, fromCol);
         if (box != null) {
-            box.setRow(toRow);
-            box.setCol(toCol);
-            box.setLocation(
-                    box.getCol() * view.getGRID_SIZE() + 2,
-                    box.getRow() * view.getGRID_SIZE() + 2
-            );
+            moveWithAnimation(fromRow, fromCol, toRow, toCol, box);
+        }
+    }
+
+    public void moveWithAnimation(int fromRow, int fromCol, int toRow, int toCol, BoxComponent box) {
+        final int startX = fromCol * view.getGRID_SIZE() + 2;
+        final int startY = fromRow * view.getGRID_SIZE() + 2;
+        final int targetX = toCol * view.getGRID_SIZE() + 2;
+        final int targetY = toRow * view.getGRID_SIZE() + 2;
+        final int duration = 200;
+        final long startTime = System.currentTimeMillis();
+
+        Timer timer = new Timer(16, e -> {
+            long elapsed = System.currentTimeMillis() - startTime;
+            float progress = Math.min(1.0f, (float) elapsed / duration);
+            float easedProgress = easeOutQuad(progress);
+
+            int currentX = (int) (startX + (targetX - startX) * easedProgress);
+            int currentY = (int) (startY + (targetY - startY) * easedProgress);
+
+            box.setLocation(currentX, currentY);
             box.repaint();
 
-            selectedRow = toRow;
-            selectedCol = toCol;
-            view.highlightSelectedBox(toRow, toCol);
-        }
+            if (progress >= 1.0f) {
+                ((Timer) e.getSource()).stop();
+                box.setRow(toRow);
+                box.setCol(toCol);
+                selectedRow = toRow;
+                selectedCol = toCol;
+                view.highlightSelectedBox(toRow, toCol);
+                view.repaint();
+            }
+        });
+
+        timer.setInitialDelay(0);
+        timer.start();
+    }
+
+    private float easeOutQuad(float t) {
+        return t * (2 - t);
     }
 
     public void checkWinCondition() {
         boolean win = true;
-        for (int i = 0; i <= 3; i++) {
-            if (model.getId(exit[i][0], exit[i][1]) != 1) {
-                win = false;
-                break;
+        for (int i = 0; i <= 1; i++)
+            for (int j = 0; j <= 1; j++)
+            {
+                if (model.getId(winx + i, winy + j) != 1) {
+                    win = false;
+                    break;
+                }
             }
-        }
 
         if (win) {
             stopGameTimer();
@@ -233,14 +248,6 @@ public class GameController {
         if (currentUser != null && !currentUser.isGuest()) userDataController.saveGame(true);
     }
 
-    public String exitLocation() {
-        return String.format("(" + exit[0][0] + ", " + exit[0][1] + ") "
-                + "(" + exit[1][0] + ", " + exit[1][1] + ") "
-                + "(" + exit[2][0] + ", " + exit[2][1] + ") "
-                + "(" + exit[3][0] + ", " + exit[3][1] + ")");
-    }
-
-
     private void startGameTimer() {
         startTime = System.currentTimeMillis();
 
@@ -269,26 +276,6 @@ public class GameController {
         if (gameTimer != null && gameTimer.isRunning()) {
             gameTimer.stop();
         }
-    }
-
-    private void restartGameTimer(long remainingSeconds) {
-        stopGameTimer();
-
-        startTime = System.currentTimeMillis() - (GAME_DURATION - remainingSeconds * 1000);
-
-        gameTimer = new Timer(1000, e -> {
-            long timeLeft = getTimeLeft();
-            if (timeLeft <= 0) {
-                stopGameTimer();
-                view.setTimeLabelString("Time Left: 00:00");
-                view.showErrorMessage("Time's up! Game Over.");
-                // view.setGameOverState(); // 禁用控制
-                return;
-            }
-            view.setTimeLabelString("Time Left: " + formatTime(timeLeft));
-        });
-
-        gameTimer.start();
     }
 
     public long getActualTime() {

@@ -10,13 +10,11 @@ public class MapModel {
     private final int width = 5;
     private final int height = 4;
     private String level;
-    private int[][] exitPositions;
 
-    public MapModel(int[][] matrix, String level, int[][] exit) {
+    public MapModel(int[][] matrix, String level) {
         this.matrix = matrix;
         this.initialMatrix = matrix;
         this.level = level;
-        this.exitPositions = exit;
     }
 
     public void setMatrix(int[][] newMatrix) {
@@ -33,18 +31,6 @@ public class MapModel {
         for (int i = 0; i < height; i++) {
             System.arraycopy(initialMatrix[i], 0, matrix[i], 0, width);
         }
-    }
-
-    public int[][] getExitPositions() {
-        return exitPositions;
-    }
-
-    public void setExitPositions(int[][] exitPositions) {
-        this.exitPositions = exitPositions;
-    }
-
-    public void setId(int row, int col, int id) {
-        matrix[row][col] = id;
     }
 
     public int getId(int row, int col) {
