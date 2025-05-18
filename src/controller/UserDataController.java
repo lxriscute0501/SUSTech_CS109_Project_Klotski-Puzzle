@@ -83,7 +83,6 @@ public class UserDataController {
             long savedTimeLeft = 300 - Long.parseLong(lines.get(2));
 
             model.setLevel(level);
-            view.updateLevelLabel(level);
             view.setSteps(savedStepCount);
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
 

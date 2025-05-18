@@ -198,7 +198,9 @@ public class GamePanel extends ListenerPanel {
     }
 
     private void updateStepLabel() {
-        if (stepLabel != null) stepLabel.setText(String.format("Steps: %d", this.steps));
+        if (stepLabel != null) {
+            stepLabel.setText(String.format("Steps: %d", this.steps));
+        }
     }
 
     public void setSteps(int steps) {
@@ -250,10 +252,6 @@ public class GamePanel extends ListenerPanel {
 
     public void setTimeLabelString(String label) {
         this.timeLabel.setText(label);
-    }
-
-    public void updateLevelLabel(String level) {
-        levelLabel.setText("Level: " + level);
     }
 
     public void showVictoryMessage(int stepCount, String timeUsed) {
