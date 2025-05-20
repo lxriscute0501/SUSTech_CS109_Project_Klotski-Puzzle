@@ -59,7 +59,7 @@ Klotski Puzzle
 ## Features List
 
 - **Login and game-start frames**
-    - [x] User login
+    - [ ] User login
     - [x] Reset password for users
     - [x] Forbid guests to save game
     - [x] User data will be saved after exit
@@ -86,7 +86,6 @@ Klotski Puzzle
     - [x] Load game available at game-start frame
     - [x] Timed auto-save (1 min)
     - [x] Auto-save on exit
-    - [x] [add] Auto-save for each step
     - [ ] Save file error handling
 
 - **Advanced features**
