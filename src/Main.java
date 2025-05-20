@@ -1,3 +1,4 @@
+import model.BackgroundMusic;
 import view.login.LoginFrame;
 import javax.swing.*;
 
@@ -6,6 +7,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame(600,400);
             loginFrame.setVisible(true);
+            new BackgroundMusic().playMusic("resources/sound/bgm.wav");
         });
     }
 }
