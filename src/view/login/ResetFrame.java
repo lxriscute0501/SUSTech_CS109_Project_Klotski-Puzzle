@@ -1,7 +1,9 @@
 package view.login;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Properties;
+import javax.swing.text.JTextComponent;
 
 /**
  * Reset the password of one user, including username, old password, new password, confirm new password.
@@ -18,6 +20,7 @@ public class ResetFrame extends JFrame {
 
     private LoginFrame parentFrame;
 
+
     public ResetFrame(LoginFrame parentFrame) {
         this.parentFrame = parentFrame;
         this.setTitle("Reset Password");
@@ -30,6 +33,7 @@ public class ResetFrame extends JFrame {
 
         usernameField = new JTextField();
         usernameField.setBounds(200, 30, 150, 30);
+        RegisterFrame.styleInputField(usernameField);
         this.add(usernameField);
 
         JLabel oldPasswordLabel = new JLabel("Old Password:");
@@ -38,6 +42,7 @@ public class ResetFrame extends JFrame {
 
         oldPasswordField = new JPasswordField();
         oldPasswordField.setBounds(200, 70, 150, 30);
+        RegisterFrame.styleInputField(oldPasswordField);
         this.add(oldPasswordField);
 
         JLabel newPasswordLabel = new JLabel("New Password:");
@@ -46,6 +51,7 @@ public class ResetFrame extends JFrame {
 
         newPasswordField = new JPasswordField();
         newPasswordField.setBounds(200, 110, 150, 30);
+        RegisterFrame.styleInputField(newPasswordField);
         this.add(newPasswordField);
 
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
@@ -54,24 +60,29 @@ public class ResetFrame extends JFrame {
 
         confirmPasswordField = new JPasswordField();
         confirmPasswordField.setBounds(200, 150, 150, 30);
+        RegisterFrame.styleInputField(confirmPasswordField); //
         this.add(confirmPasswordField);
 
-        submitBtn = new JButton("Submit");
-        submitBtn.setBounds(80, 200, 100, 30);
+
+        submitBtn = createImageButton("/Buttons/submit.png", "Submit");
+        submitBtn.setBounds(80, 200, 120, 60); // Adjust if needed
         submitBtn.addActionListener(e -> handlePasswordReset());
         this.add(submitBtn);
 
-        cancelBtn = new JButton("Cancel");
-        cancelBtn.setBounds(220, 200, 100, 30);
+        cancelBtn = createImageButton("/Buttons/cancel.png", "Cancel");
+        cancelBtn.setBounds(220, 200, 120, 60);
         cancelBtn.addActionListener(e -> this.dispose());
         this.add(cancelBtn);
 
+
         this.setLocationRelativeTo(parentFrame);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+
     }
 
     /** 3 cases:
-     * 1. empty fields
+     * 1.txt. empty fields
      * 2. new password != confirm password
      * 3. wrong username or old password
      * Note. old password = new password is allowed
@@ -83,20 +94,15 @@ public class ResetFrame extends JFrame {
         String confirmPassword = new String(confirmPasswordField.getPassword());
 
         if (username.isEmpty() || oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "All fields must be filled!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("All fields must be filled!", "Error", "/Buttons/back.png");
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(this,
-                    "New passwords do not match!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("New passwords do not match!", "Error", "/Buttons/back.png");
             return;
         }
+
 
         Properties userProperty = parentFrame.getUserProperty();
         String storedPassword = userProperty.getProperty(username);
@@ -119,5 +125,57 @@ public class ResetFrame extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
 
         this.dispose();
+
+
     }
+    private JButton createImageButton(String resourcePath, String toolTipText) {
+        java.net.URL imageUrl = getClass().getResource(resourcePath);
+        if (imageUrl == null) {
+            System.err.println("Could not load image at: " + resourcePath);
+            JButton fallback = new JButton(toolTipText);
+            fallback.setToolTipText(toolTipText);
+            fallback.setPreferredSize(new Dimension(100, 50));
+            return fallback;
+        }
+
+        int width = 120;
+        int height = 60;
+
+        ImageIcon originalIcon = new ImageIcon(imageUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JButton button = new JButton(scaledIcon);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setToolTipText(toolTipText);
+        return button;
+    }
+
+    private void showErrorDialog(String message, String title, String buttonImagePath) {
+        JDialog dialog = new JDialog(this, title, true);
+        dialog.setLayout(new BorderLayout(10, 10));
+
+        JLabel messageLabel = new JLabel("<html><body style='text-align:center;'>" + message.replace("\n", "<br>") + "</body></html>", SwingConstants.CENTER);
+        messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+        dialog.add(messageLabel, BorderLayout.CENTER);
+
+        JButton backButton = createImageButton(buttonImagePath, "Back");
+        backButton.addActionListener(e -> dialog.dispose());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        buttonPanel.add(backButton);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
+
+
 }

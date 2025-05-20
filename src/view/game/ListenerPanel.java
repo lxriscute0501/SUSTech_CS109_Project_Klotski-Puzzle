@@ -1,12 +1,9 @@
 package view.game;
 
-import model.SoundEffect;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.rmi.server.ExportException;
 
 
 public abstract class ListenerPanel extends JPanel {

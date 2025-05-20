@@ -1,8 +1,6 @@
 package controller;
 
-import model.Direction;
-import model.MapModel;
-import model.User;
+import model.*;
 import view.game.BoxComponent;
 import view.game.GamePanel;
 
@@ -217,6 +215,7 @@ public class GameController {
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
             view.showVictoryMessage(view.getSteps(), timeString);
+            new SoundEffect().playEffect("sound/win.mp3");
 
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());

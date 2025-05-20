@@ -1,45 +1,56 @@
 package controller;
 
 import model.User;
-import java.io.IOException;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 /**
- * Manages user authentication using user.config file
+ * Manages user data: load, save, and cache current user.
  */
 public class UserManager {
     private static final String DATA_FOLDER = "data";
-    private static final String CONFIG_FILE = "user.config";
+    private static final String USER_DATA_FILE = "user_data.ser";
 
+    /**
+     * Loads a user from serialized file if exists, or creates a new one.
+     */
     public static User loadUser(String username, String password) {
-        Path configPath = Paths.get(DATA_FOLDER, CONFIG_FILE);
+        String filePath = getUserDataFilePath(username);
+        File file = new File(filePath);
 
-        if (!Files.exists(configPath)) {
-            return null; // 配置文件不存在
+        if (!file.exists()) {
+            return new User(username, password);
         }
 
-        try {
-            List<String> lines = Files.readAllLines(configPath);
-            for (String line : lines) {
-                String[] parts = line.split(":");
-                if (parts.length == 2 &&
-                        parts[0].trim().equals(username.trim()) &&
-                        parts[1].trim().equals(password.trim())) {
-                    return new User(username, password); // 验证成功返回用户对象
-                }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            User user = (User) ois.readObject();
+            if (user.getPassword().equals(password)) {
+                return user;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Saves current user object to disk.
+     */
+    public static void saveUser(User user) {
+        String filePath = getUserDataFilePath(user.getUsername());
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(user);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null; // 用户名或密码不匹配
     }
 
-    public static void saveUser(User user) {
-        // 现在这个方法不需要实现，因为所有用户信息都存储在user.config中
-        // 如果需要添加新用户，需要直接编辑user.config文件
+    private static String getUserDataFilePath(String username) {
+        String userDir = DATA_FOLDER + "/" + username;
+        new File(userDir).mkdirs();
+        return userDir + "/" + USER_DATA_FILE;
     }
 }

@@ -104,7 +104,7 @@ public class GamePanel extends ListenerPanel {
 
             // update box location
             if (moved) {
-                new SoundEffect().playEffect("resources/sound/click.wav");
+                new SoundEffect().playEffect("sound/click.wav");
                 selectedBox.setLocation(
                         selectedBox.getCol() * GRID_SIZE + 2,
                         selectedBox.getRow() * GRID_SIZE + 2

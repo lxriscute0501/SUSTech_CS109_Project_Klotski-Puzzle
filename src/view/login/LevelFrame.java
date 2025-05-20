@@ -29,25 +29,42 @@ public class LevelFrame extends JFrame {
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
 
-        JLabel titleLabel = FrameUtil.createJLabel(this, new Point(200, 50), 200, 40, "Choose Game Level");
-        titleLabel.setFont(new Font("serif", Font.BOLD, 20));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Level Selection", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setBounds(0, 30, this.getWidth(), 40);
+        this.add(titleLabel);
 
-        JButton easyBtn = FrameUtil.createButton(this, "Easy", new Point(200, 120), 200, 40);
+        JLabel subheadingLabel = new JLabel("Pick the level you want to play", SwingConstants.CENTER);
+        subheadingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        subheadingLabel.setBounds(0, 70, this.getWidth(), 25);
+        this.add(subheadingLabel);
+
+
+        JButton easyBtn = createImageButton("/Buttons/easy.png", "Easy");
+        easyBtn.setBounds(200, 120, 200, 40);
         easyBtn.addActionListener(e -> startGameWithLevel(1));
+        this.add(easyBtn);
 
-        JButton mediumBtn = FrameUtil.createButton(this, "Medium", new Point(200, 180), 200, 40);
+        JButton mediumBtn = createImageButton("/Buttons/medium.png", "Medium");
+        mediumBtn.setBounds(200, 180, 200, 40);
         mediumBtn.addActionListener(e -> startGameWithLevel(2));
+        this.add(mediumBtn);
 
-        JButton hardBtn = FrameUtil.createButton(this, "Hard", new Point(200, 240), 200, 40);
+        JButton hardBtn = createImageButton("/Buttons/hard.png", "Hard");
+        hardBtn.setBounds(200, 240, 200, 40);
         hardBtn.addActionListener(e -> startGameWithLevel(3));
+        this.add(hardBtn);
 
-        JButton backBtn = FrameUtil.createButton(this, "Return", new Point(200, 300), 200, 40);
+        JButton backBtn = createImageButton("/Buttons/back.png", "Return");
+        backBtn.setBounds(200, 300, 200, 40);
         backBtn.addActionListener(e -> {
             StartMenuFrame startMenu = new StartMenuFrame(600, 400, isGuest, user);
             startMenu.setVisible(true);
             this.dispose();
         });
+        this.add(backBtn);
+
+
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -136,4 +153,31 @@ public class LevelFrame extends JFrame {
     private int[][] getDefaultMap() {
         return new int[4][5];
     }
+
+    private JButton createImageButton(String resourcePath, String toolTipText) {
+        java.net.URL imageUrl = getClass().getResource(resourcePath);
+        if (imageUrl == null) {
+            System.err.println("Could not load image at: " + resourcePath);
+            JButton fallback = new JButton(toolTipText);
+            fallback.setToolTipText(toolTipText);
+            return fallback;
+        }
+
+        ImageIcon originalIcon = new ImageIcon(imageUrl);
+        int width = 150;
+        int height = 75;
+        Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JButton button = new JButton(scaledIcon);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setToolTipText(toolTipText);
+        return button;
+    }
+
+
+
 }

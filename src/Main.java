@@ -7,7 +7,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame(600,400);
             loginFrame.setVisible(true);
-            new BackgroundMusic().playMusic("resources/sound/bgm.wav");
+            new BackgroundMusic().playMusic("sound/bgm.wav");
         });
     }
 }
