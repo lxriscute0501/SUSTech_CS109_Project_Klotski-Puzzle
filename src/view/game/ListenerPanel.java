@@ -22,7 +22,6 @@ public abstract class ListenerPanel extends JPanel {
         super.processKeyEvent(e);
         if (e.getID() == KeyEvent.KEY_PRESSED) {
             try {
-                new SoundEffect().playEffect("resources/sound/click.wav");
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_RIGHT -> doMoveRight();
                     case KeyEvent.VK_LEFT -> doMoveLeft();

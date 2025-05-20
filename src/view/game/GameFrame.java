@@ -73,10 +73,10 @@ public class GameFrame extends JFrame {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
-                g2d.setColor(new Color(144, 238, 144));
+                g2d.setColor(new Color(144, 238, 144, 235));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
 
-                g2d.setColor(new Color(0, 100, 0));
+                g2d.setColor(new Color(44, 103, 16));
                 g2d.setStroke(new BasicStroke(3));
                 g2d.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 

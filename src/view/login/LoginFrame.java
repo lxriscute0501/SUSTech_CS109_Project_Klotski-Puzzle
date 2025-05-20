@@ -3,7 +3,6 @@ package view.login;
 import controller.UserManager;
 import model.User;
 import view.FrameUtil;
-import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -51,8 +50,8 @@ public class LoginFrame extends JFrame {
         guestBtn = FrameUtil.createButton(this, "Guest", new Point(310, 140), 80, 40);
 
         loginBtn.addActionListener(e -> {
-            String inputUsername = username.getText();
-            String inputPassword = new String(password.getPassword());
+            String inputUsername = username.getText().trim();
+            String inputPassword = new String(password.getPassword()).trim();
 
             User user = UserManager.loadUser(inputUsername, inputPassword);
             if (user != null) {

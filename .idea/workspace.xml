@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Add bgm.">
-      <change afterPath="$PROJECT_DIR$/resources/sound/click.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/SoundEffect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Update README">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/ListenerPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,12 +30,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;lxriscute0501&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "history": [
+    {
+      "state": "OPEN"
+    }
+  ],
+  "lastFilter": {
+    "state": "OPEN"
   }
-}</component>
+}]]></component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDOOZ06Xc6W0_Us",
+        "number": 1
+      },
+      "lastSeen": 1747722717468
+    }
+  ]
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;git@github.com:/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle.git&quot;,
@@ -256,7 +274,31 @@
       <option name="project" value="LOCAL" />
       <updated>1747712703057</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="[FEAT] Add sound effect.">
+      <option name="closed" value="true" />
+      <created>1747713524781</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1747713524781</updated>
+    </task>
+    <task id="LOCAL-00024" summary="[FEAT] Add sound effect.">
+      <option name="closed" value="true" />
+      <created>1747713533066</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1747713533066</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Update README">
+      <option name="closed" value="true" />
+      <created>1747714058196</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1747714058196</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -301,6 +343,8 @@
     <MESSAGE value="[FIX] Fix the load game problem." />
     <MESSAGE value="[UPLOAD] Upload image resources." />
     <MESSAGE value="[FEAT] Add bgm." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Add bgm." />
+    <MESSAGE value="[FEAT] Add sound effect." />
+    <MESSAGE value="Update README" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README" />
   </component>
 </project>

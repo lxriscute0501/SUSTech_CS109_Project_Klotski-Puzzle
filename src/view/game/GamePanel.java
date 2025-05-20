@@ -4,6 +4,7 @@ import controller.GameController;
 import controller.UserDataController;
 import model.Direction;
 import model.MapModel;
+import model.SoundEffect;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -28,7 +29,6 @@ public class GamePanel extends ListenerPanel {
 
     private JLabel timeLabel;
     private JLabel stepLabel;
-    private JLabel levelLabel;
     private int steps;
 
     private final int GRID_SIZE = 50;
@@ -104,6 +104,7 @@ public class GamePanel extends ListenerPanel {
 
             // update box location
             if (moved) {
+                new SoundEffect().playEffect("resources/sound/click.wav");
                 selectedBox.setLocation(
                         selectedBox.getCol() * GRID_SIZE + 2,
                         selectedBox.getRow() * GRID_SIZE + 2

@@ -12,8 +12,14 @@ public class MapModel {
     private String level;
 
     public MapModel(int[][] matrix, String level) {
-        this.matrix = matrix;
-        this.initialMatrix = matrix;
+        this.matrix = new int[height][width];
+        this.initialMatrix = new int[height][width];
+
+        for (int i = 0; i < height; i++)
+        {
+            System.arraycopy(matrix[i], 0, this.matrix[i], 0, width);
+            System.arraycopy(matrix[i], 0, this.initialMatrix[i], 0, width);
+        }
         this.level = level;
     }
 
@@ -26,7 +32,6 @@ public class MapModel {
             System.arraycopy(newMatrix[i], 0, matrix[i], 0, width);
     }
 
-    // restore from initial matrix
     public void resetMap() {
         for (int i = 0; i < height; i++) {
             System.arraycopy(initialMatrix[i], 0, matrix[i], 0, width);

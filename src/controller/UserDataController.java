@@ -37,7 +37,6 @@ public class UserDataController {
         List<String> gameData = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
-        // saved data
         gameData.add(model.getLevel());
         gameData.add(String.valueOf(view.getSteps()));
         gameData.add(String.valueOf(controller.getActualTime()));
