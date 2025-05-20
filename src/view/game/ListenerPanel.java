@@ -1,5 +1,7 @@
 package view.game;
 
+import model.SoundEffect;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -20,6 +22,7 @@ public abstract class ListenerPanel extends JPanel {
         super.processKeyEvent(e);
         if (e.getID() == KeyEvent.KEY_PRESSED) {
             try {
+                new SoundEffect().playEffect("resources/sound/click.wav");
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_RIGHT -> doMoveRight();
                     case KeyEvent.VK_LEFT -> doMoveLeft();
@@ -47,13 +50,11 @@ public abstract class ListenerPanel extends JPanel {
         }
     }
 
-    // keyboard control
     public abstract void doMoveRight();
     public abstract void doMoveLeft();
     public abstract void doMoveUp();
     public abstract void doMoveDown();
 
-    // mouse control
     public abstract void doLeftClick(Point point);
     public abstract void doRightClick(Point point);
 }
