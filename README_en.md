@@ -22,15 +22,18 @@ Klotski Puzzle
 │   │   ├── easy/
 │   │   ├── hard/
 │   │   └── medium/
-│   └── images/
+│   ├── images/
+│   └── sound/
 ├── src/
 │   ├── controller/
 │   │   ├── GameController.java 
 │   │   ├── UserDataController.java
 │   │   └── UserManager.java
 │   ├── model/
+│   │   ├── BackgroundMusic.java
 │   │   ├── Direction.java
 │   │   ├── MapModel.java
+│   │   ├── SoundEffect.java
 │   │   └── User.java
 │   ├── view/
 │   │   ├── game/
@@ -76,7 +79,7 @@ Klotski Puzzle
 
 - **Victory / Failure condition**
     - [x] Victory interface display (including time and steps)
-    - [ ] Failure interface display (countdown runs out)
+    - [x] Failure interface display (countdown runs out)
 
 - **Save and load game**
     - [x] Save the previous game by button
@@ -90,8 +93,8 @@ Klotski Puzzle
     - [ ] User Interface (UI) beautification
     - [x] Multi-Level design
     - [ ] AI algorithm to solve automatically
-    - [ ] Animation effects
-    - [ ] Sound effects and background music
+    - [x] Animation effects
+    - [x] Sound effects and background music
     - [x] Time attack mode
     - [ ] Props and obstacles
     - [ ] Online spectating

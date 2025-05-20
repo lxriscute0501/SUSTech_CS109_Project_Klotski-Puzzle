@@ -27,15 +27,18 @@ Klotski Puzzle
 │   │   ├── easy/
 │   │   ├── hard/
 │   │   └── medium/
-│   └── images/
+│   ├── images/
+│   └── sound/
 ├── src/
 │   ├── controller/
 │   │   ├── GameController.java 
 │   │   ├── UserDataController.java
 │   │   └── UserManager.java
 │   ├── model/
+│   │   ├── BackgroundMusic.java
 │   │   ├── Direction.java
 │   │   ├── MapModel.java
+│   │   ├── SoundEffect.java
 │   │   └── User.java
 │   ├── view/
 │   │   ├── game/
@@ -96,8 +99,8 @@ Klotski Puzzle
 - [ ] 美化图形用户界面GUI
 - [x] 多等级关卡设计
 - [ ] AI自动解决问题
-- [ ] 方块移动的流畅动画效果
-- [ ] 背景音乐
+- [x] 方块移动的流畅动画效果
+- [x] 背景音乐
 - [x] 倒计时功能
     - [x] 页面倒计时
     - [x] 记录用时
