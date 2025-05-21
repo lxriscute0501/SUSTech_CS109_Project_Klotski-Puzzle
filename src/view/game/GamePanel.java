@@ -33,6 +33,11 @@ public class GamePanel extends ListenerPanel {
 
     private final int GRID_SIZE = 50;
 
+    private Image image1;
+    private Image image2;
+    private Image image3_zy, image3_hz, image3_zf, image3_mc;
+    private Image image4;
+
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
         this.setVisible(true);
@@ -42,10 +47,22 @@ public class GamePanel extends ListenerPanel {
 
         this.model = model;
         this.selectedBox = null;
+
+        addBlockPicture();
         initializeGame();
 
         this.setFocusable(true);
         this.requestFocusInWindow();
+    }
+
+    private void addBlockPicture() {
+        this.image1 = new ImageIcon(getClass().getResource("/images/blocks/CaoCao.png")).getImage();
+        this.image2 = new ImageIcon(getClass().getResource("/images/blocks/GuanYu.png")).getImage();
+        this.image3_hz = new ImageIcon(getClass().getResource("/images/blocks/HuangZhong.png")).getImage();
+        this.image3_mc = new ImageIcon(getClass().getResource("/images/blocks/MaChao.png")).getImage();
+        this.image3_zf = new ImageIcon(getClass().getResource("/images/blocks/ZhangFei.png")).getImage();
+        this.image3_zy = new ImageIcon(getClass().getResource("/images/blocks/ZhaoYun.png")).getImage();
+        this.image4 = new ImageIcon(getClass().getResource("/images/blocks/Soldier.png")).getImage();
     }
 
     public void initializeGame() {
@@ -58,23 +75,31 @@ public class GamePanel extends ListenerPanel {
             for (int j = 0; j < map[0].length; j++)
                 map[i][j] = model.getId(i, j);
 
+        int general = 0;
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 BoxComponent box = null;
                 if (map[i][j] == 1) {
-                    box = new BoxComponent(Color.GREEN, i, j);
+                    box = new BoxComponent(this.image1, i, j, Color.GREEN);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
                     map[i][j] = 0; map[i + 1][j] = 0; map[i][j + 1] = 0; map[i + 1][j + 1] = 0;
                 } else if (map[i][j] == 2) {
-                    box = new BoxComponent(Color.PINK, i, j);
+                    box = new BoxComponent(this.image2, i, j, Color.PINK);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
                     map[i][j] = 0; map[i + 1][j] = 0;
                 } else if (map[i][j] == 3) {
-                    box = new BoxComponent(Color.BLUE, i, j);
+                    switch (general) {
+                        case 0: box = new BoxComponent(this.image3_hz, i, j, Color.BLUE); break;
+                        case 1: box = new BoxComponent(this.image3_mc, i, j, Color.BLUE); break;
+                        case 2: box = new BoxComponent(this.image3_zf, i, j, Color.BLUE); break;
+                        case 3: box = new BoxComponent(this.image3_zy, i, j, Color.BLUE); break;
+                        default: box = new BoxComponent(this.image3_zy, i, j, Color.BLUE);
+                    }
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     map[i][j] = 0; map[i][j + 1] = 0;
+                    general ++;
                 } else if (map[i][j] == 4) {
-                    box = new BoxComponent(Color.ORANGE, i, j);
+                    box = new BoxComponent(this.image4, i, j, Color.ORANGE);
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     map[i][j] = 0;
                 }
@@ -137,24 +162,31 @@ public class GamePanel extends ListenerPanel {
         this.removeAll();
         boxes.clear();
 
+        int general = 0;
         for (int i = 0; i < mapData.length; i++) {
             for (int j = 0; j < mapData[0].length; j++) {
                 BoxComponent box = null;
                 if (mapData[i][j] == 1) {
-                    box = new BoxComponent(Color.GREEN, i, j);
+                    box = new BoxComponent(this.image1, i, j, Color.GREEN);
                     box.setSize(GRID_SIZE * 2, GRID_SIZE * 2);
-                    mapData[i][j] = 0; mapData[i + 1][j] = 0;
-                    mapData[i][j + 1] = 0; mapData[i + 1][j + 1] = 0;
+                    mapData[i][j] = 0; mapData[i + 1][j] = 0; mapData[i][j + 1] = 0; mapData[i + 1][j + 1] = 0;
                 } else if (mapData[i][j] == 2) {
-                    box = new BoxComponent(Color.PINK, i, j);
+                    box = new BoxComponent(this.image2, i, j, Color.PINK);
                     box.setSize(GRID_SIZE, GRID_SIZE * 2);
                     mapData[i][j] = 0; mapData[i + 1][j] = 0;
                 } else if (mapData[i][j] == 3) {
-                    box = new BoxComponent(Color.BLUE, i, j);
+                    switch (general) {
+                        case 0: box = new BoxComponent(this.image3_hz, i, j, Color.BLUE); break;
+                        case 1: box = new BoxComponent(this.image3_mc, i, j, Color.BLUE); break;
+                        case 2: box = new BoxComponent(this.image3_zf, i, j, Color.BLUE); break;
+                        case 3: box = new BoxComponent(this.image3_zy, i, j, Color.BLUE); break;
+                        default: box = new BoxComponent(this.image3_zy, i, j, Color.BLUE);
+                    }
                     box.setSize(GRID_SIZE * 2, GRID_SIZE);
                     mapData[i][j] = 0; mapData[i][j + 1] = 0;
+                    general ++;
                 } else if (mapData[i][j] == 4) {
-                    box = new BoxComponent(Color.ORANGE, i, j);
+                    box = new BoxComponent(this.image4, i, j, Color.ORANGE);
                     box.setSize(GRID_SIZE, GRID_SIZE);
                     mapData[i][j] = 0;
                 }

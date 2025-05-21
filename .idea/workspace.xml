@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Merge PR, add win applause.">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Invalid users can also login in previous version, now fixed.">
+      <change afterPath="$PROJECT_DIR$/resources/images/blocks/HuangZhong.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/images/blocks/MaChao.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/images/blocks/ZhangFei.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AI/AISolution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/ResetFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/ResetFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,8 +85,8 @@
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/resources/sound" />
       <recent name="$PROJECT_DIR$/resources/images/blocks" />
+      <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -319,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747754154012</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="[FIX] Invalid users can also login in previous version, now fixed.">
+      <option name="closed" value="true" />
+      <created>1747836769548</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1747836769549</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -343,7 +354,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update the login frame but not complete" />
     <MESSAGE value="Login is partly done" />
     <MESSAGE value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
     <MESSAGE value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
@@ -368,6 +378,7 @@
     <MESSAGE value="[FEAT] Add moving sound effect." />
     <MESSAGE value="Update README_en.md" />
     <MESSAGE value="Merge PR, add win applause." />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge PR, add win applause." />
+    <MESSAGE value="[FIX] Invalid users can also login in previous version, now fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Invalid users can also login in previous version, now fixed." />
   </component>
 </project>

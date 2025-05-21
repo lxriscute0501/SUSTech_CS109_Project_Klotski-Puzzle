@@ -20,7 +20,6 @@ public class ResetFrame extends JFrame {
 
     private LoginFrame parentFrame;
 
-
     public ResetFrame(LoginFrame parentFrame) {
         this.parentFrame = parentFrame;
         this.setTitle("Reset Password");
@@ -60,12 +59,12 @@ public class ResetFrame extends JFrame {
 
         confirmPasswordField = new JPasswordField();
         confirmPasswordField.setBounds(200, 150, 150, 30);
-        RegisterFrame.styleInputField(confirmPasswordField); //
+        RegisterFrame.styleInputField(confirmPasswordField);
         this.add(confirmPasswordField);
 
 
         submitBtn = createImageButton("/Buttons/submit.png", "Submit");
-        submitBtn.setBounds(80, 200, 120, 60); // Adjust if needed
+        submitBtn.setBounds(80, 200, 120, 60);
         submitBtn.addActionListener(e -> handlePasswordReset());
         this.add(submitBtn);
 
@@ -175,7 +174,4 @@ public class ResetFrame extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-
-
-
 }
