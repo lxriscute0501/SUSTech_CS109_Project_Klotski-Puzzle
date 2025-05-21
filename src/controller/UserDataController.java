@@ -62,7 +62,7 @@ public class UserDataController {
             view.showErrorMessage("Game saved failed: " + e.getMessage());
         }
 
-        UserManager.saveUser(currentUser);
+        // UserManager.saveUser(currentUser);
     }
 
     public void loadGame() {

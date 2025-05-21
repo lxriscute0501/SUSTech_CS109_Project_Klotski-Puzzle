@@ -2,17 +2,14 @@ package view.login;
 
 import controller.UserManager;
 import model.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.awt.Color;
 import java.util.Properties;
 
 /**
-
- The initial frame, containing login, reset, register and guest button.
- Connect RegisterFrame with register button, and StartMenuFrame with login && guest button.
+ * The initial frame, containing login, reset, register and guest button.
+ * Connect RegisterFrame with register button, and StartMenuFrame with login && guest button.
  */
 public class LoginFrame extends JFrame {
     private JTextField username;
@@ -35,104 +32,36 @@ public class LoginFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
-        // load username & password
         loadUserConfig();
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-
-        // Title
-        JLabel titleLabel = new JLabel("Welcome to the Game!", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.add(titleLabel, gbc);
-
-        gbc.gridy++;
-        JLabel subheadingLabel = new JLabel("Please log in to continue", SwingConstants.CENTER);
-        subheadingLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        this.add(subheadingLabel, gbc);
-// Reset for next row
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridy++;
-
-        JLabel usernameLabel = new JLabel("Username:");
-        this.add(usernameLabel, gbc);
-
-        // Username Field
-        gbc.gridx = 1;
-        username = new JTextField(15);
-        RegisterFrame.styleInputField(username);
-        ; //
-        this.add(username, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy++;
-        JLabel passwordLabel = new JLabel("Password:");
-        this.add(passwordLabel, gbc);
-
-        gbc.gridx = 1;
-        password = new JPasswordField(15);
-        RegisterFrame.styleInputField(password);
-        this.add(password, gbc);
-
-
-        // Buttons Row
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE;
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        loginBtn = createImageButton("/Buttons/Login.png", "Login");
-        resetBtn = createImageButton("/Buttons/reset.png", "Reset");
-        registerBtn = createImageButton("/Buttons/register.png", "Register");
-        guestBtn = createImageButton("/Buttons/guest.png", "Guest");
-
-        buttonPanel.add(loginBtn);
-        buttonPanel.add(resetBtn);
-        buttonPanel.add(registerBtn);
-        buttonPanel.add(guestBtn);
-
-        this.add(buttonPanel, gbc);
-
+        drawButton();
 
         loginBtn.addActionListener(e -> {
             String inputUsername = username.getText();
             String inputPassword = new String(password.getPassword());
 
             if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
-                warningDialog("Please enter both username and password!", "Input Required", "/Buttons/back.png");
+                warningDialog("Please enter both username and password!",
+                        "Input Required", "/Buttons/back.png");
                 return;
             }
-
 
             User user = UserManager.loadUser(inputUsername, inputPassword);
             if (user != null) {
                 enterStartMenuFrame(user, false);
             } else {
-                JOptionPane.showMessageDialog(this,
-                        "Invalid username or password!",
-                        "Login Failed",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid username or password!",
+                        "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
-        });
-
-
-        resetBtn.addActionListener(e -> {
-            ResetFrame resetFrame = new ResetFrame(this);
-            resetFrame.setVisible(true);
         });
 
         registerBtn.addActionListener(e -> {
             RegisterFrame registerFrame = new RegisterFrame(this);
             registerFrame.setVisible(true);
+        });
+
+        resetBtn.addActionListener(e -> {
+            ResetFrame resetFrame = new ResetFrame(this);
+            resetFrame.setVisible(true);
         });
 
         guestBtn.addActionListener(e -> {
@@ -174,6 +103,69 @@ public class LoginFrame extends JFrame {
         // set login frame in the center
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void drawButton() {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        JLabel titleLabel = new JLabel("Welcome to the Game!", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.add(titleLabel, gbc);
+
+        gbc.gridy++;
+        JLabel subheadingLabel = new JLabel("Please log in to continue", SwingConstants.CENTER);
+        subheadingLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        this.add(subheadingLabel, gbc);
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy++;
+
+        JLabel usernameLabel = new JLabel("Username:");
+        this.add(usernameLabel, gbc);
+
+        // Username Field
+        gbc.gridx = 1;
+        username = new JTextField(15);
+        RegisterFrame.styleInputField(username);
+        this.add(username, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel passwordLabel = new JLabel("Password:");
+        this.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        password = new JPasswordField(15);
+        RegisterFrame.styleInputField(password);
+        this.add(password, gbc);
+
+
+        // Buttons Row
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        loginBtn = createImageButton("/Buttons/Login.png", "Login");
+        resetBtn = createImageButton("/Buttons/reset.png", "Reset");
+        registerBtn = createImageButton("/Buttons/register.png", "Register");
+        guestBtn = createImageButton("/Buttons/guest.png", "Guest");
+
+        buttonPanel.add(loginBtn);
+        buttonPanel.add(resetBtn);
+        buttonPanel.add(registerBtn);
+        buttonPanel.add(guestBtn);
+
+        this.add(buttonPanel, gbc);
     }
 
     private JButton createImageButton(String resourcePath, String toolTipText) {
@@ -240,7 +232,6 @@ public class LoginFrame extends JFrame {
         dialog.setVisible(true);
     }
 
-
     private void enterStartMenuFrame(User newUser, boolean isGuest) {
         this.startMenuFrame = new StartMenuFrame(600, 400, isGuest, newUser);
         this.startMenuFrame.setVisible(true);
@@ -269,7 +260,6 @@ public class LoginFrame extends JFrame {
             saveUserConfig();
         }
     }
-
 
     protected Properties getUserProperty() {
         return userProperty;

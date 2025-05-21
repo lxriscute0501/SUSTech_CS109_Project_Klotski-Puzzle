@@ -1,56 +1,50 @@
 package controller;
 
 import model.User;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Properties;
 
 /**
- * Manages user data: load, save, and cache current user.
+ * Manages user data using Properties stored in user.config
  */
 public class UserManager {
-    private static final String DATA_FOLDER = "data";
-    private static final String USER_DATA_FILE = "user_data.ser";
+    private static final String CONFIG_FILE = "user.config";
+    private static Properties props = new Properties();
 
-    /**
-     * Loads a user from serialized file if exists, or creates a new one.
-     */
-    public static User loadUser(String username, String password) {
-        String filePath = getUserDataFilePath(username);
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            return new User(username, password);
-        }
-
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            User user = (User) ois.readObject();
-            if (user.getPassword().equals(password)) {
-                return user;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    static {
+        loadConfig();
     }
 
-    /**
-     * Saves current user object to disk.
-     */
-    public static void saveUser(User user) {
-        String filePath = getUserDataFilePath(user.getUsername());
+    private static void loadConfig() {
+        try (InputStream input = new FileInputStream(CONFIG_FILE)) {
+            props.load(input);
+        } catch (IOException e) {
+            System.out.println("No existing config. A new one will be created.");
+        }
+    }
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(user);
+    private static void saveConfig() {
+        try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
+            props.store(output, "User Configuration");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static String getUserDataFilePath(String username) {
-        String userDir = DATA_FOLDER + "/" + username;
-        new File(userDir).mkdirs();
-        return userDir + "/" + USER_DATA_FILE;
+    public static User loadUser(String username, String password) {
+        String storedPassword = props.getProperty(username);
+        if (storedPassword != null && storedPassword.equals(password)) {
+            return new User(username, password);
+        }
+        return null;
+    }
+
+    public static void saveUser(User user) {
+        props.setProperty("user." + user.getUsername() + ".password", user.getPassword());
+        saveConfig();
+    }
+
+    public static boolean userExists(String username) {
+        return props.containsKey("user." + username + ".password");
     }
 }
