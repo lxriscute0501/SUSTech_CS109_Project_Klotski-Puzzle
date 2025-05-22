@@ -55,7 +55,7 @@ public class StartMenuFrame extends JFrame {
             levelFrame.setVisible(true);
             this.setVisible(false);
         });
-        this.add(startBtn); // ✅ Important!
+        this.add(startBtn);
 
         loadBtn = createImageButton("Buttons/loadGame.png", "Load Game");
         loadBtn.setBounds(centerX, 200, buttonWidth, buttonHeight);
@@ -100,7 +100,7 @@ public class StartMenuFrame extends JFrame {
             loadBtn.setEnabled(false);
             loadBtn.setToolTipText("Guest cannot load saved games.");
         }
-        this.add(loadBtn); // ✅ Important!
+        this.add(loadBtn);
 
         exitBtn = createImageButton("Buttons/exitNew.png", "Exit");
         exitBtn.setBounds(centerX, 270, buttonWidth, buttonHeight);

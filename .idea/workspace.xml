@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Add block pictures.">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the time counting problem.">
+      <change afterPath="$PROJECT_DIR$/Klotski Puzzle.pdf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/AI/AISolution.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/AI/GameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,23 +66,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.LoginFrame.executor": "Run",
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/resources/sound",
-    "onboarding.tips.debug.path": "/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java",
-    "settings.editor.selected.configurable": "preferences.general"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.LoginFrame.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/resources/sound&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/images/blocks" />
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
@@ -337,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747843740554</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="[FIX] Fix the time counting problem.">
+      <option name="closed" value="true" />
+      <created>1747902153179</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1747902153179</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -361,7 +369,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
     <MESSAGE value="[FIX] Fix the problem of step count when clicking undo button" />
     <MESSAGE value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
     <MESSAGE value="[FIX] Fix the keyboard controlled move." />
@@ -386,6 +393,7 @@
     <MESSAGE value="[FIX] Invalid users can also login in previous version, now fixed." />
     <MESSAGE value="[FEAT] Add block pictures/" />
     <MESSAGE value="[FEAT] Add block pictures." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Add block pictures." />
+    <MESSAGE value="[FIX] Fix the time counting problem." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the time counting problem." />
   </component>
 </project>

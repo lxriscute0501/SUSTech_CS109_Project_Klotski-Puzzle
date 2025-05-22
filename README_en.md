@@ -10,7 +10,12 @@
 
 ### Introduction
 
+Klotski is a traditional Chinese puzzle game in which players need to move the "Cao Cao" block out of the board's exit. The game is typically played on a rectangular board with blocks of different sizes and shapes. In this project, we suppose the exit, the size of game panel and each block's size and number are fixed.
+
 ### Members
+
+|Members||Work|
+|:---:|:---:|:---:|
 
 ## Project Structure
 
@@ -22,7 +27,10 @@ Klotski Puzzle
 │   │   ├── easy/
 │   │   ├── hard/
 │   │   └── medium/
-│   ├── images/
+│   ├── images/                         
+│   │   ├── backgrounds/
+│   │   ├── blocks/
+│   │   └── buttons/
 │   └── sound/
 ├── src/
 │   ├── controller/
@@ -59,37 +67,39 @@ Klotski Puzzle
 ## Features List
 
 - **Login and game-start frames**
-    - [ ] User login
-    - [x] Reset password for users
-    - [x] Forbid guests to save game
-    - [x] User data will be saved after exit
+    - [x] Previous users login
+    - [x] Reset passwords for users
+    - [x] New users registeration
+    - [x] Guest mode
     - [x] Game-start frame
-    - [x] Levels choose frame
+    - [x] [advance] Level-choose frame
 
 - **Game frame and operations**
     - [x] Username display
-    - [x] Best record (time, steps) display
-    - [x] Exit (victory condition) display
+    - [x] Best (Least) time display
+    - [x] Best (Least) steps display
+    - [x] Block pictures and exit drawing
     - [x] Step counting
-    - [x] Time counting down
     - [x] Buttons control movement
     - [x] Keyboard control movement
-    - [x] Movement record (in the output window, also saved)
+    - [x] Restart function
     - [x] Undo function
+    - [x] [advance] Time counting down
+    - [x] [advance] Animation effects when moving
 
 - **Victory / Failure condition**
     - [x] Victory interface display (including time and steps)
     - [x] Failure interface display (countdown runs out)
 
 - **Save and load game**
-    - [x] Save the previous game by button
-    - [x] Load game available at game-start frame
+    - [x] Save the latest game by button
+    - [x] Load game (at game-start frame)
     - [x] Timed auto-save (1 min)
-    - [x] Auto-save on exit
+    - [x] Auto-save when exiting
     - [ ] Save file error handling
 
 - **Advanced features**
-    - [ ] User Interface (UI) beautification
+    - [ ] UI beautification (buttons, blocks, backgrounds)
     - [x] Multi-Level design
     - [ ] AI algorithm to solve automatically
     - [x] Animation effects
