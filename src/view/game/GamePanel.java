@@ -38,7 +38,6 @@ public class GamePanel extends ListenerPanel {
     private Image image3_zy, image3_hz, image3_zf, image3_mc;
     private Image image4;
 
-
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
         this.setVisible(true);
@@ -130,7 +129,7 @@ public class GamePanel extends ListenerPanel {
 
             // update box location
             if (moved) {
-                new SoundEffect().playEffect("sound/click.wav");
+                new SoundEffect().playEffect("resources/sound/click.wav");
                 selectedBox.setLocation(
                         selectedBox.getCol() * GRID_SIZE + 2,
                         selectedBox.getRow() * GRID_SIZE + 2
@@ -288,6 +287,22 @@ public class GamePanel extends ListenerPanel {
         return null;
     }
 
+    public void addObstacleAt(int row, int col) {
+        ObstacleComponent obstacle = new ObstacleComponent(row, col);
+        obstacle.setSize(GRID_SIZE, GRID_SIZE);
+        obstacle.setLocation(col * GRID_SIZE + 2, row * GRID_SIZE + 2);
+        add(obstacle);
+        repaint();
+    }
+
+    public void removeBoxAt(int row, int col) {
+        Component comp = getBoxAt(row, col);
+        if (comp != null) {
+            remove(comp);
+            repaint();
+        }
+    }
+
     public void showVictoryMessage(int stepCount, String timeUsed) {
         String message = String.format("Victory! Congratulations!\n" + "Steps: %d\n" + "Time used: %s", stepCount, timeUsed);
         JOptionPane.showMessageDialog(this, message, "Victory!", JOptionPane.INFORMATION_MESSAGE);
@@ -312,27 +327,29 @@ public class GamePanel extends ListenerPanel {
 
     // Implement the abstract methods from ListenerPanel
     @Override
-    public void doMoveRight() {
-        moveSelectedBox(Direction.RIGHT);
-    }
+    public void doMoveRight() { moveSelectedBox(Direction.RIGHT); }
 
     @Override
-    public void doMoveLeft() {
-        moveSelectedBox(Direction.LEFT);
-    }
+    public void doMoveLeft() { moveSelectedBox(Direction.LEFT); }
 
     @Override
-    public void doMoveUp() {
-        moveSelectedBox(Direction.UP);
-    }
+    public void doMoveUp() { moveSelectedBox(Direction.UP); }
 
     @Override
-    public void doMoveDown() {
-        moveSelectedBox(Direction.DOWN);
-    }
+    public void doMoveDown() { moveSelectedBox(Direction.DOWN); }
 
     @Override
     public void doLeftClick(Point point) {
+        int col = point.x / GRID_SIZE;
+        int row = point.y / GRID_SIZE;
+
+        if (controller.getCurrentTool() != GameController.Tool.NONE) {
+            if (controller.useTool(row, col)) {
+                controller.setCurrentTool(GameController.Tool.NONE);
+                return;
+            }
+        }
+
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
             if (selectedBox == null) {

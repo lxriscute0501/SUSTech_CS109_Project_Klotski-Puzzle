@@ -43,6 +43,18 @@ public class MapModel {
         return 0;
     }
 
+    public void setObstacle(int row, int col) {
+        if (getId(row, col) == 0) {
+            matrix[row][col] = -1;
+        }
+    }
+
+    public void removeSoldier(int row, int col) {
+        if (getId(row, col) == 4) {
+            matrix[row][col] = 0;
+        }
+    }
+
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }

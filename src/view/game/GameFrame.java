@@ -27,6 +27,8 @@ public class GameFrame extends JFrame {
     private boolean isGuest;
     private String level;
     private MapModel map;
+    private JButton hammerBtn;
+    private JButton obstacleBtn;
 
     public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
@@ -171,6 +173,14 @@ public class GameFrame extends JFrame {
         downBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.DOWN));
         leftBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.LEFT));
         rightBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.RIGHT));
+
+        this.hammerBtn = FrameUtil.createButton(this, "🔨",
+                new Point(rightPanelX + 50, 500), 50, 50);
+        this.obstacleBtn = FrameUtil.createButton(this, "🚧",
+                new Point(rightPanelX + 150, 500), 50, 50);
+
+        hammerBtn.addActionListener(e -> controller.selectTool(GameController.Tool.HAMMER));
+        obstacleBtn.addActionListener(e -> controller.selectTool(GameController.Tool.OBSTACLE));
     }
 
     public void startNewGame() {

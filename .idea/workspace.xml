@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the time counting problem.">
-      <change afterPath="$PROJECT_DIR$/Klotski Puzzle.pdf" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Update README">
       <change afterPath="$PROJECT_DIR$/src/AI/AISolution.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/AI/GameState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/game/ObstacleComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -345,7 +349,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747902153179</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Update README">
+      <option name="closed" value="true" />
+      <created>1747906162539</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1747906162539</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -386,7 +398,6 @@
     <MESSAGE value="[UPLOAD] Upload image resources." />
     <MESSAGE value="[FEAT] Add bgm." />
     <MESSAGE value="[FEAT] Add sound effect." />
-    <MESSAGE value="Update README" />
     <MESSAGE value="[FEAT] Add moving sound effect." />
     <MESSAGE value="Update README_en.md" />
     <MESSAGE value="Merge PR, add win applause." />
@@ -394,6 +405,7 @@
     <MESSAGE value="[FEAT] Add block pictures/" />
     <MESSAGE value="[FEAT] Add block pictures." />
     <MESSAGE value="[FIX] Fix the time counting problem." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the time counting problem." />
+    <MESSAGE value="Update README" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README" />
   </component>
 </project>

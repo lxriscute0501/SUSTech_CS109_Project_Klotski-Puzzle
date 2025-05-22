@@ -30,6 +30,9 @@ public class GameController {
     private UserDataController userDataController;
     private static long GAME_DURATION = 5 * 60 * 1000;
 
+    public enum Tool { HAMMER, OBSTACLE, NONE }
+    private Tool currentTool = Tool.NONE;
+
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
     public GameController(GamePanel view, MapModel model, User user) {
@@ -59,7 +62,9 @@ public class GameController {
         return true;
     }
 
-        private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
+    private boolean isMoveValid(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
+
+            if (model.getId(toRow, toCol) == -1) return false;
             if (!model.checkInHeightSize(toRow) || !model.checkInWidthSize(toCol)) return false;
 
             switch (blockId) {
@@ -74,25 +79,25 @@ public class GameController {
             }
         }
 
-        private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
-            for (int r = 0; r < height; r++)
+    private boolean checkLargeBlockMove(int fromRow, int fromCol, int toRow, int toCol, int height, int width) {
+        for (int r = 0; r < height; r++)
+        {
+            for (int c = 0; c < width; c++)
             {
-                for (int c = 0; c < width; c++)
-                {
-                    int checkRow = toRow + r;
-                    int checkCol = toCol + c;
+                int checkRow = toRow + r;
+                int checkCol = toCol + c;
 
-                    if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
+                if (model.getId(checkRow, checkCol) == -1) return false;
+                if (!model.checkInHeightSize(checkRow) || !model.checkInWidthSize(checkCol)) return false;
 
-                    boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
+                boolean isOriginal = (checkRow >= fromRow && checkRow < fromRow + height) &&
                         (checkCol >= fromCol && checkCol < fromCol + width);
 
-                    if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
-                }
+                if (!isOriginal && model.getId(checkRow, checkCol) != 0) return false;
             }
-            return true;
         }
-
+        return true;
+    }
 
     public boolean undoMove() {
         if (moveHistory.isEmpty()) {
@@ -216,7 +221,7 @@ public class GameController {
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
             view.showVictoryMessage(view.getSteps(), timeString);
-            new SoundEffect().playEffect("sound/win.mp3");
+            new SoundEffect().playEffect("resources/sound/win.mp3");
 
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());
@@ -282,6 +287,38 @@ public class GameController {
     public long getActualTime() {
         long currentTime = System.currentTimeMillis();
         return (currentTime - startTime + 5 * 60 * 1000 - GAME_DURATION) / 1000;
+    }
+
+    public boolean useTool(int row, int col) {
+        switch (currentTool) {
+            case HAMMER:
+                if (model.getId(row, col) == 4) {
+                    model.removeSoldier(row, col);
+                    view.removeBoxAt(row, col);
+                    return true;
+                }
+                break;
+            case OBSTACLE:
+                if (model.getId(row, col) == 0) {
+                    model.setObstacle(row, col);
+                    view.addObstacleAt(row, col);
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    public void selectTool(Tool tool) {
+        this.currentTool = tool;
+    }
+
+    public void setCurrentTool(Tool tool) {
+        this.currentTool = tool;
+    }
+
+    public Tool getCurrentTool() {
+        return currentTool;
     }
 
     public UserDataController getUserDataController() {
