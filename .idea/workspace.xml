@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Invalid users can also login in previous version, now fixed.">
-      <change afterPath="$PROJECT_DIR$/resources/images/blocks/HuangZhong.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/images/blocks/MaChao.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/images/blocks/ZhangFei.png" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Add block pictures.">
       <change afterPath="$PROJECT_DIR$/src/AI/AISolution.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/AI/GameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/BoxComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/BoxComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/ResetFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/ResetFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -330,7 +329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747836769549</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="[FEAT] Add block pictures.">
+      <option name="closed" value="true" />
+      <created>1747843740554</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1747843740554</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -354,8 +361,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Login is partly done" />
-    <MESSAGE value="[UPDATE] Login is partly done, also game but lack annotations. Focus on game control next." />
     <MESSAGE value="[FIX] Fix the wrong range of mapModel, now we can login and start the game smoothly." />
     <MESSAGE value="[FIX] Fix the problem of step count when clicking undo button" />
     <MESSAGE value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
@@ -379,6 +384,8 @@
     <MESSAGE value="Update README_en.md" />
     <MESSAGE value="Merge PR, add win applause." />
     <MESSAGE value="[FIX] Invalid users can also login in previous version, now fixed." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Invalid users can also login in previous version, now fixed." />
+    <MESSAGE value="[FEAT] Add block pictures/" />
+    <MESSAGE value="[FEAT] Add block pictures." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Add block pictures." />
   </component>
 </project>

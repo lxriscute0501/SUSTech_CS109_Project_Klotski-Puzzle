@@ -38,6 +38,7 @@ public class GamePanel extends ListenerPanel {
     private Image image3_zy, image3_hz, image3_zf, image3_mc;
     private Image image4;
 
+
     public GamePanel(MapModel model) {
         boxes = new ArrayList<>();
         this.setVisible(true);
@@ -225,6 +226,10 @@ public class GamePanel extends ListenerPanel {
         this.timeLabel = timeLabel;
     }
 
+    public void setTimeLabelString(String label) {
+        this.timeLabel.setText(label);
+    }
+
     public void setStepLabel(JLabel stepLabel) {
         this.stepLabel = stepLabel;
         updateStepLabel();
@@ -283,13 +288,8 @@ public class GamePanel extends ListenerPanel {
         return null;
     }
 
-    public void setTimeLabelString(String label) {
-        this.timeLabel.setText(label);
-    }
-
     public void showVictoryMessage(int stepCount, String timeUsed) {
         String message = String.format("Victory! Congratulations!\n" + "Steps: %d\n" + "Time used: %s", stepCount, timeUsed);
-
         JOptionPane.showMessageDialog(this, message, "Victory!", JOptionPane.INFORMATION_MESSAGE);
     }
 

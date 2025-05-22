@@ -57,12 +57,14 @@ public class UserDataController {
 
         try {
             Files.write(Path.of(filePath + "/data.txt"), gameData);
-            if (!isAuto) view.showInfoMessage("Game saved successfully!");
+            if (!isAuto) {
+                view.showInfoMessage("Game saved successfully!");
+                controller.stopGameTimer();
+                System.exit(0);
+            }
         } catch (Exception e) {
             view.showErrorMessage("Game saved failed: " + e.getMessage());
         }
-
-        // UserManager.saveUser(currentUser);
     }
 
     public void loadGame() {
@@ -98,6 +100,8 @@ public class UserDataController {
             view.rebuildGameView(loadedMap);
             view.setTimeLabelString("Time Left: " + formatTime(savedTimeLeft));
             view.showInfoMessage("Loaded level: " + level);
+
+            controller.startGameTimer(savedTimeLeft);
 
         } catch (Exception e) {
             view.showErrorMessage("Load failed: " + e.getMessage());

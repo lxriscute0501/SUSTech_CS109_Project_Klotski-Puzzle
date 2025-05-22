@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import view.game.BoxComponent;
+import view.game.GameFrame;
 import view.game.GamePanel;
 
 import java.util.Stack;
@@ -27,7 +28,7 @@ public class GameController {
     private Timer gameTimer;
 
     private UserDataController userDataController;
-    private static final long GAME_DURATION = 5 * 60 * 1000;
+    private static long GAME_DURATION = 5 * 60 * 1000;
 
     private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
 
@@ -38,7 +39,7 @@ public class GameController {
         this.view.setController(this);
         this.userDataController = new UserDataController(this, view, model, user);
 
-        startGameTimer();
+        startGameTimer(300);
         userDataController.setupAutoSave(1);
     }
 
@@ -241,14 +242,15 @@ public class GameController {
         view.clearSelection();
         view.setTimeLabelString("Time Left: 05:00");
         stopGameTimer();
-        startGameTimer();
+        startGameTimer(300);
 
         // save game after restart
         if (currentUser != null && !currentUser.isGuest()) userDataController.saveGame(true);
     }
 
-    private void startGameTimer() {
+    public void startGameTimer(long timeLeft) {
         startTime = System.currentTimeMillis();
+        GAME_DURATION = timeLeft * 1000;
 
         gameTimer = new Timer(1000, e -> {
             long elapsed = System.currentTimeMillis() - startTime;
@@ -271,7 +273,7 @@ public class GameController {
         gameTimer.start();
     }
 
-    private void stopGameTimer() {
+    public void stopGameTimer() {
         if (gameTimer != null && gameTimer.isRunning()) {
             gameTimer.stop();
         }
@@ -279,12 +281,7 @@ public class GameController {
 
     public long getActualTime() {
         long currentTime = System.currentTimeMillis();
-        return (currentTime - startTime) / 1000;
-    }
-
-    public long getTimeLeft() {
-        long elapsed = System.currentTimeMillis() - startTime;
-        return Math.max(0, GAME_DURATION - elapsed) / 1000;
+        return (currentTime - startTime + 5 * 60 * 1000 - GAME_DURATION) / 1000;
     }
 
     public UserDataController getUserDataController() {
