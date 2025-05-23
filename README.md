@@ -2,7 +2,7 @@
 
 # Klotski Puzzle 华容道
 
-**📖 中文 | [English (professional)](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/README_en.md)**
+**📖 中文 | [English](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/README_en.md)**
 
 **CS109 计算机程序设计基础(JavaA) 25春 项目报告**
 
@@ -16,7 +16,7 @@
 
 华容道是一款传统的中国益智游戏，在游戏中，玩家需要将“曹操”这个方块从棋盘的出口处移出。游戏通常在带有不同尺寸和形状方块的矩形棋盘上进行，在此项目中，我们固定了出口、棋盘的尺寸以及各个方块的尺寸与数量。
 
-更多信息请参照项目文档。
+更多信息请参照[项目文档](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/Klotski%20Puzzle.pdf)。
 
 ### 小组成员
 |成员|学号|分工|
@@ -40,33 +40,35 @@ Klotski Puzzle
 │   └── sound/                      
 ├── src/
 │   ├── controller/
-│   │   ├── GameController.java         # 
-│   │   ├── UserDataController.java     # 
-│   │   └── UserManager.java            # 
+│   │   ├── GameController.java         # 游戏基本逻辑，包含检验移动合法性、更新方块位置、检验胜利条件、工具使用、计时等
+│   │   ├── UserDataController.java     # 存储与加载游戏信息
+│   │   └── UserManager.java            # 登录时验证与加载用户数据
 │   ├── model/
 │   │   ├── BackgroundMusic.java        # 背景音乐（全程运行）
-│   │   ├── Direction.java              #
-│   │   ├── MapModel.java               #
+│   │   ├── Direction.java              # 枚举类，上下左右四个方向
+│   │   ├── MapModel.java               # 设置与复制地图，存储地图信息
 │   │   ├── SoundEffect.java            # 移动音效与胜利鼓掌音效
-│   │   └── User.java                   #
+│   │   └── User.java                   # 存储用户信息，包含密码、最佳时间与步数等
 │   ├── view/
 │   │   ├── game/
-│   │   │    ├── BoxComponent.java      #
-│   │   │    ├── GameFrame.java         # 选择关卡后
-│   │   │    ├── GamePanel.java         #
-│   │   │    └── ListenerPanel.java     #
+│   │   │    ├── BoxComponent.java      # 设置每个方块的位置与图案
+│   │   │    ├── GameFrame.java         # 设置游戏界面的各个标签与按键
+│   │   │    ├── GamePanel.java         # 对方块选择与移动进行响应，设置工具按键，更新步数与时间标签，步数计数也在此
+│   │   │    └── ListenerPanel.java     # 实现对键盘与鼠标的响应
 │   │   ├── login/
 │   │   │    ├── LevelFrame.java        # 开始新游戏后选择关卡，各难度3张图随机选择
 │   │   │    ├── LoginFrame.java        # 设置四个按钮功能，验证并存储用户信息
 │   │   │    ├── RegisterFrame.java     # 新用户注册
 │   │   │    ├── ResetFrame.java        # 老用户修改密码
 │   │   │    └── StartGameFrame.java    # 登录后游戏开始页面，同时在此加载游戏
-│   │   └── FrameUtil.java              # 
+│   │   └── FrameUtil.java              # 创建标签、密码、按键的基本要素
 │   └── Main.java
 ├── .gitignore
 ├── CS109_Project_Klotski-Puzzle.iml
+├── Klotski Puzzle.pdf                  # 项目文档
 ├── LICENSE
-└── README.md
+├── README.md
+└── README_en.md
 ```
 
 ## 功能列表
@@ -91,6 +93,8 @@ Klotski Puzzle
     - [x] 撤回操作
     - [x] [高级] 倒计时显示
     - [x] [高级] 方块移动时的流畅动画
+    - [x] [高级] 锤子按键，可移除士兵 
+    - [x] [高级] 障碍按键，可设置禁区
 
 - **胜利/失败条件**
     - [x] 胜利页面显示（包含所用时间、步数）
@@ -104,18 +108,22 @@ Klotski Puzzle
     - [ ] 不加载被损坏文件
 
 - **高级功能**
-    - [x] 美化UI（按键、方块、背景图）
+    - [x] 美化UI（按键、方块、背景）
     - [x] 多等级关卡设计
-    - [ ] AI自动解决
+    - [ ] AI自动求解
     - [x] 方块移动的流畅动画效果
     - [x] 背景音乐
     - [x] 倒计时功能
-    - [ ] 添加道具与障碍物
+    - [x] 添加道具与障碍物
     - [ ] 允许多个用户同时登录，可观赛等
 
 
 ## 问题与解答
 
-- 游客进入游戏后会显示其Username为Guest，但这并不会产生冲突，根据， 如果用户也起名为Guest，因为要随之存储密码，游戏会识别出用户，保存及加载游戏等功能均可正常使用。
-- 如果没有用户名，我们会为您默认为admin，密码也为admin
-- 
+- *Q1: 游客进入游戏后用户名会显示为`Guest`，是否会与用户名也为`Guest`的用户产生冲突？*
+- ✅ 不会。如果用户也起名为`Guest`，其信息存储在`User`中，其中的`isGuest`值为`false`，且`user.config`中也会存储其用户名及密码。因此游戏会识别出用户，保存及加载游戏等功能均可正常使用。
+
+- *Q2: 工具的使用（锤子和障碍）与`Undo`、`Restart`之间的关系？*
+- ✅ 无关。工具的使用并不会计为步数，因此是不可逆的。
+
+

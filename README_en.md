@@ -14,7 +14,7 @@ Klotski is a traditional Chinese puzzle game in which players need to move the "
 
 ### Members
 
-|Members||Work|
+|Members|ID|Work|
 |:---:|:---:|:---:|
 
 ## Project Structure
@@ -59,8 +59,10 @@ Klotski Puzzle
 │   └── Main.java
 ├── .gitignore
 ├── CS109_Project_Klotski-Puzzle.iml
+├── Klotski Puzzle.pdf
 ├── LICENSE
-└── README.md
+├── README.md
+└── README_en.md
 ```
 
 
