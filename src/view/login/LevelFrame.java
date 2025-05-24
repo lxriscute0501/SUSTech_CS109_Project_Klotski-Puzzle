@@ -1,8 +1,7 @@
 package view.login;
 
 import model.MapModel;
-import model.User;
-import view.FrameUtil;
+import controller.User;
 import view.game.GameFrame;
 import javax.swing.*;
 import java.awt.*;

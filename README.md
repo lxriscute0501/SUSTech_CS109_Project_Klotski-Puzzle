@@ -42,13 +42,13 @@ Klotski Puzzle
 │   ├── controller/
 │   │   ├── GameController.java         # 游戏基本逻辑，包含检验移动合法性、更新方块位置、检验胜利条件、工具使用、计时等
 │   │   ├── UserDataController.java     # 存储与加载游戏信息
-│   │   └── UserManager.java            # 登录时验证与加载用户数据
+│   │   ├──  UserManager.java            # 登录时验证与加载用户数据
+│   │   └── User.java                   # 存储用户信息，包含密码、最佳时间与步数等
 │   ├── model/
 │   │   ├── BackgroundMusic.java        # 背景音乐（全程运行）
 │   │   ├── Direction.java              # 枚举类，上下左右四个方向
 │   │   ├── MapModel.java               # 设置与复制地图，存储地图信息
-│   │   ├── SoundEffect.java            # 移动音效与胜利鼓掌音效
-│   │   └── User.java                   # 存储用户信息，包含密码、最佳时间与步数等
+│   │   └── SoundEffect.java            # 移动音效与胜利鼓掌音效
 │   ├── view/
 │   │   ├── game/
 │   │   │    ├── BoxComponent.java      # 设置每个方块的位置与图案

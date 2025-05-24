@@ -1,7 +1,7 @@
 package view.login;
 
 import model.MapModel;
-import model.User;
+import controller.User;
 import view.FrameUtil;
 import view.game.GameFrame;
 

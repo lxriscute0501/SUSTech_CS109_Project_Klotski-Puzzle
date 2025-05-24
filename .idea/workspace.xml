@@ -7,14 +7,17 @@
     <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Update README">
       <change afterPath="$PROJECT_DIR$/src/AI/AISolution.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/AI/GameState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/game/ObstacleComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README_en.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_en.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -357,7 +360,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747906162539</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="[FEAT] Add obstacle and hammer buttons.">
+      <option name="closed" value="true" />
+      <created>1747928051765</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1747928051765</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Update README">
+      <option name="closed" value="true" />
+      <created>1748006363226</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1748006363226</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -381,7 +400,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FIX] Fix the problem of step count when clicking undo button" />
     <MESSAGE value="[FIX] Fix the undo button, but still have problems with keyboard controlling." />
     <MESSAGE value="[FIX] Fix the keyboard controlled move." />
     <MESSAGE value="ignore" />
@@ -405,6 +423,7 @@
     <MESSAGE value="[FEAT] Add block pictures/" />
     <MESSAGE value="[FEAT] Add block pictures." />
     <MESSAGE value="[FIX] Fix the time counting problem." />
+    <MESSAGE value="[FEAT] Add obstacle and hammer buttons." />
     <MESSAGE value="Update README" />
     <option name="LAST_COMMIT_MESSAGE" value="Update README" />
   </component>

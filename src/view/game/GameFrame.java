@@ -4,7 +4,7 @@ import controller.GameController;
 import controller.UserDataController;
 import model.Direction;
 import model.MapModel;
-import model.User;
+import controller.User;
 import view.FrameUtil;
 
 import javax.swing.*;

@@ -1,7 +1,6 @@
 package controller;
 
 import model.MapModel;
-import model.User;
 import view.game.GamePanel;
 
 import java.io.File;

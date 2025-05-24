@@ -2,7 +2,6 @@ package controller;
 
 import model.*;
 import view.game.BoxComponent;
-import view.game.GameFrame;
 import view.game.GamePanel;
 
 import java.util.Stack;

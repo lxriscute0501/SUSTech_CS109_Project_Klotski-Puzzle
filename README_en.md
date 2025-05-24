@@ -36,13 +36,13 @@ Klotski Puzzle
 │   ├── controller/
 │   │   ├── GameController.java 
 │   │   ├── UserDataController.java
-│   │   └── UserManager.java
+│   │   ├── UserManager.java
+│   │   └── User.java
 │   ├── model/
 │   │   ├── BackgroundMusic.java
 │   │   ├── Direction.java
 │   │   ├── MapModel.java
-│   │   ├── SoundEffect.java
-│   │   └── User.java
+│   │   └── SoundEffect.java
 │   ├── view/
 │   │   ├── game/
 │   │   │    ├── BoxComponent.java

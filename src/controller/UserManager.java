@@ -1,6 +1,5 @@
 package controller;
 
-import model.User;
 import java.io.*;
 import java.util.Properties;
 
@@ -37,14 +36,5 @@ public class UserManager {
             return new User(username, password);
         }
         return null;
-    }
-
-    public static void saveUser(User user) {
-        props.setProperty("user." + user.getUsername() + ".password", user.getPassword());
-        saveConfig();
-    }
-
-    public static boolean userExists(String username) {
-        return props.containsKey("user." + username + ".password");
     }
 }
