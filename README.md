@@ -42,7 +42,7 @@ Klotski Puzzle
 │   ├── controller/
 │   │   ├── GameController.java         # 游戏基本逻辑，包含检验移动合法性、更新方块位置、检验胜利条件、工具使用、计时等
 │   │   ├── UserDataController.java     # 存储与加载游戏信息
-│   │   ├──  UserManager.java            # 登录时验证与加载用户数据
+│   │   ├── UserManager.java            # 登录时验证与加载用户数据
 │   │   └── User.java                   # 存储用户信息，包含密码、最佳时间与步数等
 │   ├── model/
 │   │   ├── BackgroundMusic.java        # 背景音乐（全程运行）
@@ -134,7 +134,10 @@ Klotski Puzzle
 ```
 
 - 💡 使用锤子、障碍工具后的`Undo`与`Restart`功能：
+    * `Restart`后，所有被删除的士兵与设置的禁区都会被恢复；
+    * 使用工具的操作是不可逆的，因此若`Undo`操作的士兵已被删除，`Undo`不会执行，并有错误提示；
+    * 同理，若原位置已被设为禁区，`Undo`也不会执行，并有错误提示。
 
-
+- 
 
 

@@ -27,39 +27,38 @@ Klotski Puzzle
 │   │   ├── easy/
 │   │   ├── hard/
 │   │   └── medium/
-│   ├── images/                         
+│   ├── images/
 │   │   ├── backgrounds/
 │   │   ├── blocks/
 │   │   └── buttons/
 │   └── sound/
 ├── src/
 │   ├── controller/
-│   │   ├── GameController.java 
-│   │   ├── UserDataController.java
-│   │   ├── UserManager.java
-│   │   └── User.java
+│   │   ├── GameController.java         # Basic game logic, including checking the legality of movements, updating the position of the blocks, checking victory conditions, using tools, and timing
+│   │   ├── UserDataController.java     # Stores and loads game information
+│   │   ├── UserManager.java            # Verifies and loads user data during login
+│   │   └── User.java                   # Stores user information, including password, best time, and steps, etc.
 │   ├── model/
-│   │   ├── BackgroundMusic.java
-│   │   ├── Direction.java
-│   │   ├── MapModel.java
-│   │   └── SoundEffect.java
+│   │   ├── BackgroundMusic.java        # Background Music (running throughout)
+│   │   ├── Direction.java              # Enum class, four directions: up, down, left, right
+│   │   ├── MapModel.java               # Setting and copying of the map, storing map information
+│   │   └── SoundEffect.java            # Movement sound effect and victory clapping sound effect 
 │   ├── view/
 │   │   ├── game/
-│   │   │    ├── BoxComponent.java
-│   │   │    ├── GameFrame.java
-│   │   │    ├── GamePanel.java
-│   │   │    └── ListenerPanel.java
+│   │   │    ├── BoxComponent.java      # Sets the position and pattern of each block
+│   │   │    ├── GameFrame.java         # Configures various labels and buttons of the game interface
+│   │   │    ├── GamePanel.java         # Responds to block selection and movement, sets tool buttons, updates the step count and time labels, and also counts the steps here
+│   │   │    └── ListenerPanel.java     # Implements responses to keyboard and mouse inputs 
 │   │   ├── login/
-│   │   │    ├── LevelFrame.java
-│   │   │    ├── LoginFrame.java
-│   │   │    ├── RegisterFrame.java
-│   │   │    ├── ResetFrame.java
-│   │   │    └── StartGameFrame.java
-│   │   └── FrameUtil.java
-│   └── Main.java
+│   │   │    ├── LevelFrame.java        # Select level after starting a new game, randomly choose 3 images from each difficulty level
+│   │   │    ├── LoginFrame.java        # Set the functions of four buttons, verify and store user information
+│   │   │    ├── RegisterFrame.java     # New user registration
+│   │   │    ├── ResetFrame.java        # Old user password modification
+│   │   │    └── StartGameFrame.java    # Login page for starting the game, and load the game here simultaneously
+│   │   └── FrameUtil.java              # Create basic elements for labels, passwords, and buttons │   └── Main.java
 ├── .gitignore
 ├── CS109_Project_Klotski-Puzzle.iml
-├── Klotski Puzzle.pdf
+├── Klotski Puzzle.pdf                  # Project Document 
 ├── LICENSE
 ├── README.md
 └── README_en.md
@@ -113,8 +112,20 @@ Klotski Puzzle
 
 ## Q & A
 
-- When a player enters the game, their Username will be displayed as "Guest", but this does not cause any conflict. According to... If the user also names themselves as "Guest", since passwords need to be stored along with it, the game will recognize the user and all functions such as saving and loading the game can be used normally.
+- *Q: After a guest enters the game, the username will be displayed as `Guest`. Will this cause any conflict with users whose usernames are also `Guest`?*
+✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
 
-- If there is no username, we will default it to "admin" for you, and the password will also be "admin".
+- 💡 In the `saveGame` method, the saved path is `data/username/data.txt`, and its format is: 
+```
+[level]
+[steps]
+[used time]
+[best steps]
+[best time]
+[map data (4*5)]
+```
 
-- Defensive programming: Even when the level resources are attacked or damaged, the default map can still be launched.
+- 💡 The `Undo` and `Restart` functions after using the hammer and obstacle tools:
+    * After performing `Restart`, all the deleted soldiers and the designated restricted areas will be restored;
+    * The operations using the tools are irreversible. Therefore, if the soldiers deleted by the `Undo` operation have already been removed, the `Undo` operation will not be executed and an error message will be displayed;
+    * Similarly, if the original position has been set as a restricted area, the `Undo` operation will not be executed either, and an error message will be displayed.

@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/MapModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/MapModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
-    </list>
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[UPDATE] fix the problems of hammer and obstacle" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -377,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748056889341</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="[UPDATE] fix the problems of hammer and obstacle">
+      <option name="closed" value="true" />
+      <created>1748067294361</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1748067294361</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -401,7 +402,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FIX] Fix the keyboard controlled move." />
     <MESSAGE value="ignore" />
     <MESSAGE value="[FEAT] multi-user login" />
     <MESSAGE value="[FEAT] Save and load game of multi-users." />
@@ -426,6 +426,7 @@
     <MESSAGE value="[FEAT] Add obstacle and hammer buttons." />
     <MESSAGE value="Update README" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="[UPDATE] fix the problems of hammer and obstacle" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] fix the problems of hammer and obstacle" />
   </component>
 </project>
