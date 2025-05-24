@@ -55,7 +55,8 @@ Klotski Puzzle
 │   │   │    ├── RegisterFrame.java     # New user registration
 │   │   │    ├── ResetFrame.java        # Old user password modification
 │   │   │    └── StartGameFrame.java    # Login page for starting the game, and load the game here simultaneously
-│   │   └── FrameUtil.java              # Create basic elements for labels, passwords, and buttons │   └── Main.java
+│   │   └── FrameUtil.java              # Create basic elements for labels, passwords, and buttons 
+│   └── Main.java
 ├── .gitignore
 ├── CS109_Project_Klotski-Puzzle.iml
 ├── Klotski Puzzle.pdf                  # Project Document 
