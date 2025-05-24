@@ -209,7 +209,6 @@ public class GamePanel extends ListenerPanel {
         }
 
         boolean success = controller.undoMove();
-
         if (success) {
             steps--;
             updateStepLabel();

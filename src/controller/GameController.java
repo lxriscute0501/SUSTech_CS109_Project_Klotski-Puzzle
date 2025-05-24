@@ -32,7 +32,46 @@ public class GameController {
     public enum Tool { HAMMER, OBSTACLE, NONE }
     private Tool currentTool = Tool.NONE;
 
-    private record MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol) {}
+    public static class MoveRecord {
+        private final int blockId;
+        private final int fromRow, fromCol;
+        private final int toRow, toCol;
+        private final boolean isValid;
+
+        public MoveRecord(int blockId, int fromRow, int fromCol, int toRow, int toCol, boolean isValid) {
+            this.blockId = blockId;
+            this.fromRow = fromRow;
+            this.fromCol = fromCol;
+            this.toRow = toRow;
+            this.toCol = toCol;
+            this.isValid = isValid;
+        }
+
+        public int getBlockId() {
+            return blockId;
+        }
+
+        public int getFromRow() {
+            return fromRow;
+        }
+
+        public int getFromCol() {
+            return fromCol;
+        }
+
+        public int getToRow() {
+            return toRow;
+        }
+
+        public int getToCol() {
+            return toCol;
+        }
+
+        public boolean isValid() {
+            return isValid;
+        }
+    }
+
 
     public GameController(GamePanel view, MapModel model, User user) {
         this.view = view;
@@ -55,7 +94,7 @@ public class GameController {
 
         if (!isMoveValid(blockId, row, col, toRow, toCol)) return false;
 
-        moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol));
+        moveHistory.push(new MoveRecord(blockId, row, col, toRow, toCol, true));
         updateModelPosition(blockId, row, col, toRow, toCol);
         updateViewPosition(row, col, toRow, toCol);
         return true;
@@ -99,32 +138,46 @@ public class GameController {
     }
 
     public boolean undoMove() {
-        if (moveHistory.isEmpty()) {
-            System.out.println("Can not undo!");
-            return false;
+        if (!moveHistory.isEmpty()) {
+            MoveRecord lastMove = moveHistory.pop();
+            int blockId = lastMove.getBlockId();
+
+            if (model.isOccupied(lastMove.getFromRow(), lastMove.getFromCol())) {
+                System.out.println("Undo blocked: position is occupied!");
+                return false;
+            }
+
+            BoxComponent box = view.getBoxAt(lastMove.getToRow(), lastMove.getToCol());
+            if (box != null) {
+
+                updateModelPosition(blockId,
+                        lastMove.getToRow(), lastMove.getToCol(),
+                        lastMove.getFromRow(), lastMove.getFromCol()
+                );
+
+                box.setRow(lastMove.getFromRow());
+                box.setCol(lastMove.getFromCol());
+                box.setLocation(
+                        box.getCol() * view.getGRID_SIZE() + 2,
+                        box.getRow() * view.getGRID_SIZE() + 2
+                );
+                box.repaint();
+
+                selectedRow = lastMove.getFromRow();
+                selectedCol = lastMove.getFromCol();
+                view.highlightSelectedBox(selectedRow, selectedCol);
+                return true;
+            } else {
+                System.out.println("Undo failed: block already deleted.");
+                return false;
+            }
         }
 
-        MoveRecord lastMove = moveHistory.pop();
-        updateModelPosition(lastMove.blockId(), lastMove.toRow(), lastMove.toCol(), lastMove.fromRow(), lastMove.fromCol());
-
-        // update box vision
-        BoxComponent box = view.getBoxAt(lastMove.toRow(), lastMove.toCol());
-        if (box != null) {
-            box.setRow(lastMove.fromRow());
-            box.setCol(lastMove.fromCol());
-            box.setLocation(
-                    box.getCol() * view.getGRID_SIZE() + 2,
-                    box.getRow() * view.getGRID_SIZE() + 2
-            );
-            box.repaint();
-        }
-
-        // update step count and selected box
-        selectedRow = lastMove.fromRow();
-        selectedCol = lastMove.fromCol();
-        view.highlightSelectedBox(selectedRow, selectedCol);
-        return true;
+        System.out.println("No valid moves to undo!");
+        return false;
     }
+
+
 
     private void updateModelPosition(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
         model.getMatrix()[fromRow][fromCol] = 0;

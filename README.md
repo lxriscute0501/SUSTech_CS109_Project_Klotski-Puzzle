@@ -120,10 +120,21 @@ Klotski Puzzle
 
 ## 问题与解答
 
-- *Q1: 游客进入游戏后用户名会显示为`Guest`，是否会与用户名也为`Guest`的用户产生冲突？*
+- *Q: 游客进入游戏后用户名会显示为`Guest`，是否会与用户名也为`Guest`的用户产生冲突？*
 - ✅ 不会。如果用户也起名为`Guest`，其信息存储在`User`中，其中的`isGuest`值为`false`，且`user.config`中也会存储其用户名及密码。因此游戏会识别出用户，保存及加载游戏等功能均可正常使用。
 
-- *Q2: 工具的使用（锤子和障碍）与`Undo`、`Restart`之间的关系？*
-- ✅ 无关。工具的使用并不会计为步数，因此是不可逆的。
+- 💡 `saveGame`方法中，保存的路径为`data/username/data.txt`，其格式为：
+```
+[level]
+[steps]
+[used time]
+[best steps]
+[best time]
+[map data (4*5)]
+```
+
+- 💡 使用锤子、障碍工具后的`Undo`与`Restart`功能：
+
+
 
 

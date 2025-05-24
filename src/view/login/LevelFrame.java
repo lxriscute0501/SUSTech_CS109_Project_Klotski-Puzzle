@@ -10,11 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The third frame, connecting StartMenuFrame && GameFrame.
- * Able to choose different game levels.
- */
-
 public class LevelFrame extends JFrame {
     private final boolean isGuest;
     private final User user;
@@ -95,7 +90,6 @@ public class LevelFrame extends JFrame {
 
         String basePath = "resources/levels/" + difficultyFolder + "/";
 
-        // if no map in the folder, return the default map
         int mapCount = getMapCount(basePath);
         if (mapCount == 0) return getDefaultMap();
 
@@ -176,7 +170,4 @@ public class LevelFrame extends JFrame {
         button.setToolTipText(toolTipText);
         return button;
     }
-
-
-
 }
