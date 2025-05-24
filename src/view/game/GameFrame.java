@@ -7,10 +7,12 @@ import model.MapModel;
 import controller.User;
 import view.FrameUtil;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
+    private Clip backgroundClip;
     private GameController controller;
     private UserDataController userData;
 
@@ -21,33 +23,41 @@ public class GameFrame extends JFrame {
     private JButton leftBtn;
     private JButton rightBtn;
     private JButton undoBtn;
+    private JButton soundBtn;
+    private JButton hammerBtn;
+    private JButton obstacleBtn;
+    private JLabel timeLabel;
+    private JLabel levelLabel;
+    private JLabel stepLabel;
 
+    private boolean isSoundOn = true;
     private GamePanel gamePanel;
     private User currentUser;
     private boolean isGuest;
     private String level;
     private MapModel map;
-    private JButton hammerBtn;
-    private JButton obstacleBtn;
 
     public GameFrame(int width, int height, MapModel mapModel, boolean isGuest, User user) {
         this.setTitle("Klotski Puzzle");
-        this.setLayout(null);
         this.setSize(width, height);
+        this.setLayout(null);
+
         this.currentUser = user;
         this.isGuest = isGuest;
         this.map = mapModel;
         this.level = map.getLevel();
 
-        // create the main game panel
+
+
         gamePanel = new GamePanel(mapModel);
-        gamePanel.setLocation(30, height / 2 - gamePanel.getHeight() / 2);
+        gamePanel.setLocation(width/2-gamePanel.getWidth()/2, height / 2 - gamePanel.getHeight() / 2-100);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapModel, user);
         this.userData = controller.getUserDataController();
 
         initializeUIComponents();
         addExitIndicator();
+
 
         this.setLocationRelativeTo(null);
         if (isGuest) this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -65,7 +75,9 @@ public class GameFrame extends JFrame {
                 }
             });
         }
+        playBackgroundMusic();
     }
+
 
     // draw exit image
     private void addExitIndicator() {
@@ -96,91 +108,185 @@ public class GameFrame extends JFrame {
         this.add(exitPanel);
     }
 
-    private void initializeUIComponents() {
-        int rightPanelX = gamePanel.getWidth() + 120;
 
-        JLabel timeLabel = FrameUtil.createJLabel(this, "Time Left: 05:00",
-                new Font("serif", Font.BOLD, 22),
-                new Point(rightPanelX, 20), 300, 50);
+    private void initializeUIComponents() {
+        int x=0;
+        int y=0;
+
+        // Time Label
+        JLabel timeLabel = FrameUtil.createJLabel(this, "Time Left 05:00",
+                new Font("Arial", Font.PLAIN, 22),
+                new Point(x+30, y+20),
+                200, 100);
         gamePanel.setTimeLabel(timeLabel);
 
-        JLabel levelLabel = FrameUtil.createJLabel(this, "Level: " + this.level,
-                new Font("serif", Font.BOLD, 22),
-                new Point(rightPanelX + 200, 20), 300, 50);
+        // Level Label
+        JLabel levelLabel = FrameUtil.createJLabel(this, "",
+                new Font("Arial", Font.PLAIN, 22),
+                new Point(x+45, y+100),
+                200, 100);
+        levelLabel.setText("<html><div style='text-align: center;'>"
+                + "<b>Level</b><br>"
+                + "<hr style='width: 80%; margin: 2px 0;'>"
+                + "<span style='font-size: 16pt;'>" + this.level + "</span>"
+                + "</div></html>");
 
-        JLabel usernameLabel = FrameUtil.createJLabel(this, "Username: " + currentUser.getUsername(),
-                new Font("serif", Font.BOLD, 22),
-                new Point(rightPanelX + 100, 60), 300, 50);
+        this.add(levelLabel);
 
-        JLabel bestStepsLabel = FrameUtil.createJLabel(this,
-                "Best Steps: " + (currentUser.hasBestSteps() ? currentUser.getBestSteps() : "N/A"),
-                new Font("serif", Font.BOLD, 22),
-                new Point(rightPanelX + 100, 100), 300, 50);
-
-        JLabel bestTimeLabel = FrameUtil.createJLabel(this,
-                "Best Time: " + (currentUser.hasBestTime() ? currentUser.getBestTime() : "N/A"),
-                new Font("serif", Font.BOLD, 22),
-                new Point(rightPanelX + 100, 140), 300, 50);
-
+        // Steps Label
         JLabel stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
-                new Font("serif", Font.BOLD, 25),
-                new Point(rightPanelX + 100, 220), 300, 50);
+                new Font("Arial", Font.PLAIN, 25),
+                new Point(x+40, y+180),
+                200, 100);
         gamePanel.setStepLabel(stepLabel);
 
-        // restart game button
-        this.restartBtn = FrameUtil.createButton(this, "Restart",
-                new Point(rightPanelX + 100, 260), 120, 40);
-        this.restartBtn.addActionListener(e -> {
+        this.add(stepLabel);
+
+        // Username Label
+        JLabel usernameLabel = FrameUtil.createJLabel(this,
+                "<html><div style='text-align: center;'>"
+                        + "<b>Username</b><br>"
+                        + "<hr style='width: 80%; margin: 2px 0;'>"
+                        + "<span style='font-size: 16pt;'>" + currentUser.getUsername() + "</span>"
+                        + "</div></html>",
+                new Font("Arial", Font.PLAIN, 22),
+                new Point(x+750, y+20),
+                200, 100);
+        this.add(usernameLabel);
+
+        // Best Steps Label
+        JLabel bestStepsLabel = FrameUtil.createJLabel(this,
+                "<html><div style='text-align: center;'>"
+                        + "<b>Best Steps</b><br>"
+                        + "<hr style='width: 80%; margin: 2px 0;'>"
+                        + "<span style='font-size: 16pt;'>"
+                        + (currentUser.hasBestSteps() ? currentUser.getBestSteps() : "N/A")
+                        + "</span></div></html>",
+                new Font("Arial", Font.PLAIN, 22),
+                new Point(x+750, 100),
+                200, 100);
+        this.add(bestStepsLabel);
+
+        // Best Time Label
+        JLabel bestTimeLabel = FrameUtil.createJLabel(this,
+                "<html><div style='text-align: center;'>"
+                        + "<b>Best Time</b><br>"
+                        + "<hr style='width: 80%; margin: 2px 0;'>"
+                        + "<span style='font-size: 16pt;'>"
+                        + (currentUser.hasBestTime() ? currentUser.getBestTime() : "N/A")
+                        + "</span></div></html>",
+                new Font("Arial", Font.PLAIN, 22),
+                new Point(x+752, y+180),
+                200, 100);
+        this.add(bestTimeLabel);
+
+        // Buttons size
+        int btnWidth = 180;
+        int btnHeight = 90;
+
+        restartBtn = FrameUtil.createImageButton("/Buttons/restart.png", "Restart", btnWidth, btnHeight);
+        restartBtn.setBounds(x+710, y+470, btnWidth, btnHeight);
+        restartBtn.addActionListener(e -> {
             startNewGame();
             gamePanel.requestFocusInWindow();
         });
+        this.add(restartBtn);
 
-        // save game button (disabled for guests)
-        this.saveBtn = FrameUtil.createButton(this, "Save Game",
-                new Point(rightPanelX + 100, 300), 120, 40);
-
-        this.saveBtn.addActionListener(e -> {
-            userData.saveGame(false);
-        });
-
-        // forbid guest to click save button
+        saveBtn = FrameUtil.createImageButton("/Buttons/saveGame.png", "Save Game", btnWidth, btnHeight);
+        saveBtn.setBounds(x+710, y+420, btnWidth, btnHeight);
+        saveBtn.addActionListener(e -> userData.saveGame(false));
         if (isGuest) {
             saveBtn.setEnabled(false);
             saveBtn.setToolTipText("Guest cannot save games.");
         }
+        this.add(saveBtn);
 
-        // undo button
-        this.undoBtn = FrameUtil.createButton(this, "Undo",
-                new Point(rightPanelX + 100, 340), 120, 40);
-        this.undoBtn.addActionListener(e -> {
+        undoBtn = FrameUtil.createImageButton("/Buttons/undo.png", "Undo", btnWidth, btnHeight);
+        undoBtn.setBounds(x+710, y+370, btnWidth, btnHeight);
+        undoBtn.addActionListener(e -> {
             if (gamePanel.undoLastMove()) {
                 gamePanel.requestFocusInWindow();
             }
         });
+        this.add(undoBtn);
 
-        // direction button
-        this.upBtn = FrameUtil.createButton(this, "⬆",
-                new Point(rightPanelX + 100, 400), 40, 40);
-        this.downBtn = FrameUtil.createButton(this, "⬇",
-                new Point(rightPanelX + 100, 450), 40, 40);
-        this.leftBtn = FrameUtil.createButton(this, "⬅",
-                new Point(rightPanelX + 60, 425), 40, 40);
-        this.rightBtn = FrameUtil.createButton(this, "➡",
-                new Point(rightPanelX + 140, 425), 40, 40);
 
-        // set direction button action
+        upBtn = FrameUtil.createImageButton("/Buttons/up.png", "Move Up", 150, 100);
+        upBtn.setBounds(x+375, y+325, 150, 100);
         upBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.UP));
+        this.add(upBtn);
+
+        downBtn = FrameUtil.createImageButton("/Buttons/down.png", "Move Down", 150, 100);
+        downBtn.setBounds(x+375, y+405, 150, 100);
         downBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.DOWN));
+        this.add(downBtn);
+
+        leftBtn = FrameUtil.createImageButton("/Buttons/left.png", "Move Left", 150, 100);
+        leftBtn.setBounds(x+335, 365, 150, 100);
         leftBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.LEFT));
+        this.add(leftBtn);
+
+        rightBtn = FrameUtil.createImageButton("/Buttons/right.png", "Move Right", 150, 100);
+        rightBtn.setBounds(x + 415, 365, 150, 100);
         rightBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.RIGHT));
+        this.add(rightBtn);
 
-        this.hammerBtn = FrameUtil.createButton(this, "🔨",
-                new Point(rightPanelX + 50, 500), 50, 50);
-        this.obstacleBtn = FrameUtil.createButton(this, "🚧",
-                new Point(rightPanelX + 150, 500), 50, 50);
+        // Sound Toggle Button (larger size)
+        int soundBtnWidth = 150;
+        int soundBtnHeight = 100;
+        soundBtn = FrameUtil.createImageButton("/Buttons/soundOn.png", "Toggle Sound", soundBtnWidth, soundBtnHeight);
+        soundBtn.setBounds(x+ 0,y+ 450, soundBtnWidth, soundBtnHeight);
+        soundBtn.addActionListener(e -> toggleSound());
+        this.add(soundBtn);
 
+
+
+        // Tool Buttons
+        // Tool Buttons
+        hammerBtn = FrameUtil.createImageButton( "/Buttons/hammer.png", "hammer",soundBtnWidth, soundBtnHeight);
+        hammerBtn.setBounds(x +0, y+300, soundBtnWidth, soundBtnHeight);
         hammerBtn.addActionListener(e -> controller.selectTool(GameController.Tool.HAMMER));
+        this.add(hammerBtn);
+
+        obstacleBtn = FrameUtil.createImageButton( "/Buttons/obstacle.png","obstacle",soundBtnWidth,soundBtnHeight);
+        obstacleBtn.setBounds(x +0, y+375, soundBtnWidth, soundBtnHeight);
         obstacleBtn.addActionListener(e -> controller.selectTool(GameController.Tool.OBSTACLE));
+        this.add(obstacleBtn);
+    }
+
+    private void toggleSound() {
+        if (isSoundOn) {
+            stopBackgroundMusic();
+            soundBtn.setIcon(FrameUtil.loadIcon("/Buttons/mute.png", 200, 100));
+        } else {
+            playBackgroundMusic();
+            soundBtn.setIcon(FrameUtil.loadIcon("/Buttons/soundOn.png", 200, 100));
+        }
+        isSoundOn = !isSoundOn;
+        gamePanel.requestFocusInWindow();
+    }
+
+    private void playBackgroundMusic() {
+        try {
+            if (backgroundClip != null && backgroundClip.isRunning()) {
+                backgroundClip.stop();
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+                    getClass().getResource("/Sounds/bgm.wav"));
+            backgroundClip = AudioSystem.getClip();
+            backgroundClip.open(audioStream);
+            backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
+            backgroundClip.start();
+        } catch (Exception e) {
+            System.err.println("Error playing background music: " + e.getMessage());
+        }
+    }
+
+    private void stopBackgroundMusic() {
+        if (backgroundClip != null && backgroundClip.isRunning()) {
+            backgroundClip.stop();
+        }
     }
 
     public void startNewGame() {

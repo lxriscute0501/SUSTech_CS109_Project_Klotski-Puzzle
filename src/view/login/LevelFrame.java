@@ -2,7 +2,9 @@ package view.login;
 
 import model.MapModel;
 import controller.User;
+import view.FrameUtil;
 import view.game.GameFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -18,56 +20,71 @@ public class LevelFrame extends JFrame {
         this.isGuest = isGuest;
         this.user = user;
 
-        this.setTitle("Klotski Puzzle - Game Level Choose");
-        this.setLayout(null);
-        this.setSize(width, height);
-        this.setLocationRelativeTo(null);
+        setTitle("Klotski Puzzle - Game Level Choose");
+        setSize(width, height);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        // Use GridBagLayout
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // General GBC setup for all components
+        gbc.insets = new Insets(0, 0, 0, 0); // vertical spacing
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Row 0 - Title label
         JLabel titleLabel = new JLabel("Level Selection", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titleLabel.setBounds(0, 30, this.getWidth(), 40);
-        this.add(titleLabel);
+        gbc.gridy = 0;
+        add(titleLabel, gbc);
 
+        // Row 1 - Subheading label
         JLabel subheadingLabel = new JLabel("Pick the level you want to play", SwingConstants.CENTER);
         subheadingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        subheadingLabel.setBounds(0, 70, this.getWidth(), 25);
-        this.add(subheadingLabel);
+        gbc.gridy = 1;
+        add(subheadingLabel, gbc);
 
+        // Button size constants
+        int btnWidth = 150;
+        int btnHeight = 75;
 
-        JButton easyBtn = createImageButton("/Buttons/easy.png", "Easy");
-        easyBtn.setBounds(200, 120, 200, 40);
+        // Helper method to create and add buttons
+        gbc.gridy = 2;
+        JButton easyBtn = FrameUtil.createImageButton("/Buttons/easy.png", "Easy", btnWidth, btnHeight);
         easyBtn.addActionListener(e -> startGameWithLevel(1));
-        this.add(easyBtn);
+        add(easyBtn, gbc);
 
-        JButton mediumBtn = createImageButton("/Buttons/medium.png", "Medium");
-        mediumBtn.setBounds(200, 180, 200, 40);
+        gbc.gridy = 3;
+        JButton mediumBtn = FrameUtil.createImageButton("/Buttons/medium.png", "Medium", btnWidth, btnHeight);
         mediumBtn.addActionListener(e -> startGameWithLevel(2));
-        this.add(mediumBtn);
+        add(mediumBtn, gbc);
 
-        JButton hardBtn = createImageButton("/Buttons/hard.png", "Hard");
-        hardBtn.setBounds(200, 240, 200, 40);
+        gbc.gridy = 4;
+        JButton hardBtn = FrameUtil.createImageButton("/Buttons/hard.png", "Hard", btnWidth, btnHeight);
         hardBtn.addActionListener(e -> startGameWithLevel(3));
-        this.add(hardBtn);
+        add(hardBtn, gbc);
 
-        JButton backBtn = createImageButton("/Buttons/back.png", "Return");
-        backBtn.setBounds(200, 300, 200, 40);
+        gbc.gridy = 5;
+        JButton backBtn = FrameUtil.createImageButton("/Buttons/back.png", "Return", btnWidth, btnHeight);
         backBtn.addActionListener(e -> {
             StartMenuFrame startMenu = new StartMenuFrame(600, 400, isGuest, user);
             startMenu.setVisible(true);
             this.dispose();
         });
-        this.add(backBtn);
-
-
-
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        add(backBtn, gbc);
     }
 
     private void startGameWithLevel(int difficulty) {
         int[][] mapData = generateMap(difficulty);
 
         String level = "";
-        if (difficulty == 1) level = "Easy"; else if (difficulty == 2) level = "Medium"; else if (difficulty == 3) level = "Hard";
+        if (difficulty == 1) level = "Easy";
+        else if (difficulty == 2) level = "Medium";
+        else if (difficulty == 3) level = "Hard";
 
         MapModel model = new MapModel(mapData, level);
         model.setLevel(level);
@@ -82,10 +99,17 @@ public class LevelFrame extends JFrame {
     private int[][] generateMap(int difficulty) {
         String difficultyFolder;
         switch (difficulty) {
-            case 1: difficultyFolder = "easy"; break;
-            case 2: difficultyFolder = "medium"; break;
-            case 3: difficultyFolder = "hard"; break;
-            default: difficultyFolder = "medium";
+            case 1:
+                difficultyFolder = "easy";
+                break;
+            case 2:
+                difficultyFolder = "medium";
+                break;
+            case 3:
+                difficultyFolder = "hard";
+                break;
+            default:
+                difficultyFolder = "medium";
         }
 
         String basePath = "resources/levels/" + difficultyFolder + "/";
@@ -119,14 +143,10 @@ public class LevelFrame extends JFrame {
 
             if (lines.isEmpty()) return getDefaultMap();
 
-            boolean hasExits = lines.size() > 4;
             int[][] map = new int[4][5];
-
-            for (int i = 0; i < 4 && i < lines.size(); i++)
-            {
+            for (int i = 0; i < 4 && i < lines.size(); i++) {
                 String[] values = lines.get(i).split("\\s+");
-                for (int j = 0; j < 5 && j < values.length; j++)
-                {
+                for (int j = 0; j < 5 && j < values.length; j++) {
                     try {
                         map[i][j] = Integer.parseInt(values[j]);
                     } catch (NumberFormatException e) {
@@ -142,32 +162,7 @@ public class LevelFrame extends JFrame {
         }
     }
 
-    // defensive programming, if level resources have been changed, we can still load the default map
     private int[][] getDefaultMap() {
         return new int[4][5];
-    }
-
-    private JButton createImageButton(String resourcePath, String toolTipText) {
-        java.net.URL imageUrl = getClass().getResource(resourcePath);
-        if (imageUrl == null) {
-            System.err.println("Could not load image at: " + resourcePath);
-            JButton fallback = new JButton(toolTipText);
-            fallback.setToolTipText(toolTipText);
-            return fallback;
-        }
-
-        ImageIcon originalIcon = new ImageIcon(imageUrl);
-        int width = 150;
-        int height = 75;
-        Image scaledImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-        JButton button = new JButton(scaledIcon);
-        button.setPreferredSize(new Dimension(width, height));
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setToolTipText(toolTipText);
-        return button;
     }
 }

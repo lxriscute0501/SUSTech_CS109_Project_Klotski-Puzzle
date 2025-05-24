@@ -2,7 +2,7 @@
 
 # Klotski Puzzle 华容道
 
-**📖 中文 | [English](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/README_en.md)**
+**📖 Language: 中文 | [English](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/README_en.md)**
 
 **CS109 计算机程序设计基础(JavaA) 25春 项目报告**
 
