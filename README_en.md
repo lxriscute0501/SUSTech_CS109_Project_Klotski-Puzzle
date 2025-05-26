@@ -43,6 +43,7 @@ Klotski Puzzle
 │   ├── model/
 │   │   ├── BackgroundMusic.java        # Background Music (running throughout)
 │   │   ├── Direction.java              # Enum class, four directions: up, down, left, right
+│   │   ├── FireworksEffect.java        # Set fireworks when win the game
 │   │   ├── MapModel.java               # Setting and copying of the map, storing map information
 │   │   └── SoundEffect.java            # Movement sound effect and victory clapping sound effect 
 │   ├── view/
@@ -122,7 +123,7 @@ Klotski Puzzle
 - ✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally.
 
 - *Q: When choosing levels, what if all the map resources have been destroyed?*
-- ✅ If the map we choose do not have the size of $4*5$, we will load the default map, and users can play the game normally.
+- ✅ At each level, one map resource is randomly selected from three options. If the map we choose do not have the size of $4*5$, we will load the default map, and users can play the game normally.
 
 - 💡 In the `saveGame` method, the saved path is `data/username/data.txt`, and its format is: 
 ```
