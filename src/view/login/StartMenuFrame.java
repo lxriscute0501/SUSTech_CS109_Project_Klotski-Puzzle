@@ -3,15 +3,16 @@ package view.login;
 import model.MapModel;
 import controller.User;
 import view.FrameUtil;
+import view.game.BackgroundPanel;
 import view.game.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 public class StartMenuFrame extends JFrame {
     private User user;
@@ -25,6 +26,9 @@ public class StartMenuFrame extends JFrame {
         setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel("/images/UI/startBG.png");
+        this.setContentPane(backgroundPanel);
 
         // Use GridBagLayout
         setLayout(new GridBagLayout());
@@ -64,9 +68,20 @@ public class StartMenuFrame extends JFrame {
             try {
                 List<String> lines = Files.readAllLines(Path.of(filePath));
                 String level = lines.getFirst();
+                if (!Objects.equals(level, "Easy") && !Objects.equals(level, "Medium") && !Objects.equals(level, "Hard")) {
+                    JOptionPane.showMessageDialog(this, "Game cannot load!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 int[][] loadedMap = new int[4][5];
                 for (int i = 0; i < 4; i++) {
                     String[] value1 = lines.get(5 + i).split(" ");
+
+                    if (value1.length != 5) {
+                        JOptionPane.showMessageDialog(this, "Game cannot load!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
                     for (int j = 0; j < 5; j++) {
                         loadedMap[i][j] = Integer.parseInt(value1[j]);
                     }

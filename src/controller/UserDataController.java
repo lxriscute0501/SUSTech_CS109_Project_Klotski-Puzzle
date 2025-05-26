@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.Timer;
 
 public class UserDataController {
@@ -73,7 +74,7 @@ public class UserDataController {
             List<String> lines = Files.readAllLines(Path.of(filePath));
             System.out.println("Loaded data: " + lines);
 
-            if (lines.size() < 9) {
+            if (lines.size() != 9) {
                 view.showErrorMessage("Save file is corrupted!");
                 return;
             }
@@ -81,6 +82,11 @@ public class UserDataController {
             String level = lines.get(0);
             int savedStepCount = Integer.parseInt(lines.get(1));
             long savedTimeLeft = 300 - Long.parseLong(lines.get(2));
+
+            if ((!Objects.equals(level, "Easy") && !Objects.equals(level, "Medium") && !Objects.equals(level, "Hard")) || savedTimeLeft < 0) {
+                view.showErrorMessage("Save file is corrupted!");
+                return;
+            }
 
             model.setLevel(level);
             view.setSteps(savedStepCount);
@@ -90,6 +96,12 @@ public class UserDataController {
             for (int i = 0; i < 4; i++)
             {
                 String[] value1 = lines.get(5 + i).split(" ");
+
+                if (value1.length != 5) {
+                    view.showErrorMessage("Save file is corrupted!");
+                    return;
+                }
+
                 for (int j = 0; j < 5; j++) {
                     loadedMap[i][j] = Integer.parseInt(value1[j]);
                 }

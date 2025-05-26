@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Update README">
-      <change beforePath="$PROJECT_DIR$/src/view/FrameUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/FrameUtil.java" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="Update README and UI">
+      <change afterPath="$PROJECT_DIR$/resources/images/UI/gameBG.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/images/UI/startBG.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/game/BackgroundPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
     </list>
@@ -81,6 +86,7 @@
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/images/UI" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/images/blocks" />
       <recent name="$PROJECT_DIR$/resources/sound" />
@@ -399,7 +405,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748067935287</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Update README and UI">
+      <option name="closed" value="true" />
+      <created>1748068920266</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1748068920266</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -423,7 +437,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ignore" />
     <MESSAGE value="[FEAT] multi-user login" />
     <MESSAGE value="[FEAT] Save and load game of multi-users." />
     <MESSAGE value="[FEAT] timed auto-save or auto-save on exit" />
@@ -448,6 +461,7 @@
     <MESSAGE value="test" />
     <MESSAGE value="[UPDATE] fix the problems of hammer and obstacle" />
     <MESSAGE value="Update README" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README" />
+    <MESSAGE value="Update README and UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README and UI" />
   </component>
 </project>

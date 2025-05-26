@@ -31,7 +31,7 @@ public class GamePanel extends ListenerPanel {
     private JLabel stepLabel;
     private int steps;
 
-    private final int GRID_SIZE = 50;
+    private final int GRID_SIZE = 80;
 
     private Image image1;
     private Image image2;

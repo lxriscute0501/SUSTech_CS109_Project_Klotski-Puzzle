@@ -7,12 +7,10 @@ import model.MapModel;
 import controller.User;
 import view.FrameUtil;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
-    private Clip backgroundClip;
     private GameController controller;
     private UserDataController userData;
 
@@ -23,14 +21,12 @@ public class GameFrame extends JFrame {
     private JButton leftBtn;
     private JButton rightBtn;
     private JButton undoBtn;
-    private JButton soundBtn;
     private JButton hammerBtn;
     private JButton obstacleBtn;
     private JLabel timeLabel;
     private JLabel levelLabel;
     private JLabel stepLabel;
 
-    private boolean isSoundOn = true;
     private GamePanel gamePanel;
     private User currentUser;
     private boolean isGuest;
@@ -41,16 +37,18 @@ public class GameFrame extends JFrame {
         this.setTitle("Klotski Puzzle");
         this.setSize(width, height);
         this.setLayout(null);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel("/images/UI/gameBG.jpg");
+        this.setContentPane(backgroundPanel);
 
         this.currentUser = user;
         this.isGuest = isGuest;
         this.map = mapModel;
         this.level = map.getLevel();
 
-
-
         gamePanel = new GamePanel(mapModel);
-        gamePanel.setLocation(width/2-gamePanel.getWidth()/2, height / 2 - gamePanel.getHeight() / 2-100);
+        gamePanel.setLocation(width / 2 - gamePanel.getWidth() / 2, height / 2 - gamePanel.getHeight() / 2 - 100);
         this.add(gamePanel);
         this.controller = new GameController(gamePanel, mapModel, user);
         this.userData = controller.getUserDataController();
@@ -75,7 +73,6 @@ public class GameFrame extends JFrame {
                 }
             });
         }
-        playBackgroundMusic();
     }
 
 
@@ -212,82 +209,40 @@ public class GameFrame extends JFrame {
 
 
         upBtn = FrameUtil.createImageButton("/Buttons/up.png", "Move Up", 150, 100);
-        upBtn.setBounds(x+375, y+325, 150, 100);
+        upBtn.setBounds(x+375, y+360, 150, 100);
         upBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.UP));
         this.add(upBtn);
 
         downBtn = FrameUtil.createImageButton("/Buttons/down.png", "Move Down", 150, 100);
-        downBtn.setBounds(x+375, y+405, 150, 100);
+        downBtn.setBounds(x+375, y+440, 150, 100);
         downBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.DOWN));
         this.add(downBtn);
 
         leftBtn = FrameUtil.createImageButton("/Buttons/left.png", "Move Left", 150, 100);
-        leftBtn.setBounds(x+335, 365, 150, 100);
+        leftBtn.setBounds(x+335, 400, 150, 100);
         leftBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.LEFT));
         this.add(leftBtn);
 
         rightBtn = FrameUtil.createImageButton("/Buttons/right.png", "Move Right", 150, 100);
-        rightBtn.setBounds(x + 415, 365, 150, 100);
+        rightBtn.setBounds(x + 415, 400, 150, 100);
         rightBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.RIGHT));
         this.add(rightBtn);
 
-        // Sound Toggle Button (larger size)
-        int soundBtnWidth = 150;
-        int soundBtnHeight = 100;
-        soundBtn = FrameUtil.createImageButton("/Buttons/soundOn.png", "Toggle Sound", soundBtnWidth, soundBtnHeight);
-        soundBtn.setBounds(x+ 0,y+ 450, soundBtnWidth, soundBtnHeight);
-        soundBtn.addActionListener(e -> toggleSound());
-        this.add(soundBtn);
 
+        int BtnWidth = 150;
+        int BtnHeight = 100;
 
-
-        // Tool Buttons
-        // Tool Buttons
-        hammerBtn = FrameUtil.createImageButton( "/Buttons/hammer.png", "hammer",soundBtnWidth, soundBtnHeight);
-        hammerBtn.setBounds(x +0, y+300, soundBtnWidth, soundBtnHeight);
+        hammerBtn = FrameUtil.createImageButton( "/Buttons/hammer.png", "hammer", BtnWidth, BtnHeight);
+        hammerBtn.setBounds(x, y + 350, BtnWidth, BtnHeight);
         hammerBtn.addActionListener(e -> controller.selectTool(GameController.Tool.HAMMER));
         this.add(hammerBtn);
 
-        obstacleBtn = FrameUtil.createImageButton( "/Buttons/obstacle.png","obstacle",soundBtnWidth,soundBtnHeight);
-        obstacleBtn.setBounds(x +0, y+375, soundBtnWidth, soundBtnHeight);
+        obstacleBtn = FrameUtil.createImageButton( "/Buttons/obstacle.png","obstacle", BtnWidth, BtnHeight);
+        obstacleBtn.setBounds(x, y + 450, BtnWidth, BtnHeight);
         obstacleBtn.addActionListener(e -> controller.selectTool(GameController.Tool.OBSTACLE));
         this.add(obstacleBtn);
     }
 
-    private void toggleSound() {
-        if (isSoundOn) {
-            stopBackgroundMusic();
-            soundBtn.setIcon(FrameUtil.loadIcon("/Buttons/mute.png", 200, 100));
-        } else {
-            playBackgroundMusic();
-            soundBtn.setIcon(FrameUtil.loadIcon("/Buttons/soundOn.png", 200, 100));
-        }
-        isSoundOn = !isSoundOn;
-        gamePanel.requestFocusInWindow();
-    }
-
-    private void playBackgroundMusic() {
-        try {
-            if (backgroundClip != null && backgroundClip.isRunning()) {
-                backgroundClip.stop();
-            }
-
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(
-                    getClass().getResource("/Sounds/bgm.wav"));
-            backgroundClip = AudioSystem.getClip();
-            backgroundClip.open(audioStream);
-            backgroundClip.loop(Clip.LOOP_CONTINUOUSLY);
-            backgroundClip.start();
-        } catch (Exception e) {
-            System.err.println("Error playing background music: " + e.getMessage());
-        }
-    }
-
-    private void stopBackgroundMusic() {
-        if (backgroundClip != null && backgroundClip.isRunning()) {
-            backgroundClip.stop();
-        }
-    }
 
     public void startNewGame() {
         controller.restartGame();

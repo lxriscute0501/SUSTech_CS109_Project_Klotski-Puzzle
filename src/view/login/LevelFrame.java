@@ -3,6 +3,7 @@ package view.login;
 import model.MapModel;
 import controller.User;
 import view.FrameUtil;
+import view.game.BackgroundPanel;
 import view.game.GameFrame;
 
 import javax.swing.*;
@@ -24,6 +25,9 @@ public class LevelFrame extends JFrame {
         setSize(width, height);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel("/images/UI/startBG.png");
+        this.setContentPane(backgroundPanel);
 
         // Use GridBagLayout
         setLayout(new GridBagLayout());
