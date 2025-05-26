@@ -16,8 +16,8 @@ Klotski is a traditional Chinese puzzle game in which players need to move the "
 
 |Members|Login|Game Logic|GUI|Time|Levels|Tools|Save & Load|Sound|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|Li Xuanran||:check_mark:|||:check_mark:|:check_mark:|:check_mark:||
-|Tisha|:check_mark:||:check_mark:|:check_mark:||||:check_mark:|
+|Li Xuanran||✔️|||✔️|✔️|✔️||
+|Tisha|✔️||✔️|✔️||||✔️|
 
 ## Project Structure
 
@@ -116,7 +116,7 @@ Klotski Puzzle
 ## Q & A
 
 - *Q: After a guest enters the game, the username will be displayed as `Guest`. Will this cause any conflict with users whose usernames are also `Guest`?*
-✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
+- ✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
 
 - 💡 In the `saveGame` method, the saved path is `data/username/data.txt`, and its format is: 
 ```
