@@ -7,10 +7,12 @@ import model.MapModel;
 import controller.User;
 import view.FrameUtil;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
+    private Clip backgroundClip;
     private GameController controller;
     private UserDataController userData;
 
@@ -21,9 +23,14 @@ public class GameFrame extends JFrame {
     private JButton leftBtn;
     private JButton rightBtn;
     private JButton undoBtn;
+    private JButton soundBtn;
     private JButton hammerBtn;
     private JButton obstacleBtn;
+    private JLabel timeLabel;
+    private JLabel levelLabel;
+    private JLabel stepLabel;
 
+    private boolean isSoundOn = true;
     private GamePanel gamePanel;
     private User currentUser;
     private boolean isGuest;
@@ -125,6 +132,7 @@ public class GameFrame extends JFrame {
 
         this.add(levelLabel);
 
+        // Steps Label
         JLabel stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("Arial", Font.PLAIN, 25),
                 new Point(x+40, y+180),
@@ -133,6 +141,7 @@ public class GameFrame extends JFrame {
 
         this.add(stepLabel);
 
+        // username label
         JLabel usernameLabel = FrameUtil.createJLabel(this,
                 "<html><div style='text-align: center;'>"
                         + "<b>Username</b><br>"
@@ -233,7 +242,6 @@ public class GameFrame extends JFrame {
         obstacleBtn.addActionListener(e -> controller.selectTool(GameController.Tool.OBSTACLE));
         this.add(obstacleBtn);
     }
-
 
     public void startNewGame() {
         controller.restartGame();

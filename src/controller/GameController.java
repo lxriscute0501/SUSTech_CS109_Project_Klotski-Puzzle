@@ -4,6 +4,9 @@ import model.*;
 import view.game.BoxComponent;
 import view.game.GamePanel;
 
+import java.awt.*;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Stack;
 import javax.swing.*;
 
@@ -31,6 +34,11 @@ public class GameController {
 
     public enum Tool { HAMMER, OBSTACLE, NONE }
     private Tool currentTool = Tool.NONE;
+
+    private FireworksEffect fireworks;
+    private boolean isWinning = false;
+    private long winTime;
+    private final Random random = new Random();
 
     public static class MoveRecord {
         private final int blockId;
@@ -179,7 +187,6 @@ public class GameController {
     }
 
 
-
     private void updateModelPosition(int blockId, int fromRow, int fromCol, int toRow, int toCol) {
         model.getMatrix()[fromRow][fromCol] = 0;
 
@@ -269,11 +276,13 @@ public class GameController {
                 }
             }
 
-        if (win) {
+        if (win && !isWinning) {
+            isWinning = true;
+            winTime = System.currentTimeMillis();
             stopGameTimer();
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
-            view.showVictoryMessage(view.getSteps(), timeString);
+
             new SoundEffect().playEffect("resources/sound/win.mp3");
 
             if (currentUser != null && !currentUser.isGuest()) {
@@ -282,7 +291,10 @@ public class GameController {
                 UserManager.saveUser(currentUser);
                 userDataController.saveGame(true);
             }
-            System.exit(0);
+
+            SwingUtilities.invokeLater(() -> {
+                view.showVictoryMessage(view.getSteps(), timeString);
+            });
         }
     }
 
@@ -318,9 +330,8 @@ public class GameController {
 
             if (remaining <= 0) {
                 stopGameTimer();
-                view.setTimeLabelString("Time Left: 00:00");
-                view.showErrorMessage("Time's up! Game over.");
-                // view.setGameOverState(); // 假设你有这个方法来禁用交互
+                view.setTimeLabelString("00:00");
+                view.timeoutDialog();
                 return;
             }
 
@@ -377,6 +388,6 @@ public class GameController {
     }
 
     public UserDataController getUserDataController() {
-            return userDataController;
+        return userDataController;
     }
 }

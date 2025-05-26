@@ -3,8 +3,10 @@ package view.game;
 import controller.GameController;
 import controller.UserDataController;
 import model.Direction;
+import model.FireworksEffect;
 import model.MapModel;
 import model.SoundEffect;
+import view.FrameUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -302,9 +304,70 @@ public class GamePanel extends ListenerPanel {
         }
     }
 
+    public void timeoutDialog() {
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+
+        JDialog dialog = new JDialog(parentWindow, "Time's Up!", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setLayout(new BorderLayout(20, 20));
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        String message = "<html><body style='text-align:center;'>Time's up!<br>The game is over.</body></html>";
+        JLabel messageLabel = new JLabel(message, SwingConstants.CENTER);
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        messageLabel.setBorder(BorderFactory.createEmptyBorder(40, 40, 20, 40));
+        dialog.add(messageLabel, BorderLayout.CENTER);
+
+        JButton exitButton = FrameUtil.createImageButton("/images/buttons/exitNew.png", "Exit Game", 120, 60);
+        exitButton.setToolTipText("Exit the game");
+        exitButton.addActionListener(e -> System.exit(0));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        buttonPanel.add(exitButton);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
     public void showVictoryMessage(int stepCount, String timeUsed) {
-        String message = String.format("Victory! Congratulations!\n" + "Steps: %d\n" + "Time used: %s", stepCount, timeUsed);
-        JOptionPane.showMessageDialog(this, message, "Victory!", JOptionPane.INFORMATION_MESSAGE);
+        JDialog victoryDialog = new JDialog((Frame)SwingUtilities.getWindowAncestor(this), "Victory!", true);
+        victoryDialog.setLayout(new BorderLayout());
+        victoryDialog.setSize(500, 400);
+        victoryDialog.setLocationRelativeTo(this);
+
+        FireworksEffect fireworksPanel = new FireworksEffect(500, 400);
+        victoryDialog.add(fireworksPanel, BorderLayout.CENTER);
+
+        JPanel infoPanel = new JPanel(new GridLayout(3, 1));
+        infoPanel.setOpaque(false);
+
+        JLabel congratsLabel = new JLabel("Victory! Congratulations!", SwingConstants.CENTER);
+        congratsLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        JLabel stepsLabel = new JLabel("Steps: " + stepCount, SwingConstants.CENTER);
+        stepsLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        JLabel timeLabel = new JLabel("Time used: " + timeUsed, SwingConstants.CENTER);
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        infoPanel.add(congratsLabel);
+        infoPanel.add(stepsLabel);
+        infoPanel.add(timeLabel);
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(500, 400));
+
+        fireworksPanel.setBounds(0, 0, 500, 400);
+        infoPanel.setBounds(0, 150, 500, 100);
+
+        layeredPane.add(fireworksPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(infoPanel, JLayeredPane.PALETTE_LAYER);
+
+        victoryDialog.add(layeredPane);
+        victoryDialog.setVisible(true);
     }
 
     public void showInfoMessage(String message) {
@@ -376,7 +439,6 @@ public class GamePanel extends ListenerPanel {
     public void doRightClick(Point point) {
         Component component = this.getComponentAt(point);
         if (component instanceof BoxComponent clickedComponent) {
-            // click the selected box, cancel it
             if (selectedBox != null && selectedBox == clickedComponent) {
                 clickedComponent.setSelected(false);
                 selectedBox = null;
