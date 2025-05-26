@@ -1,40 +1,43 @@
 package controller;
 
 import java.io.*;
-import java.util.Properties;
 
-/**
- * Manages user data using Properties stored in user.config
- */
 public class UserManager {
-    private static final String CONFIG_FILE = "user.config";
-    private static Properties props = new Properties();
+    private static final String USER_DATA_DIR = "userdata/";
 
-    static {
-        loadConfig();
-    }
-
-    private static void loadConfig() {
-        try (InputStream input = new FileInputStream(CONFIG_FILE)) {
-            props.load(input);
-        } catch (IOException e) {
-            System.out.println("No existing config. A new one will be created.");
-        }
-    }
-
-    private static void saveConfig() {
-        try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
-            props.store(output, "User Configuration");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static boolean userExists(String username) {
+        File userFile = new File(USER_DATA_DIR + username + ".dat");
+        return userFile.exists();
     }
 
     public static User loadUser(String username, String password) {
-        String storedPassword = props.getProperty(username);
-        if (storedPassword != null && storedPassword.equals(password)) {
-            return new User(username, password);
+        File userFile = new File(USER_DATA_DIR + username + ".dat");
+        if (userFile.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(userFile))) {
+                User user = (User) ois.readObject();
+                if (user.getPassword().equals(password)) {
+                    return user;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return null;
+    }
+
+    public static boolean saveUser(User user) {
+        File dir = new File(USER_DATA_DIR);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(USER_DATA_DIR + user.getUsername() + ".dat"))) {
+            oos.writeObject(user);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

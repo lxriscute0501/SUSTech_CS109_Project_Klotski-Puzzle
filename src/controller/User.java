@@ -13,7 +13,7 @@ public class User implements Serializable {
     private String password;
     private final boolean isGuest;
     private int highestLevel;
-    private int bestSteps;
+    private int bestSteps = Integer.MAX_VALUE;
     private long bestTime = Long.MAX_VALUE;
 
     public User(String username, String password) {
@@ -21,7 +21,6 @@ public class User implements Serializable {
         this.password = password;
         this.isGuest = false;
         this.highestLevel = 0;
-        this.bestSteps = Integer.MAX_VALUE;
     }
 
     public User(String username) {
@@ -29,7 +28,6 @@ public class User implements Serializable {
         this.password = null;
         this.isGuest = true;
         this.highestLevel = 0;
-        this.bestSteps = Integer.MAX_VALUE;
     }
 
     public void updateBestSteps(int moveCount) {

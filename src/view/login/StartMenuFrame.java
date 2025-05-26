@@ -40,7 +40,7 @@ public class StartMenuFrame extends JFrame {
 
         // Title label
         JLabel titleLabel = new JLabel("Klotski Puzzle");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         gbc.gridy = 0;
         add(titleLabel, gbc);
 

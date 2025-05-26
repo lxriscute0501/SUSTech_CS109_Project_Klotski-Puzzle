@@ -1,5 +1,7 @@
 package view.login;
 
+import controller.User;
+import controller.UserManager;
 import view.FrameUtil;
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +32,6 @@ public class RegisterFrame extends JFrame {
         JPasswordField passwordField = FrameUtil.createJPasswordField(this, new Point(160, 80), 180, 40);
         RegisterFrame.styleInputField(passwordField);
 
-
         JLabel confirmLabel = FrameUtil.createJLabel(this, new Point(50, 130), 100, 40, "confirm:");
         JPasswordField confirmField = FrameUtil.createJPasswordField(this, new Point(160, 130), 180, 40);
         RegisterFrame.styleInputField(confirmField);
@@ -40,7 +41,6 @@ public class RegisterFrame extends JFrame {
         registerBtn.setBounds(x, 180, 140, 50);
         this.add(registerBtn);
 
-
         registerBtn.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
@@ -48,19 +48,21 @@ public class RegisterFrame extends JFrame {
 
             if (username.isEmpty() || password.isEmpty()) {
                 showErrorDialog("Username and password cannot be empty!", "Error", "/Buttons/back.png");
-            } else if (loginFrame.getUserProperty().containsKey(username)) {
+            } else if (UserManager.userExists(username)) {
                 showErrorDialog("Username already exists! Please choose a different one.", "Error", "/Buttons/back.png");
             } else if (!password.equals(confirm)) {
                 showErrorDialog("Passwords do not match!", "Error", "/Buttons/back.png");
             } else {
-                Properties props = loginFrame.getUserProperty();
-                props.setProperty(username, password);
-                loginFrame.saveUserConfig();
-
-                JOptionPane.showMessageDialog(this,
-                        "Registration successful!",
-                        username + ", welcome!", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
+                // 创建新用户并保存
+                User newUser = new User(username, password);
+                if (UserManager.saveUser(newUser)) {
+                    JOptionPane.showMessageDialog(this,
+                            "Registration successful!",
+                            username + ", welcome!", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } else {
+                    showErrorDialog("Failed to register user. Please try again.", "Error", "/Buttons/back.png");
+                }
             }
         });
 

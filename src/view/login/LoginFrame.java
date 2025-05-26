@@ -47,6 +47,11 @@ public class LoginFrame extends JFrame {
 
             User user = UserManager.loadUser(inputUsername, inputPassword);
             if (user != null) {
+                System.out.println("Log in successfully!");
+                System.out.println("Username: " + user.getUsername());
+                System.out.println("Password: " + user.getPassword());
+                System.out.println("Best steps: " + user.getBestSteps());
+                System.out.println("Best time: " + user.getBestTime());
                 enterStartMenuFrame(user, false);
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid username or password!",

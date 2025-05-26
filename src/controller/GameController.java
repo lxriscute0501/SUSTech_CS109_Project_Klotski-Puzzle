@@ -279,6 +279,7 @@ public class GameController {
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());
                 currentUser.updateBestTime(actualTime);
+                UserManager.saveUser(currentUser);
                 userDataController.saveGame(true);
             }
             System.exit(0);
