@@ -12,14 +12,12 @@
 
 Klotski is a traditional Chinese puzzle game in which players need to move the "Cao Cao" block out of the board's exit. The game is typically played on a rectangular board with blocks of different sizes and shapes. In this project, we suppose the exit, the size of game panel and each block's size and number are fixed.
 
-For more information, please read [Klotski Puzzle](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/Klotski%20Puzzle.pdf).
-
 ### Members
 
 |Members|Login|Game Logic|GUI|Time|Levels|Tools|Save & Load|Sound|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|Li Xuanran||:heavy_check_mark:|||:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:||
-|Tisha|:heavy_check_mark:||:heavy_check_mark:|:heavy_check_mark:||||:heavy_check_mark:|
+|Li Xuanran||:check_mark:|||:check_mark:|:check_mark:|:check_mark:||
+|Tisha|:check_mark:||:check_mark:|:check_mark:||||:check_mark:|
 
 ## Project Structure
 
@@ -51,7 +49,7 @@ Klotski Puzzle
 │   │   ├── game/
 │   │   │    ├── BoxComponent.java      # Sets the position and pattern of each block
 │   │   │    ├── GameFrame.java         # Configures various labels and buttons of the game interface
-│   │   │    ├── GamePanel.java         # Responds to block selection and movement, sets tool buttons, updates the step count and time labels, also counts the steps here
+│   │   │    ├── GamePanel.java         # Responds to block selection and movement, sets tool buttons, updates the step count and time labels, and also counts the steps here
 │   │   │    └── ListenerPanel.java     # Implements responses to keyboard and mouse inputs 
 │   │   ├── login/
 │   │   │    ├── LevelFrame.java        # Select level after starting a new game, randomly choose 3 images from each difficulty level
@@ -102,24 +100,23 @@ Klotski Puzzle
     - [x] Load game (at game-start frame)
     - [x] Timed auto-save (1 min)
     - [x] Auto-save when exiting
-    - [x] Save file error handling
+    - [ ] Save file error handling
 
 - **Advanced features**
-    - [x] UI beautification (buttons, blocks, backgrounds)
+    - [ ] UI beautification (buttons, blocks, backgrounds)
     - [x] Multi-Level design
     - [ ] AI algorithm to solve automatically
     - [x] Animation effects
     - [x] Sound effects and background music
     - [x] Time attack mode
-    - [x] Props and obstacles
+    - [ ] Props and obstacles
     - [ ] Online spectating
 
 
-## Q & A & Notion
+## Q & A
 
 - *Q: After a guest enters the game, the username will be displayed as `Guest`. Will this cause any conflict with users whose usernames are also `Guest`?*
-
-- ✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
+✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
 
 - 💡 In the `saveGame` method, the saved path is `data/username/data.txt`, and its format is: 
 ```
@@ -130,14 +127,6 @@ Klotski Puzzle
 [best time]
 [map data (4*5)]
 ```
-
-- 💡 In the `loadGame` method, we can detect the errors including:
-    * The number of columns is not $9$;
-    * `level` string is not `Easy`, `Medium` or `Hard`;
-    * Time is already used up;
-    * The size of map is not $4*5$.
-
-- 💡 `Hammer` can only delete a soldier each time, the ID becomes $0$;  `Obstacle` can be setted at any empty place, the ID becomes $-1$.
 
 - 💡 The `Undo` and `Restart` functions after using the hammer and obstacle tools:
     * After performing `Restart`, all the deleted soldiers and the designated restricted areas will be restored;
