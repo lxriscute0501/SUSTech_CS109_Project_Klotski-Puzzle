@@ -172,7 +172,7 @@ public class GameFrame extends JFrame {
         int btnWidth = 180;
         int btnHeight = 90;
 
-        restartBtn = FrameUtil.createImageButton("/Buttons/restart.png", "Restart", btnWidth, btnHeight);
+        restartBtn = FrameUtil.createImageButton("/images/buttons/restart.png", "Restart", btnWidth, btnHeight);
         restartBtn.setBounds(x+710, y+470, btnWidth, btnHeight);
         restartBtn.addActionListener(e -> {
             startNewGame();
@@ -180,7 +180,7 @@ public class GameFrame extends JFrame {
         });
         this.add(restartBtn);
 
-        saveBtn = FrameUtil.createImageButton("/Buttons/saveGame.png", "Save Game", btnWidth, btnHeight);
+        saveBtn = FrameUtil.createImageButton("/images/buttons/saveGame.png", "Save Game", btnWidth, btnHeight);
         saveBtn.setBounds(x+710, y+420, btnWidth, btnHeight);
         saveBtn.addActionListener(e -> userData.saveGame(false));
         if (isGuest) {
@@ -189,7 +189,7 @@ public class GameFrame extends JFrame {
         }
         this.add(saveBtn);
 
-        undoBtn = FrameUtil.createImageButton("/Buttons/undo.png", "Undo", btnWidth, btnHeight);
+        undoBtn = FrameUtil.createImageButton("/images/buttons/undo.png", "Undo", btnWidth, btnHeight);
         undoBtn.setBounds(x+710, y+370, btnWidth, btnHeight);
         undoBtn.addActionListener(e -> {
             if (gamePanel.undoLastMove()) {
@@ -199,23 +199,23 @@ public class GameFrame extends JFrame {
         this.add(undoBtn);
 
 
-        upBtn = FrameUtil.createImageButton("/Buttons/up.png", "Move Up", 150, 100);
-        upBtn.setBounds(x+375, y+360, 150, 100);
+        upBtn = FrameUtil.createImageButton("/images/buttons/up.png", "Move Up", 50, 50);
+        upBtn.setBounds(x+375, y+380, 50, 50);
         upBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.UP));
         this.add(upBtn);
 
-        downBtn = FrameUtil.createImageButton("/Buttons/down.png", "Move Down", 150, 100);
-        downBtn.setBounds(x+375, y+440, 150, 100);
+        downBtn = FrameUtil.createImageButton("/images/buttons/down.png", "Move Down", 50, 50);
+        downBtn.setBounds(x+375, y+460, 50, 50);
         downBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.DOWN));
         this.add(downBtn);
 
-        leftBtn = FrameUtil.createImageButton("/Buttons/left.png", "Move Left", 150, 100);
-        leftBtn.setBounds(x+335, 400, 150, 100);
+        leftBtn = FrameUtil.createImageButton("/images/buttons/left.png", "Move Left", 50, 50);
+        leftBtn.setBounds(x+335, y+420, 50, 50);
         leftBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.LEFT));
         this.add(leftBtn);
 
-        rightBtn = FrameUtil.createImageButton("/Buttons/right.png", "Move Right", 150, 100);
-        rightBtn.setBounds(x + 415, 400, 150, 100);
+        rightBtn = FrameUtil.createImageButton("/images/buttons/right.png", "Move Right", 50, 50);
+        rightBtn.setBounds(x + 415, y+420, 50, 50);
         rightBtn.addActionListener(e -> gamePanel.moveSelectedBox(Direction.RIGHT));
         this.add(rightBtn);
 
@@ -223,12 +223,12 @@ public class GameFrame extends JFrame {
         int BtnWidth = 150;
         int BtnHeight = 100;
 
-        hammerBtn = FrameUtil.createImageButton( "/Buttons/hammer.png", "hammer", BtnWidth, BtnHeight);
+        hammerBtn = FrameUtil.createImageButton("/images/buttons/hammer.png", "hammer", BtnWidth, BtnHeight);
         hammerBtn.setBounds(x, y + 350, BtnWidth, BtnHeight);
         hammerBtn.addActionListener(e -> controller.selectTool(GameController.Tool.HAMMER));
         this.add(hammerBtn);
 
-        obstacleBtn = FrameUtil.createImageButton( "/Buttons/obstacle.png","obstacle", BtnWidth, BtnHeight);
+        obstacleBtn = FrameUtil.createImageButton("/images/buttons/obstacle.png","obstacle", BtnWidth, BtnHeight);
         obstacleBtn.setBounds(x, y + 450, BtnWidth, BtnHeight);
         obstacleBtn.addActionListener(e -> controller.selectTool(GameController.Tool.OBSTACLE));
         this.add(obstacleBtn);

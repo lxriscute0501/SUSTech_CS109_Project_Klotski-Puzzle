@@ -5,7 +5,6 @@ import controller.UserManager;
 import view.FrameUtil;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Properties;
 import javax.swing.text.JTextComponent;
 
 
@@ -36,7 +35,7 @@ public class RegisterFrame extends JFrame {
         JPasswordField confirmField = FrameUtil.createJPasswordField(this, new Point(160, 130), 180, 40);
         RegisterFrame.styleInputField(confirmField);
 
-        JButton registerBtn = createImageButton("/Buttons/register.png", "Register");
+        JButton registerBtn = createImageButton("/images/buttons/register.png", "Register");
         int x = (this.getWidth() - 140) / 2;
         registerBtn.setBounds(x, 180, 140, 50);
         this.add(registerBtn);
@@ -47,11 +46,11 @@ public class RegisterFrame extends JFrame {
             String confirm = new String(confirmField.getPassword());
 
             if (username.isEmpty() || password.isEmpty()) {
-                showErrorDialog("Username and password cannot be empty!", "Error", "/Buttons/back.png");
+                showErrorDialog("Username and password cannot be empty!", "Error", "/images/buttons/back.png");
             } else if (UserManager.userExists(username)) {
-                showErrorDialog("Username already exists! Please choose a different one.", "Error", "/Buttons/back.png");
+                showErrorDialog("Username already exists! Please choose a different one.", "Error", "/images/buttons/back.png");
             } else if (!password.equals(confirm)) {
-                showErrorDialog("Passwords do not match!", "Error", "/Buttons/back.png");
+                showErrorDialog("Passwords do not match!", "Error", "/images/buttons/back.png");
             } else {
                 // 创建新用户并保存
                 User newUser = new User(username, password);
@@ -61,7 +60,7 @@ public class RegisterFrame extends JFrame {
                             username + ", welcome!", JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                 } else {
-                    showErrorDialog("Failed to register user. Please try again.", "Error", "/Buttons/back.png");
+                    showErrorDialog("Failed to register user. Please try again.", "Error", "/images/buttons/back.png");
                 }
             }
         });

@@ -4,7 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Now best time and steps can be loaded correctly." />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="test">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS109_Project_Klotski-Puzzle.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CS109_Project_Klotski-Puzzle.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/Register.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/back.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/back.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/cancel.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/cancel.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/down.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/down.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/easy.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/easy.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/exitNew.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/exitNew.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/guest.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/guest.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/hammer.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/hammer.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/hard.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/hard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/left.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/left.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/load" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/loadGame.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/loadGame.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/login.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/login.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/medium.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/medium.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/mute.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/mute.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/next.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/next.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/obstacle.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/obstacle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/register.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/register.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/reset.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/reset.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/restart.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/restart.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/right.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/right.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/saveGame.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/saveGame.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/soundOn.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/soundOn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/startNew.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/startNew.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/submit.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/submit.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/undo.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/undo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Buttons/up.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/images/buttons/up.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/UserDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserDataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LevelFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LevelFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/ResetFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/ResetFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +115,7 @@
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/images" />
       <recent name="$PROJECT_DIR$/resources/images/UI" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/images/blocks" />
@@ -427,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748242375735</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="test">
+      <option name="closed" value="true" />
+      <created>1748247451848</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1748247451848</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -469,13 +517,13 @@
     <MESSAGE value="[FEAT] Add block pictures." />
     <MESSAGE value="[FIX] Fix the time counting problem." />
     <MESSAGE value="[FEAT] Add obstacle and hammer buttons." />
-    <MESSAGE value="test" />
     <MESSAGE value="[UPDATE] fix the problems of hammer and obstacle" />
     <MESSAGE value="Update README" />
     <MESSAGE value="Update README and UI" />
     <MESSAGE value="[UPDATE] Add background, add loaded file check." />
     <MESSAGE value="[FIX] Fix the undo problem." />
     <MESSAGE value="[FIX] Now best time and steps can be loaded correctly." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Now best time and steps can be loaded correctly." />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
 </project>

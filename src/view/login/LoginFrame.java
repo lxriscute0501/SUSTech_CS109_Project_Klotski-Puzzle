@@ -41,7 +41,7 @@ public class LoginFrame extends JFrame {
 
             if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
                 warningDialog("Please enter both username and password!",
-                        "Input Required", "/Buttons/back.png");
+                        "Input Required", "/images/buttons/back.png");
                 return;
             }
 
@@ -83,8 +83,8 @@ public class LoginFrame extends JFrame {
 
             // Buttons Panel
             JPanel GuestButtonPanel = new JPanel();
-            JButton continueBtn = createImageButton("/Buttons/next.png", "Continue as Guest");
-            JButton cancelBtn = createImageButton("/Buttons/cancel.png", "Cancel");
+            JButton continueBtn = createImageButton("/images/buttons/next.png", "Continue as Guest");
+            JButton cancelBtn = createImageButton("/images/buttons/cancel.png", "Cancel");
 
             GuestButtonPanel.add(continueBtn);
             GuestButtonPanel.add(cancelBtn);
@@ -160,10 +160,10 @@ public class LoginFrame extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        loginBtn = createImageButton("/Buttons/Login.png", "Login");
-        resetBtn = createImageButton("/Buttons/reset.png", "Reset");
-        registerBtn = createImageButton("/Buttons/register.png", "Register");
-        guestBtn = createImageButton("/Buttons/guest.png", "Guest");
+        loginBtn = createImageButton("/images/buttons/Login.png", "Login");
+        resetBtn = createImageButton("/images/buttons/reset.png", "Reset");
+        registerBtn = createImageButton("/images/buttons/register.png", "Register");
+        guestBtn = createImageButton("/images/buttons/guest.png", "Guest");
 
         buttonPanel.add(loginBtn);
         buttonPanel.add(resetBtn);

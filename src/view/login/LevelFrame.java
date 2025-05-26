@@ -58,22 +58,22 @@ public class LevelFrame extends JFrame {
 
         // Helper method to create and add buttons
         gbc.gridy = 2;
-        JButton easyBtn = FrameUtil.createImageButton("/Buttons/easy.png", "Easy", btnWidth, btnHeight);
+        JButton easyBtn = FrameUtil.createImageButton("/images/buttons/easy.png", "Easy", btnWidth, btnHeight);
         easyBtn.addActionListener(e -> startGameWithLevel(1));
         add(easyBtn, gbc);
 
         gbc.gridy = 3;
-        JButton mediumBtn = FrameUtil.createImageButton("/Buttons/medium.png", "Medium", btnWidth, btnHeight);
+        JButton mediumBtn = FrameUtil.createImageButton("/images/buttons/medium.png", "Medium", btnWidth, btnHeight);
         mediumBtn.addActionListener(e -> startGameWithLevel(2));
         add(mediumBtn, gbc);
 
         gbc.gridy = 4;
-        JButton hardBtn = FrameUtil.createImageButton("/Buttons/hard.png", "Hard", btnWidth, btnHeight);
+        JButton hardBtn = FrameUtil.createImageButton("/images/buttons/hard.png", "Hard", btnWidth, btnHeight);
         hardBtn.addActionListener(e -> startGameWithLevel(3));
         add(hardBtn, gbc);
 
         gbc.gridy = 5;
-        JButton backBtn = FrameUtil.createImageButton("/Buttons/back.png", "Return", btnWidth, btnHeight);
+        JButton backBtn = FrameUtil.createImageButton("/images/buttons/back.png", "Return", btnWidth, btnHeight);
         backBtn.addActionListener(e -> {
             StartMenuFrame startMenu = new StartMenuFrame(600, 400, isGuest, user);
             startMenu.setVisible(true);
@@ -145,12 +145,20 @@ public class LevelFrame extends JFrame {
                 lines.add(line.trim());
             }
 
-            if (lines.isEmpty()) return getDefaultMap();
+            if (lines.size() != 4) {
+                return getDefaultMap();
+            }
 
             int[][] map = new int[4][5];
-            for (int i = 0; i < 4 && i < lines.size(); i++) {
+            for (int i = 0; i < 4; i++)
+            {
                 String[] values = lines.get(i).split("\\s+");
-                for (int j = 0; j < 5 && j < values.length; j++) {
+                if (values.length != 5) {
+                    return getDefaultMap();
+                }
+
+                for (int j = 0; j < 5; j++)
+                {
                     try {
                         map[i][j] = Integer.parseInt(values[j]);
                     } catch (NumberFormatException e) {
@@ -167,6 +175,10 @@ public class LevelFrame extends JFrame {
     }
 
     private int[][] getDefaultMap() {
-        return new int[4][5];
+        return new int[][] {
+                {4, 3, 3, 1, 1},
+                {0, 3, 3, 1, 1},
+                {4, 0, 2, 4, 4},
+                {3, 3, 2, 3, 3}};
     }
 }

@@ -59,8 +59,6 @@ public class UserDataController {
             Files.write(Path.of(filePath + "/data.txt"), gameData);
             if (!isAuto) {
                 view.showInfoMessage("Game saved successfully!");
-                controller.stopGameTimer();
-                System.exit(0);
             }
         } catch (Exception e) {
             view.showErrorMessage("Game saved failed: " + e.getMessage());

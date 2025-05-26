@@ -1,14 +1,13 @@
 package view.login;
 
+import controller.User;
+import controller.UserManager;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Properties;
-import javax.swing.text.JTextComponent;
 
 /**
  * Reset the password of one user, including username, old password, new password, confirm new password.
  */
-
 public class ResetFrame extends JFrame {
     private JTextField usernameField;
     private JPasswordField oldPasswordField;
@@ -62,30 +61,21 @@ public class ResetFrame extends JFrame {
         RegisterFrame.styleInputField(confirmPasswordField);
         this.add(confirmPasswordField);
 
-
-        submitBtn = createImageButton("/Buttons/submit.png", "Submit");
+        submitBtn = createImageButton("/images/buttons/submit.png", "Submit");
         submitBtn.setBounds(80, 200, 120, 60);
         submitBtn.addActionListener(e -> handlePasswordReset());
         this.add(submitBtn);
 
-        cancelBtn = createImageButton("/Buttons/cancel.png", "Cancel");
+        cancelBtn = createImageButton("/images/buttons/cancel.png", "Cancel");
         cancelBtn.setBounds(220, 200, 120, 60);
         cancelBtn.addActionListener(e -> this.dispose());
         this.add(cancelBtn);
 
-
         this.setLocationRelativeTo(parentFrame);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setVisible(true);
-
     }
 
-    /** 3 cases:
-     * 1.txt. empty fields
-     * 2. new password != confirm password
-     * 3. wrong username or old password
-     * Note. old password = new password is allowed
-     */
     private void handlePasswordReset() {
         String username = usernameField.getText();
         String oldPassword = new String(oldPasswordField.getPassword());
@@ -93,20 +83,17 @@ public class ResetFrame extends JFrame {
         String confirmPassword = new String(confirmPasswordField.getPassword());
 
         if (username.isEmpty() || oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            showErrorDialog("All fields must be filled!", "Error", "/Buttons/back.png");
+            showErrorDialog("All fields must be filled!", "Error", "/images/buttons/back.png");
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            showErrorDialog("New passwords do not match!", "Error", "/Buttons/back.png");
+            showErrorDialog("New passwords do not match!", "Error", "/images/buttons/back.png");
             return;
         }
 
-
-        Properties userProperty = parentFrame.getUserProperty();
-        String storedPassword = userProperty.getProperty(username);
-
-        if (storedPassword == null || !storedPassword.equals(oldPassword)) {
+        User user = UserManager.loadUser(username, oldPassword);
+        if (user == null) {
             JOptionPane.showMessageDialog(this,
                     "Invalid username or old password!",
                     "Error",
@@ -114,19 +101,18 @@ public class ResetFrame extends JFrame {
             return;
         }
 
-        // reset username and password
-        userProperty.setProperty(username, newPassword);
-        parentFrame.saveUserConfig();
-
-        JOptionPane.showMessageDialog(this,
-                "Password changed successfully!",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        this.dispose();
-
-
+        user.setPassword(newPassword);
+        if (UserManager.saveUser(user)) {
+            JOptionPane.showMessageDialog(this,
+                    "Password changed successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } else {
+            showErrorDialog("Failed to save new password. Please try again.", "Error", "/images/buttons/back.png");
+        }
     }
+
     private JButton createImageButton(String resourcePath, String toolTipText) {
         java.net.URL imageUrl = getClass().getResource(resourcePath);
         if (imageUrl == null) {

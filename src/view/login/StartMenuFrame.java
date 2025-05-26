@@ -45,7 +45,7 @@ public class StartMenuFrame extends JFrame {
         add(titleLabel, gbc);
 
         // Start Button
-        JButton startBtn = FrameUtil.createImageButton("/Buttons/startNew.png", "Start new game", 150, 75);
+        JButton startBtn = FrameUtil.createImageButton("/images/buttons/startNew.png", "Start new game", 150, 75);
         startBtn.addActionListener(e -> {
             LevelFrame levelFrame = new LevelFrame(600, 400, isGuest, user);
             levelFrame.setVisible(true);
@@ -55,7 +55,7 @@ public class StartMenuFrame extends JFrame {
         add(startBtn, gbc);
 
         // Load Button
-        JButton loadBtn = FrameUtil.createImageButton("/Buttons/loadGame.png", "Load Game", 150, 75);
+        JButton loadBtn = FrameUtil.createImageButton("/images/buttons/loadGame.png", "Load Game", 150, 75);
         loadBtn.addActionListener(e -> {
             String filePath = "data/" + user.getUsername() + "/data.txt";
             File saveFile = new File(filePath);
@@ -106,7 +106,7 @@ public class StartMenuFrame extends JFrame {
         add(loadBtn, gbc);
 
         // Exit Button
-        JButton exitBtn = FrameUtil.createImageButton("/Buttons/exitNew.png", "Exit", 150, 75);
+        JButton exitBtn = FrameUtil.createImageButton("/images/buttons/exitNew.png", "Exit", 150, 75);
         exitBtn.addActionListener(e -> {
             LoginFrame loginFrame = new LoginFrame(600, 400);
             loginFrame.setVisible(true);
