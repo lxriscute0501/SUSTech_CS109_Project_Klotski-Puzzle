@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Fix the undo problem.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/LoginFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/RegisterFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login/StartMenuFrame.java" afterDir="false" />
-    </list>
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FIX] Now best time and steps can be loaded correctly." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -429,7 +419,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748240242731</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="[FIX] Now best time and steps can be loaded correctly.">
+      <option name="closed" value="true" />
+      <created>1748242375735</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1748242375735</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -453,7 +451,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FEAT] timed auto-save or auto-save on exit" />
     <MESSAGE value="[FEAT] Add level choosing feature, but resources need to be added." />
     <MESSAGE value="[UPDATE] add levels in saveGame and loadGame" />
     <MESSAGE value="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update" />
@@ -478,6 +475,7 @@
     <MESSAGE value="Update README and UI" />
     <MESSAGE value="[UPDATE] Add background, add loaded file check." />
     <MESSAGE value="[FIX] Fix the undo problem." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Fix the undo problem." />
+    <MESSAGE value="[FIX] Now best time and steps can be loaded correctly." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Now best time and steps can be loaded correctly." />
   </component>
 </project>
