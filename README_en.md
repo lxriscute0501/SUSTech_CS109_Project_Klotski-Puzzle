@@ -37,9 +37,9 @@ Klotski Puzzle
 ├── src/
 │   ├── controller/
 │   │   ├── GameController.java         # Basic game logic, including checking the legality of movements, updating the position of the blocks, checking victory conditions, using tools, and timing
+│   │   ├── User.java                   # Stores user information, including password, best time, and steps, etc.
 │   │   ├── UserDataController.java     # Stores and loads game information
-│   │   ├── UserManager.java            # Verifies and loads user data during login
-│   │   └── User.java                   # Stores user information, including password, best time, and steps, etc.
+│   │   └── UserManager.java            # Verifies and loads user data during login
 │   ├── model/
 │   │   ├── BackgroundMusic.java        # Background Music (running throughout)
 │   │   ├── Direction.java              # Enum class, four directions: up, down, left, right
@@ -47,10 +47,12 @@ Klotski Puzzle
 │   │   └── SoundEffect.java            # Movement sound effect and victory clapping sound effect 
 │   ├── view/
 │   │   ├── game/
-│   │   │    ├── BoxComponent.java      # Sets the position and pattern of each block
-│   │   │    ├── GameFrame.java         # Configures various labels and buttons of the game interface
-│   │   │    ├── GamePanel.java         # Responds to block selection and movement, sets tool buttons, updates the step count and time labels, and also counts the steps here
-│   │   │    └── ListenerPanel.java     # Implements responses to keyboard and mouse inputs 
+│   │   │    ├── BackgroundPanel.java   # Add background picture
+│   │   │    ├── BoxComponent.java      # Set the position and pattern of each block
+│   │   │    ├── GameFrame.java         # Configure various labels and buttons of the game interface
+│   │   │    ├── GamePanel.java         # Respond to block selection and movement, sets tool buttons, updates the step count and time labels, and also counts the steps here
+│   │   │    ├── ListenerPanel.java     # Implement responses to keyboard and mouse inputs
+│   │   │    └── ObstacleComponent.java # Set obstacle blocks
 │   │   ├── login/
 │   │   │    ├── LevelFrame.java        # Select level after starting a new game, randomly choose 3 images from each difficulty level
 │   │   │    ├── LoginFrame.java        # Set the functions of four buttons, verify and store user information
@@ -87,7 +89,7 @@ Klotski Puzzle
     - [x] Buttons control movement
     - [x] Keyboard control movement
     - [x] Restart function
-    - [x] Undo function
+    - [x] [advance] Undo function
     - [x] [advance] Time counting down
     - [x] [advance] Animation effects when moving
 
@@ -100,23 +102,27 @@ Klotski Puzzle
     - [x] Load game (at game-start frame)
     - [x] Timed auto-save (1 min)
     - [x] Auto-save when exiting
-    - [ ] Save file error handling
+    - [x] Save file error handling
+    - [ ] [advance] Detect and maintain the legitimacy of the save data
 
 - **Advanced features**
-    - [ ] UI beautification (buttons, blocks, backgrounds)
+    - [x] UI beautification (buttons, blocks, backgrounds)
     - [x] Multi-Level design
     - [ ] AI algorithm to solve automatically
     - [x] Animation effects
     - [x] Sound effects and background music
     - [x] Time attack mode
-    - [ ] Props and obstacles
+    - [x] Props and obstacles
     - [ ] Online spectating
 
 
 ## Q & A
 
 - *Q: After a guest enters the game, the username will be displayed as `Guest`. Will this cause any conflict with users whose usernames are also `Guest`?*
-- ✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally. 
+- ✅ No. If the user is also named `Guest`, their information will be stored in the `User` section, where the `isGuest` value is `false`, and their username and password will also be stored in `user.config`. Therefore, the game will be able to recognize the user, and all functions such as saving and loading the game can operate normally.
+
+- *Q: When choosing levels, what if all the map resources have been destroyed?*
+- ✅ If the map we choose do not have the size of $4*5$, we will load the default map, and users can play the game normally.
 
 - 💡 In the `saveGame` method, the saved path is `data/username/data.txt`, and its format is: 
 ```
@@ -127,6 +133,12 @@ Klotski Puzzle
 [best time]
 [map data (4*5)]
 ```
+
+- 💡 In the `loadGame` method, the errors we can detect are:
+    * `level` string is not `Easy`, `Medium` or `Hard`;
+    * Time has been used up;
+    * The size of map data is not $4*5$;
+    * Missing or extra lines.
 
 - 💡 The `Undo` and `Restart` functions after using the hammer and obstacle tools:
     * After performing `Restart`, all the deleted soldiers and the designated restricted areas will be restored;
