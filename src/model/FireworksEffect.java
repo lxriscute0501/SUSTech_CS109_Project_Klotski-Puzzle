@@ -15,11 +15,10 @@ public class FireworksEffect extends JPanel {  // 改为继承JPanel
     public FireworksEffect(int width, int height) {
         this.width = width;
         this.height = height;
-        setBackground(new Color(0, 0, 0, 0)); // 透明背景
+        setBackground(new Color(0, 0, 0, 0));
         setPreferredSize(new Dimension(width, height));
         createInitialFireworks();
 
-        // 设置动画定时器
         animationTimer = new Timer(16, e -> {
             updateParticles();
             repaint();
@@ -49,7 +48,6 @@ public class FireworksEffect extends JPanel {  // 改为继承JPanel
             }
         }
 
-        // 随机添加新烟花
         if (random.nextInt(20) == 0) {
             createFirework(random.nextInt(width), random.nextInt(height / 2));
         }
@@ -60,11 +58,9 @@ public class FireworksEffect extends JPanel {  // 改为继承JPanel
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
-        // 绘制半透明背景
         g2d.setColor(new Color(6, 253, 253, 255));
         g2d.fillRect(0, 0, width, height);
 
-        // 绘制所有粒子
         for (Particle p : particles) {
             p.draw(g2d);
         }

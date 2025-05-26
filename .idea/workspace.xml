@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="test">
-      <change afterPath="$PROJECT_DIR$/src/model/FireworksEffect.java" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Add fireworks when winning.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GameFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/FireworksEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/FireworksEffect.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,18 +62,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.LoginFrame.executor": "Run",
-    "Application.Main.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/resources/sound",
-    "onboarding.tips.debug.path": "/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java",
-    "settings.editor.selected.configurable": "preferences.general"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.LoginFrame.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/resources/sound&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/lxr/IDEAjava/CS109_Project_Klotski-Puzzle/src/Main.java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/resources/sound" />
@@ -450,7 +447,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748257007629</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="[FEAT] Add fireworks when winning.">
+      <option name="closed" value="true" />
+      <created>1748267716597</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1748267716597</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -474,7 +479,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FEAT] Add level choosing feature, but resources need to be added." />
     <MESSAGE value="[UPDATE] add levels in saveGame and loadGame" />
     <MESSAGE value="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update" />
     <MESSAGE value="Load game was fixed, but still need to re-construct." />
@@ -499,6 +503,7 @@
     <MESSAGE value="[FIX] Fix the undo problem." />
     <MESSAGE value="[FIX] Now best time and steps can be loaded correctly." />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="[FEAT] Add fireworks when winning." />
+    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Add fireworks when winning." />
   </component>
 </project>
