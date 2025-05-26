@@ -56,7 +56,7 @@ public class MapModel {
     }
 
     public boolean isOccupied(int row, int col) {
-        return getId(row, col) == -1;
+        return getId(row, col) != 0;
     }
 
     public int getWidth() { return width; }

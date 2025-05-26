@@ -143,13 +143,13 @@ public class GameController {
             int blockId = lastMove.getBlockId();
 
             if (model.isOccupied(lastMove.getFromRow(), lastMove.getFromCol())) {
+                moveHistory.push(lastMove);
                 System.out.println("Undo blocked: position is occupied!");
                 return false;
             }
 
             BoxComponent box = view.getBoxAt(lastMove.getToRow(), lastMove.getToCol());
             if (box != null) {
-
                 updateModelPosition(blockId,
                         lastMove.getToRow(), lastMove.getToCol(),
                         lastMove.getFromRow(), lastMove.getFromCol()
@@ -168,6 +168,7 @@ public class GameController {
                 view.highlightSelectedBox(selectedRow, selectedCol);
                 return true;
             } else {
+                moveHistory.push(lastMove);
                 System.out.println("Undo failed: block already deleted.");
                 return false;
             }
@@ -280,6 +281,7 @@ public class GameController {
                 currentUser.updateBestTime(actualTime);
                 userDataController.saveGame(true);
             }
+            System.exit(0);
         }
     }
 

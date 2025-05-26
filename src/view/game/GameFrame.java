@@ -23,9 +23,6 @@ public class GameFrame extends JFrame {
     private JButton undoBtn;
     private JButton hammerBtn;
     private JButton obstacleBtn;
-    private JLabel timeLabel;
-    private JLabel levelLabel;
-    private JLabel stepLabel;
 
     private GamePanel gamePanel;
     private User currentUser;
@@ -101,7 +98,7 @@ public class GameFrame extends JFrame {
         };
 
         exitPanel.setBounds(gamePanel.getX() + gamePanel.getWidth(),
-                gamePanel.getY() + gamePanel.getHeight()/2 - 50, 30, 100);
+                gamePanel.getY() + gamePanel.getHeight() / 2 - 80, 30, 160);
         this.add(exitPanel);
     }
 
@@ -110,14 +107,12 @@ public class GameFrame extends JFrame {
         int x=0;
         int y=0;
 
-        // Time Label
         JLabel timeLabel = FrameUtil.createJLabel(this, "Time Left 05:00",
                 new Font("Arial", Font.PLAIN, 22),
                 new Point(x+30, y+20),
                 200, 100);
         gamePanel.setTimeLabel(timeLabel);
 
-        // Level Label
         JLabel levelLabel = FrameUtil.createJLabel(this, "",
                 new Font("Arial", Font.PLAIN, 22),
                 new Point(x+45, y+100),
@@ -130,7 +125,6 @@ public class GameFrame extends JFrame {
 
         this.add(levelLabel);
 
-        // Steps Label
         JLabel stepLabel = FrameUtil.createJLabel(this, "Steps: 0",
                 new Font("Arial", Font.PLAIN, 25),
                 new Point(x+40, y+180),
@@ -139,7 +133,6 @@ public class GameFrame extends JFrame {
 
         this.add(stepLabel);
 
-        // Username Label
         JLabel usernameLabel = FrameUtil.createJLabel(this,
                 "<html><div style='text-align: center;'>"
                         + "<b>Username</b><br>"
@@ -151,7 +144,6 @@ public class GameFrame extends JFrame {
                 200, 100);
         this.add(usernameLabel);
 
-        // Best Steps Label
         JLabel bestStepsLabel = FrameUtil.createJLabel(this,
                 "<html><div style='text-align: center;'>"
                         + "<b>Best Steps</b><br>"
@@ -164,7 +156,6 @@ public class GameFrame extends JFrame {
                 200, 100);
         this.add(bestStepsLabel);
 
-        // Best Time Label
         JLabel bestTimeLabel = FrameUtil.createJLabel(this,
                 "<html><div style='text-align: center;'>"
                         + "<b>Best Time</b><br>"
@@ -177,7 +168,7 @@ public class GameFrame extends JFrame {
                 200, 100);
         this.add(bestTimeLabel);
 
-        // Buttons size
+
         int btnWidth = 180;
         int btnHeight = 90;
 

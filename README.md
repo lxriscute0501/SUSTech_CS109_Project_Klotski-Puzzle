@@ -19,8 +19,6 @@
 更多信息请参照[项目文档](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/Klotski%20Puzzle.pdf)。
 
 ### 小组成员
-|成员|学号|分工|
-|:---:|:---:|:---:|
 
 
 ## 项目结构
