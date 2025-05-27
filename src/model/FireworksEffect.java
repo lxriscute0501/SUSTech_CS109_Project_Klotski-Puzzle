@@ -53,6 +53,12 @@ public class FireworksEffect extends JPanel {  // 改为继承JPanel
         }
     }
 
+    public void stopAnimation() {
+        if (animationTimer != null && animationTimer.isRunning()) {
+            animationTimer.stop();
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

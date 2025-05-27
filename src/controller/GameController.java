@@ -269,14 +269,14 @@ public class GameController {
 
     public void checkWinCondition() {
         boolean win = true;
-        for (int i = 0; i <= 1; i++)
-            for (int j = 0; j <= 1; j++)
-            {
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j <= 1; j++) {
                 if (model.getId(winx + i, winy + j) != 1) {
                     win = false;
                     break;
                 }
             }
+        }
 
         if (win && !isWinning) {
             isWinning = true;
@@ -285,7 +285,7 @@ public class GameController {
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
 
-            new SoundEffect().playEffect("/sound/win.mp3");
+            new SoundEffect().playEffect("resources/sound/win.mp3");
 
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());
@@ -295,7 +295,67 @@ public class GameController {
             }
 
             SwingUtilities.invokeLater(() -> {
-                view.showVictoryMessage(view.getSteps(), timeString);
+                JDialog victoryDialog = new JDialog((Frame)SwingUtilities.getWindowAncestor(view), "Victory!", true);
+                victoryDialog.setLayout(new BorderLayout());
+                victoryDialog.setSize(500, 450);
+
+                fireworks = new FireworksEffect(500, 500);
+                victoryDialog.add(fireworks, BorderLayout.CENTER);
+
+                JPanel infoPanel = new JPanel(new GridLayout(3, 1));
+                infoPanel.setOpaque(false);
+
+                JLabel congratsLabel = new JLabel("Victory! Congratulations!", SwingConstants.CENTER);
+                congratsLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+                JLabel stepsLabel = new JLabel("Steps: " + view.getSteps(), SwingConstants.CENTER);
+                stepsLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+
+                JLabel timeLabel = new JLabel("Time used: " + timeString, SwingConstants.CENTER);
+                timeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+
+                infoPanel.add(congratsLabel);
+                infoPanel.add(stepsLabel);
+                infoPanel.add(timeLabel);
+
+                JLayeredPane layeredPane = new JLayeredPane();
+                layeredPane.setPreferredSize(new Dimension(500, 500));
+
+                fireworks.setBounds(0, 0, 500, 500);
+                infoPanel.setBounds(0, 150, 500, 100);
+
+                layeredPane.add(fireworks, JLayeredPane.DEFAULT_LAYER);
+                layeredPane.add(infoPanel, JLayeredPane.PALETTE_LAYER);
+
+                JButton okButton = new JButton("OK");
+                okButton.addActionListener(e -> victoryDialog.dispose());
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.add(okButton);
+
+                victoryDialog.add(layeredPane, BorderLayout.CENTER);
+                victoryDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                victoryDialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        if (fireworks != null) {
+                            fireworks.stopAnimation();
+                        }
+                        System.exit(0);
+                    }
+
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        if (fireworks != null) {
+                            fireworks.stopAnimation();
+                        }
+                        System.exit(0);
+                    }
+                });
+
+                victoryDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                victoryDialog.setLocationRelativeTo(view);
+                victoryDialog.setVisible(true);
             });
         }
     }

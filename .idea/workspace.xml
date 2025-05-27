@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="delete win.mp3">
-      <change afterPath="$PROJECT_DIR$/resources/sound/win.mp3" afterDir="false" />
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="add win.mp3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/FireworksEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/FireworksEffect.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,11 +80,11 @@
       <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/sound" />
       <recent name="$PROJECT_DIR$/resources/images" />
       <recent name="$PROJECT_DIR$/resources/images/UI" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/resources/images/blocks" />
-      <recent name="$PROJECT_DIR$/resources/sound" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -472,7 +472,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748320183216</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="add win.mp3">
+      <option name="closed" value="true" />
+      <created>1748323643711</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1748323643711</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -496,7 +504,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Load game was fixed, but still need to re-construct." />
     <MESSAGE value="[FIX] Fix all the save and load problem." />
     <MESSAGE value="[FEAT] Fix the undo problem, add animation effects. Still have problem of restart (gamePanel do not return originally)." />
     <MESSAGE value="[FIX] Fix the load game problem." />
@@ -521,6 +528,7 @@
     <MESSAGE value="[FEAT] Add fireworks when winning." />
     <MESSAGE value="update" />
     <MESSAGE value="delete win.mp3" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete win.mp3" />
+    <MESSAGE value="add win.mp3" />
+    <option name="LAST_COMMIT_MESSAGE" value="add win.mp3" />
   </component>
 </project>
