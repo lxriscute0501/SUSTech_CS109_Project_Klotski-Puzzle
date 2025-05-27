@@ -285,7 +285,7 @@ public class GameController {
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
 
-            // new SoundEffect().playEffect("resources/sound/win.wav");
+            new SoundEffect().playEffect("/sound/win.mp3");
 
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());
