@@ -5,6 +5,8 @@ import view.game.BoxComponent;
 import view.game.GamePanel;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
@@ -283,7 +285,7 @@ public class GameController {
             long actualTime = getActualTime();
             String timeString = formatTime(actualTime);
 
-            new SoundEffect().playEffect("resources/sound/win.mp3");
+            // new SoundEffect().playEffect("resources/sound/win.wav");
 
             if (currentUser != null && !currentUser.isGuest()) {
                 currentUser.updateBestSteps(view.getSteps());
@@ -387,7 +389,5 @@ public class GameController {
         return currentTool;
     }
 
-    public UserDataController getUserDataController() {
-        return userDataController;
-    }
+    public UserDataController getUserDataController() { return userDataController; }
 }

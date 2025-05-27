@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="[FEAT] Add fireworks when winning.">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/FireworksEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/FireworksEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sound/win.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/game/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/game/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -455,7 +457,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748267716597</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="update">
+      <option name="closed" value="true" />
+      <created>1748279946219</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1748279946219</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -479,7 +489,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[UPDATE] add levels in saveGame and loadGame" />
     <MESSAGE value="[FIX] fix the problem that bestTimeLabel &amp;&amp; bestStepsLabel can not update" />
     <MESSAGE value="Load game was fixed, but still need to re-construct." />
     <MESSAGE value="[FIX] Fix all the save and load problem." />
@@ -504,6 +513,7 @@
     <MESSAGE value="[FIX] Now best time and steps can be loaded correctly." />
     <MESSAGE value="test" />
     <MESSAGE value="[FEAT] Add fireworks when winning." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Add fireworks when winning." />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>

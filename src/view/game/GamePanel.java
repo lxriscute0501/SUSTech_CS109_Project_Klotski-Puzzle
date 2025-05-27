@@ -13,6 +13,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -348,10 +350,10 @@ public class GamePanel extends ListenerPanel {
         congratsLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JLabel stepsLabel = new JLabel("Steps: " + stepCount, SwingConstants.CENTER);
-        stepsLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        stepsLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JLabel timeLabel = new JLabel("Time used: " + timeUsed, SwingConstants.CENTER);
-        timeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
 
         infoPanel.add(congratsLabel);
         infoPanel.add(stepsLabel);
