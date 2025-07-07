@@ -16,8 +16,12 @@
 
 更多信息请参照[项目文档](https://github.com/lxriscute0501/SUSTech_CS109_Project_Klotski-Puzzle/blob/main/Klotski%20Puzzle.pdf)。
 
-### 小组成员
+### 成员
 
+|          成员          |Login|Game Logic|GUI|Time|Levels|Tools|Save & Load|Sound|
+|:--------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|  🇨🇳 12312110 李轩然   ||✔️|||✔️|✔️|✔️||
+| 🇮🇩 12412262 Tisha  |✔️||✔️|✔️||||✔️|
 
 ## 项目结构
 
@@ -102,6 +106,7 @@ Klotski Puzzle
     - [x] 定时自动保存（1分钟）
     - [x] 退出时自动保存
     - [x] 不加载被损坏文件
+    - [ ] [高级] 检测保存的数据是否损坏并修复
 
 - **高级功能**
     - [x] 美化UI（按键、方块、背景）

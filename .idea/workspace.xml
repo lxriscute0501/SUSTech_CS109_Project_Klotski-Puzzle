@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="add win.mp3">
+    <list default="true" id="54120069-fe47-4eab-90e7-9e7041ef1c52" name="Changes" comment="game will exit automatically after winning">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/FireworksEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/FireworksEffect.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -480,7 +479,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748323643711</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="game will exit automatically after winning">
+      <option name="closed" value="true" />
+      <created>1748325935901</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1748325935901</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -504,7 +511,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[FIX] Fix all the save and load problem." />
     <MESSAGE value="[FEAT] Fix the undo problem, add animation effects. Still have problem of restart (gamePanel do not return originally)." />
     <MESSAGE value="[FIX] Fix the load game problem." />
     <MESSAGE value="[UPLOAD] Upload image resources." />
@@ -529,6 +535,7 @@
     <MESSAGE value="update" />
     <MESSAGE value="delete win.mp3" />
     <MESSAGE value="add win.mp3" />
-    <option name="LAST_COMMIT_MESSAGE" value="add win.mp3" />
+    <MESSAGE value="game will exit automatically after winning" />
+    <option name="LAST_COMMIT_MESSAGE" value="game will exit automatically after winning" />
   </component>
 </project>

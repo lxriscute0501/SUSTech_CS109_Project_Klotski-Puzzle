@@ -295,67 +295,7 @@ public class GameController {
             }
 
             SwingUtilities.invokeLater(() -> {
-                JDialog victoryDialog = new JDialog((Frame)SwingUtilities.getWindowAncestor(view), "Victory!", true);
-                victoryDialog.setLayout(new BorderLayout());
-                victoryDialog.setSize(500, 450);
-
-                fireworks = new FireworksEffect(500, 500);
-                victoryDialog.add(fireworks, BorderLayout.CENTER);
-
-                JPanel infoPanel = new JPanel(new GridLayout(3, 1));
-                infoPanel.setOpaque(false);
-
-                JLabel congratsLabel = new JLabel("Victory! Congratulations!", SwingConstants.CENTER);
-                congratsLabel.setFont(new Font("Arial", Font.BOLD, 24));
-
-                JLabel stepsLabel = new JLabel("Steps: " + view.getSteps(), SwingConstants.CENTER);
-                stepsLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-
-                JLabel timeLabel = new JLabel("Time used: " + timeString, SwingConstants.CENTER);
-                timeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-
-                infoPanel.add(congratsLabel);
-                infoPanel.add(stepsLabel);
-                infoPanel.add(timeLabel);
-
-                JLayeredPane layeredPane = new JLayeredPane();
-                layeredPane.setPreferredSize(new Dimension(500, 500));
-
-                fireworks.setBounds(0, 0, 500, 500);
-                infoPanel.setBounds(0, 150, 500, 100);
-
-                layeredPane.add(fireworks, JLayeredPane.DEFAULT_LAYER);
-                layeredPane.add(infoPanel, JLayeredPane.PALETTE_LAYER);
-
-                JButton okButton = new JButton("OK");
-                okButton.addActionListener(e -> victoryDialog.dispose());
-                JPanel buttonPanel = new JPanel();
-                buttonPanel.add(okButton);
-
-                victoryDialog.add(layeredPane, BorderLayout.CENTER);
-                victoryDialog.add(buttonPanel, BorderLayout.SOUTH);
-
-                victoryDialog.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        if (fireworks != null) {
-                            fireworks.stopAnimation();
-                        }
-                        System.exit(0);
-                    }
-
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        if (fireworks != null) {
-                            fireworks.stopAnimation();
-                        }
-                        System.exit(0);
-                    }
-                });
-
-                victoryDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                victoryDialog.setLocationRelativeTo(view);
-                victoryDialog.setVisible(true);
+                view.showVictoryMessage(view.getSteps(), timeString);
             });
         }
     }

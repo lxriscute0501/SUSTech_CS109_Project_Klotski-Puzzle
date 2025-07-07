@@ -14,10 +14,10 @@ Klotski is a traditional Chinese puzzle game in which players need to move the "
 
 ### Members
 
-|Members|Login|Game Logic|GUI|Time|Levels|Tools|Save & Load|Sound|
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|Li Xuanran||✔️|||✔️|✔️|✔️||
-|Tisha|✔️||✔️|✔️||||✔️|
+|           Members           |Login|Game Logic|GUI|Time|Levels|Tools|Save & Load|Sound|
+|:---------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|  🇨🇳 12312110 Li Xuanran   ||✔️|||✔️|✔️|✔️||
+|     🇮🇩 12412262 Tisha     |✔️||✔️|✔️||||✔️|
 
 ## Project Structure
 
